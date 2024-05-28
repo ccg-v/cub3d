@@ -44,13 +44,13 @@ void	get_map_dim(char *file_name)
 	printf("map length is %d\n", length);
 }
 
-int	main(int argc, char **argv)
-{
-	if (argc < 2)
-	{
-		printf("wrong args!\n");
-		return (0);
-	}
-	get_map_dim(argv[1]);
-	return (0);
-}
+// int	main(int argc, char **argv)
+// {
+// 	if (argc < 2)
+// 	{
+// 		printf("wrong args!\n");
+// 		return (0);
+// 	}
+// 	get_map_dim(argv[1]);
+// 	return (0);
+// }

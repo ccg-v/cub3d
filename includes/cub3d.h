@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/27 21:58:41 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/05/28 20:52:48 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ typedef struct s_map
 
 /* --- Functions ------------------------------------------------------------ */
 
-void	get_map_dim(char *file_name);
+int		main(int argc, char **argv);
+// void	get_map_dim(char *file_name);
+int		count_lines(char *file);
+int		set_map_starting_line (char *file);
 
 #endif
