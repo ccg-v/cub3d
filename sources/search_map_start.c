@@ -6,26 +6,30 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/30 00:27:56 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:16:23 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//	IN PROCESS: trying to read file until the end
-int	search_map_starting_line(t_map *map)
+int open_file(const char *file)
+{
+    int fd = open(file, O_RDONLY);
+    if (fd == -1)
+    {
+        perror("Error opening file");
+    }
+    return fd;
+}
+
+int	find_map_starting_line_and_height(t_map *map)
 {
 	int		fd;
 	char	*line;
-	int		map_starting_line;
 
-	fd = open(map->file, O_RDONLY);
+	fd = open_file(map->file);
 	if (fd == -1)
-	{
-		perror("Error opening file");
 		return (-1);
-	}
-	map_starting_line = 1;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -33,7 +37,7 @@ int	search_map_starting_line(t_map *map)
 		if (((line[0] != ' ' && line[0] != '1')
 			|| (line[0] == ' ' &&  ft_strchr(line, '1') == NULL))
 			&& map->height == 0)
-				++map_starting_line;
+				++map->starting_line;
 		else
 		{
 			if (line[0] != '\n')
@@ -44,117 +48,103 @@ int	search_map_starting_line(t_map *map)
 	}
 	free(line);
 	close(fd);
-	return (map_starting_line);
+	return (0);
 }
 
-// //	WORKS but leaves fd pointer in map_starting_line
-// int	search_map_starting_line(t_map *map)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		map_starting_line;
-
-// 	fd = open(map->file, O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		perror("Error opening file");
-// 		return (-1);
-// 	}
-// 	map_starting_line = 0;
-// 	line = get_next_line(fd);
-// 	while (line != NULL)
-// 	{
-// 		map_starting_line++;
-// 		if (line[0] == ' ' && ft_strchr(line, '1') != NULL)
-// 		{
-// 			free(line);
-// 			close(fd);
-// 			return (map_starting_line);
-// 		}
-// 		if (line[0] == '1')
-// 			break ;
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	free(line);
-// 	close(fd);
-// 	return (map_starting_line);
-// }
-
-int	search_map_height(t_map *map)
+int	find_map_width(t_map *map)
 {
-	int		height;
 	int		fd;
-	int 	current_line;
 	char	*line;
 
-	fd = open(map->file, O_RDONLY);
+	fd = open_file(map->file);
 	if (fd == -1)
-	{
-		perror("Error opening file");
 		return (-1);
-	}
-	current_line = 0;
-	height = 0;
 	line = get_next_line(fd);
-    while (current_line < map->starting_line && line != NULL)
-	{
-        free(line);
-        current_line++;
-        if (current_line < map->starting_line) {
-            line = get_next_line(fd);
-        }
-    }
     while (line != NULL) {
-		if (line[0] != '\n')
-        	height++;
-		line = get_next_line(fd);
 		free(line);
+		if (ft_strlen(line) > map->width)
+        	map->width = ft_strlen(line);
+		line = get_next_line(fd);
     }
-    close(fd);
-	return (height);	
+	close(fd);
+	free(line);
+	return (0);
 }
 
-// //	COUNTS ALL THE LINES OF THE CONFIG FILE, NOT JUST THE MAP LINES
+char **allocate_map_array(t_map *map)
+{
+	size_t	i;
+
+	map->array = malloc(map->height * sizeof(char *));
+	if (!map->array)
+		return (NULL);
+	i = 0;
+	while (i < map->height)
+	{
+		map->array[i] = malloc(map->width * sizeof(char));
+		if (!map->array[i])
+			return (NULL);
+		i++;
+	}
+	return (map->array);
+}
+
+int	fill_map_array(t_map *map)
+{
+	int		fd;
+	char	*line;
+	size_t	i;
+	size_t	j;
+
+	fd = open_file(map->file);
+	if (fd == -1)
+		return (-1);
+	i = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		j = 0;
+		while (j < map->width && i > map->starting_line)
+		{
+			if (line[j])
+				map->array[i][j] = line[j];
+			j++;
+		}
+		free(line);
+		line = get_next_line(fd);
+		i++;
+	}
+	free(line);
+	close(fd);
+	return (0);
+}
+
+//	// NOT NEEDED: height is calculated in search_map_starting_line_and_height()
 // int	search_map_height(t_map *map)
 // {
-// 	int		height;
 // 	int		fd;
+// 	int 	current_line;
 // 	char	*line;
 
-// 	height = 0;
-// 	fd = 0;
-// 	line = NULL;
-// 	fd = open(map->file, O_RDONLY);
+// 	fd = open_file(map->file);
 // 	if (fd == -1)
-// 	{
-// 		perror("Error opening file");
 // 		return (-1);
-// 	}
+// 	current_line = 0;
 // 	line = get_next_line(fd);
+//     while (current_line < map->starting_line && line != NULL)
+// 	{
+//         free(line);
+//         current_line++;
+//         if (current_line < map->starting_line) {
+//             line = get_next_line(fd);
+//         }
+//     }
 //     while (line != NULL) {
-// 		free(line);
-//         height++;
+// 		if (line[0] != '\n')
+//         	map->height++;
 // 		line = get_next_line(fd);
+// 		free(line);
 //     }
 //     close(fd);
-// 	return (height);	
-// }
-
-// int	search_map_width(char *file)
-// {
-// 	int width;
-// 	int max_width;
-// 	int	fd;
-
-// 	width = 0;
-// 	max_width = 0;
-// 	fd = open(file, O_RDONLY, 0);
-// 	if (fd == -1)
-// 	{
-// 		perror("Error opening file");
-// 		return (-1);
-// 	}
-
-// 	return (width);
+// 	return (0);
 // }
