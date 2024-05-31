@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/31 02:04:54 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/05/31 02:12:05 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ char **allocate_map_array(t_map *map)
 {
 	size_t	i;
 
-	map->array = malloc(map->height * sizeof(char *));
+	map->array = ft_calloc((map->height + 1), sizeof(char *));
 	if (!map->array)
 		return (NULL);
 	i = 0;
 	while (i < map->height)
 	{
-		map->array[i] = malloc(map->width * sizeof(char));
+		map->array[i] = ft_calloc((map->width + 1) , sizeof(char));
 		if (!map->array[i])
 			return (NULL);
 		i++;
