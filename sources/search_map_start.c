@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/31 00:16:23 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/05/31 02:04:54 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,29 +95,38 @@ int	fill_map_array(t_map *map)
 	char	*line;
 	size_t	i;
 	size_t	j;
+	size_t	k;
 
 	fd = open_file(map->file);
 	if (fd == -1)
 		return (-1);
-	i = 0;
+	i = 1;
+	k = 0;
 	line = get_next_line(fd);
-	while (line != NULL)
+	while (i < map->starting_line)
+	{
+		free(line);
+		line = get_next_line(fd);
+		i++;
+	}
+	while (k < map->height)
 	{
 		j = 0;
-		while (j < map->width && i > map->starting_line)
+		while (j < map->width)
 		{
 			if (line[j])
-				map->array[i][j] = line[j];
+				map->array[k][j] = line[j];
 			j++;
 		}
 		free(line);
 		line = get_next_line(fd);
-		i++;
+		k++;
 	}
 	free(line);
 	close(fd);
 	return (0);
 }
+
 
 //	// NOT NEEDED: height is calculated in search_map_starting_line_and_height()
 // int	search_map_height(t_map *map)
