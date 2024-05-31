@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/30 23:57:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/01 01:28:12 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 	allocate_map_array(&map);
 	fill_map_array(&map);
 	print_map_array(&map);
+	free_map_array(&map);
 
 printf("map file is %s\n", map.file);
 printf("map starting line is %zu\n", map.starting_line);

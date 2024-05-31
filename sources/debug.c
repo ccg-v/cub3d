@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 21:01:10 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/31 00:08:33 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:53:46 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	print_map_array(t_map *map)
 			printf("%c", map->array[i][j]);
 			j++;
 		}
+		printf("\n");
 		i++;
 	}
 }

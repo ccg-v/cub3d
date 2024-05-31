@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/05/30 23:57:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/01 00:05:21 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int		find_map_width(t_map *map);
 char	**allocate_map_array(t_map *map);
 int		fill_map_array(t_map *map);
 void	print_map_array(t_map *map);
+void 	free_map_array(t_map *map);
 
 #endif
