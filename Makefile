@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/01 00:51:23 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/01 20:03:37 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR)
 OBJ_FILES 		= 		$(SRC_FILES:.c=.o)
 DEP_FILES 		= 		$(SRC_FILES:.c=.d)
 SRC_FILES		=		main.c \
-						search_map_start.c \
+						parse.c \
+						prs_check_map.c \
 						debug.c
 
 # --- Files full paths ------------------------------------------------------- #
