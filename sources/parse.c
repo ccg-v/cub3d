@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/01 19:53:35 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:50:03 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int	find_map_starting_line_and_height(t_map *map)
 		else
 		{
 			if (line[0] != '\n') // ignore newlines after map
+			// {
+			// 	find_map_width(map, line);
 				map->height++;
+			// }
 		}
 		free(line);
 		line = get_next_line(fd);
@@ -65,25 +68,94 @@ int	find_map_starting_line_and_height(t_map *map)
 	return (0);
 }
 
+// // WORKS BUT MUST BE CALLED FROM 'find_map_starting_line_and_height()'
+//
+// void	find_map_width(t_map *map, char *line)
+// {
+// 	size_t	len;
+
+// 	len = ft_strlen(line);
+// 	if (len > map->width)
+// 		map->width = len;
+// }
+
+
+// // CANNOT DEBUG because lldb skips it (???)
+//
+// int	find_map_width(t_map *map)
+// {
+// 	int		fd;
+// 	char	*line;
+// 	size_t	i;
+
+// 	i = 0;
+// 	fd = open_file(map->file);
+// 	if (fd == -1)
+// 		return (-1);
+// 	while (i < map->starting_line)
+// 	{
+// 		line = get_next_line(fd);
+// 		free(line);
+// 		i++;
+// 	}
+// 	line = get_next_line(fd);
+//     while (line != NULL) {
+// 		free(line);
+// 		if (ft_strlen(line) > map->width)
+//         	map->width = ft_strlen(line);
+// 		line = get_next_line(fd);
+//     }
+// 	free(line);
+// 	close(fd);
+// 	return (0);
+// }
+
 int	find_map_width(t_map *map)
 {
 	int		fd;
 	char	*line;
+	size_t	i;
 
+	i = 0;
 	fd = open_file(map->file);
 	if (fd == -1)
 		return (-1);
-	line = get_next_line(fd);
-    while (line != NULL) {
+	while (i++ < map->starting_line)
+	{
+		line = get_next_line(fd);
 		free(line);
+	}
+    while (line != NULL)
+	{
 		if (ft_strlen(line) > map->width)
         	map->width = ft_strlen(line);
 		line = get_next_line(fd);
+		free(line);
     }
-	free(line);
+	// free(line);
 	close(fd);
 	return (0);
 }
+
+// int	find_map_width(t_map *map)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	fd = open_file(map->file);
+// 	if (fd == -1)
+// 		return (-1);
+// 	line = get_next_line(fd);
+//     while (line != NULL) {
+// 		free(line);
+// 		if (ft_strlen(line) > map->width)
+//         	map->width = ft_strlen(line);
+// 		line = get_next_line(fd);
+//     }
+// 	free(line);
+// 	close(fd);
+// 	return (0);
+// }
 
 char **allocate_map_array(t_map *map)
 {
