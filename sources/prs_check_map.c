@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:00:12 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/04 01:20:04 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/04 20:24:03 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void dfs(t_map *map, size_t x, size_t y) // Keep original types for function par
 
 	printf("\nVisited map:\n");
 	size_t k = 0;
-	while (map->visited[k] != '\0')
+	while (map->visited[k])
 	{
 		size_t j = 0;
 		while (j < ft_strlen(map->visited[k]))

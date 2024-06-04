@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/16 19:55:46 by ccarrace          #+#    #+#              #
-#    Updated: 2023/07/29 01:38:46 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/04 22:25:49 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = libft.a
 
 CC = cc
 
-CFLAGS = -MMD -Wall -Wextra -Werror
+CFLAGS = -MMD -Wall -Wextra -Werror -fPIE
 
 HEADER = libft.h
 
