@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/01 20:03:37 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/04 13:30:29 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ DEP_FILES 		= 		$(SRC_FILES:.c=.d)
 SRC_FILES		=		main.c \
 						parse.c \
 						prs_check_map.c \
+						prs_player.c \
 						debug.c
 
 # --- Files full paths ------------------------------------------------------- #

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/02 23:29:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:31:04 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_map
 	size_t		player_x;
 	size_t		player_y;
 	bool		closed;
+	size_t		new_x;
+	size_t		new_y;
 }	t_map;
 
 /* --- Functions ------------------------------------------------------------ */
@@ -48,6 +50,7 @@ int		fill_map_array(t_map *map);
 void 	free_map_array(t_map *map);
 
 //	prs_check_map.c
+int		check_player(t_map *map);
 bool	check_navigability(t_map *map);
 
 //	debug.c
