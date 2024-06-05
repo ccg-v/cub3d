@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/04 13:31:04 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/06 00:43:25 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ void 	free_map_array(t_map *map);
 
 //	prs_check_map.c
 int		check_player(t_map *map);
+int 	all_chars_are_valid(t_map *map);
 bool	check_navigability(t_map *map);
+
+//	prs_check_config.c
+int 	check_configuration_data(t_map *map);
 
 //	debug.c
 void	print_map_array(t_map *map);

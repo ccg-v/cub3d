@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/04 14:23:18 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/06 00:43:46 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,12 @@ int main(int argc, char **argv)
     printf("map height is %zu\n", map.height);
     printf("map width is %zu\n", map.width);
 
-  	check_player(&map);
+    if (all_chars_are_valid(&map))
+      printf("All characters in map are valid\n");
+    else
+      printf("Error: map contains invalid characters\n");
+    check_player(&map);
+    check_configuration_data(&map);
 
     free_map_array(&map);
     return 0;
