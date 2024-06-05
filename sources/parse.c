@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/05 21:01:54 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:12:39 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,37 +77,6 @@ int	find_map_starting_line_and_height(t_map *map)
 // 	len = ft_strlen(line);
 // 	if (len > map->width)
 // 		map->width = len;
-// }
-
-
-// // CANNOT DEBUG because lldb skips it (???)
-//
-// int	find_map_width(t_map *map)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	size_t	i;
-
-// 	i = 0;
-// 	fd = open_file(map->file);
-// 	if (fd == -1)
-// 		return (-1);
-// 	while (i < map->starting_line)
-// 	{
-// 		line = get_next_line(fd);
-// 		free(line);
-// 		i++;
-// 	}
-// 	line = get_next_line(fd);
-//     while (line != NULL) {
-// 		free(line);
-// 		if (ft_strlen(line) > map->width)
-//         	map->width = ft_strlen(line);
-// 		line = get_next_line(fd);
-//     }
-// 	free(line);
-// 	close(fd);
-// 	return (0);
 // }
 
 int	find_map_width(t_map *map)
