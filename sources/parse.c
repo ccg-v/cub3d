@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/05 20:44:28 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:01:54 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,17 @@ int	find_map_width(t_map *map)
 {
 	int		fd;
 	char	*line;
-	size_t	i;
+	// size_t	i;
 	size_t	len;
 
-	i = 0;
+	map->i = 0;
 	fd = open_file(map->file);
 	if (fd == -1)
 		return (-1);
-	while (i++ < map->starting_line)
+	while (map->i++ < map->starting_line)
 	{
 		line = get_next_line(fd);
-		if (i < map->starting_line)
+		if (map->i < map->starting_line)
 			free(line);
 	}
     while (line != NULL)
@@ -139,26 +139,6 @@ int	find_map_width(t_map *map)
 	close(fd);
 	return (0);
 }
-
-// int	find_map_width(t_map *map)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open_file(map->file);
-// 	if (fd == -1)
-// 		return (-1);
-// 	line = get_next_line(fd);
-//     while (line != NULL) {
-// 		free(line);
-// 		if (ft_strlen(line) > map->width)
-//         	map->width = ft_strlen(line);j
-// 		line = get_next_line(fd);
-//     }
-// 	free(line);
-// 	close(fd);
-// 	return (0);
-// }
 
 char **allocate_map_array(t_map *map)
 {
