@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:58:55 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/04 14:43:08 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/04 23:30:42 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 
 int	check_player(t_map *map)
 {
-    size_t		i;
+    size_t	i;
     int		j;
     int		player_counter;
 
@@ -72,20 +72,20 @@ int	check_player(t_map *map)
         {
             if (map->array[i][j] == 'N' || map->array[i][j] == 'S' 
                 || map->array[i][j] == 'E' || map->array[i][j] == 'W')
-            {
                 player_counter++;
-            }
             j++;
         }
         i++;
     }
-	// return (player_counter);
-	printf("NUMBER OF PLAYERS: %d\n", player_counter);
-	if (player_counter == 0)
-		printf("Error: no player found in the map\n");
-	else if (player_counter > 1)
-		printf("Error: the map contains more than one player\n");
-	else
-		printf("Player OK\n");
-	return (0);
+	return (player_counter);
 }
+
+// 	printf("NUMBER OF PLAYERS: %d\n", player_counter);
+// 	if (player_counter == 0)
+// 		printf("Error: no player found in the map\n");
+// 	else if (player_counter > 1)
+// 		printf("Error: the map contains more than one player\n");
+// 	else
+// 		printf("Player OK\n");
+// 	return (0);
+// }

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/02 23:50:03 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/05 20:44:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	find_map_width(t_map *map)
 	int		fd;
 	char	*line;
 	size_t	i;
+	size_t	len;
 
 	i = 0;
 	fd = open_file(map->file);
@@ -123,16 +124,18 @@ int	find_map_width(t_map *map)
 	while (i++ < map->starting_line)
 	{
 		line = get_next_line(fd);
-		free(line);
+		if (i < map->starting_line)
+			free(line);
 	}
     while (line != NULL)
 	{
-		if (ft_strlen(line) > map->width)
-        	map->width = ft_strlen(line);
-		line = get_next_line(fd);
+		len = ft_strlen(line);
+		if (len > map->width)
+        	map->width = len;
 		free(line);
+		line = get_next_line(fd);
     }
-	// free(line);
+	free(line);
 	close(fd);
 	return (0);
 }
@@ -149,7 +152,7 @@ int	find_map_width(t_map *map)
 //     while (line != NULL) {
 // 		free(line);
 // 		if (ft_strlen(line) > map->width)
-//         	map->width = ft_strlen(line);
+//         	map->width = ft_strlen(line);j
 // 		line = get_next_line(fd);
 //     }
 // 	free(line);
@@ -167,7 +170,7 @@ char **allocate_map_array(t_map *map)
 	i = 0;
 	while (i < map->height)
 	{
-		map->array[i] = malloc((map->width) * sizeof(char));
+		map->array[i] = malloc((map->width + 1) * sizeof(char));
 		if (!map->array[i])
 			return (NULL);
 		i++;
@@ -206,7 +209,7 @@ int fill_map_array(t_map *map)
             if (map->j < len && line[map->j] != '\0')
                 map->array[map->i][map->j] = line[map->j];
             else
-                map->array[map->i][map->j] = '\0';  // Fill remaining with spaces or another default character
+                map->array[map->i][map->j] = '\0';
             map->j++;
         }
 		map->array[map->i][map->width] = '\0';
