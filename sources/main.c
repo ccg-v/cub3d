@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/06 00:43:46 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/06 23:51:49 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_map(t_map *map, char *map_file)
 {
-	map->file = map_file;
+  map->file = map_file;
 	map->starting_line = 1;
 	map->width = 0;
 	map->height = 0;
@@ -27,6 +27,24 @@ void	init_map(t_map *map, char *map_file)
 	map->closed = true;
 	map->new_x = 0;
 	map->new_y = 0;
+}
+
+void  init_textures(t_textures *textures)
+{
+  textures->north = NULL;
+  textures->south = NULL;
+  textures->east = NULL;
+  textures->west = NULL;
+}
+
+void  init_colors(t_colors *colors)
+{
+  colors->floor[0] = 0;
+  colors->floor[1] = 0;
+  colors->floor[2] = 0;
+  colors->ceiling[0] = 0; 
+  colors->ceiling[1] = 0;
+  colors->ceiling[2] = 0;
 }
 
 // int	main(int argc, char **argv)
@@ -59,21 +77,42 @@ void	init_map(t_map *map, char *map_file)
 
 int main(int argc, char **argv)
 {
-    t_map map;
+    t_map         map;
+    t_textures    textures;
+    t_colors  colors;
 
     (void)argc;
     init_map(&map, argv[1]);
+    init_textures(&textures);
+    init_colors(&colors);
     find_map_starting_line_and_height(&map);
     find_map_width(&map);
     allocate_map_array(&map);
     fill_map_array(&map);
     print_map_array(&map);
 
-    // Print to verify all fields in map
-    printf("map file is %s\n", map.file);
-    printf("map starting line is %zu\n", map.starting_line);
-    printf("map height is %zu\n", map.height);
-    printf("map width is %zu\n", map.width);
+
+
+    parse_textures(&map, &textures);
+
+    parse_colors(&map, &colors);
+
+    // Now you have all the textures and colors parsed
+    // printf("North texture: %s\n", textures.north);
+    // printf("South texture: %s\n", textures.south);
+    // printf("West texture: %s\n", textures.west);
+    // printf("East texture: %s\n", textures.east);
+    // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
+    // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
+ 
+    check_textures(&textures);
+    check_colors(&colors);
+    // Free the allocated memory for texture paths
+    free(textures.north);
+    free(textures.south);
+    free(textures.west);
+    free(textures.east);
+
 
     if (all_chars_are_valid(&map))
       printf("All characters in map are valid\n");
@@ -81,7 +120,8 @@ int main(int argc, char **argv)
       printf("Error: map contains invalid characters\n");
     check_player(&map);
     check_configuration_data(&map);
-
+    printf("Player orientation is %c\n", map.player_orientation);
+    
     free_map_array(&map);
     return 0;
 }

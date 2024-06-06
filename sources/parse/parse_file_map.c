@@ -1,41 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_file_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/05 21:12:39 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:55:40 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int open_file(const char *file)
-{
-    int fd = open(file, O_RDONLY);
-    if (fd == -1)
-    {
-        perror("Error opening file");
-    }
-    return fd;
-}
-
-void free_map_array(t_map *map)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < map->height)
-	{
-		// printf("freeing map->array[%zu] = '%s'\n", i, map->array[i]);
-		free(map->array[i]);
-		i++;
-	}
-
-	free(map->array);
-}
 int	find_map_starting_line_and_height(t_map *map)
 {
 	int		fd;
