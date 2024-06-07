@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/06 23:51:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/07 19:52:57 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
  
     check_textures(&textures);
-    check_colors(&colors);
+    // check_colors(&colors);
     // Free the allocated memory for texture paths
     free(textures.north);
     free(textures.south);

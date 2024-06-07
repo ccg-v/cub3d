@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/07 00:13:50 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/07 21:55:59 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int check_textures(t_textures *textures)
     if (textures->north != NULL && textures->south != NULL
         && textures->east != NULL && textures->west != NULL)
     {
-        printf("Textures ok!");
+        printf("Textures ok!\n");
         return (0);
     }
     if (textures->north == NULL && textures->south == NULL
@@ -65,18 +65,63 @@ int check_textures(t_textures *textures)
 
 void store_rgb_color(char *line, int *color)
 {
-    int i;
-    char **rgb_values;
+    int     i;
+    char    **rgb_values;
+    int     values_count;
 
-    i = 0;
+    i = -1;
+    values_count = 0;
     rgb_values = ft_split(line, ',');
-    while (i < 3)
-    {
-        color[i] = ft_atoi(rgb_values[i]);
-        free(rgb_values[i]);
-        i++;
+    if (!rgb_values) {
+        printf("Error: Failed to split RGB values.\n");
+        return;
     }
+    while (rgb_values[values_count] != NULL)
+        values_count++;
+    if (values_count == 3)
+    {
+        while (++i < values_count)
+        {
+            color[i] = ft_atoi(rgb_values[i]);
+            if (color[i] < 0 || color[i] > 255)
+            {
+                printf("Error: Invalid RGB color code\n");
+                break;
+            } 
+        }
+    }
+    else
+        printf("Error: Incomplete RGB color code\n");
+    while (--values_count >= 0)
+        free(rgb_values[values_count]);
     free(rgb_values);
+}
+
+int check_colors(int color_found)
+{
+    if (color_found == 0)
+    {
+        printf("Error: no colors defined in the file\n");
+        return (-1);
+    }
+    else if (color_found == 1)
+    {
+        printf("Error: color for the ceiling is missing in the file\n");
+        return (-1);
+    }
+    else if (color_found == 2)
+    {
+        printf("Error: color for the floor is missing in the file\n");
+        return (-1);
+    }
+    else if (color_found == 3)
+    {
+        printf("Colors Ok!\n");
+        return (0);
+    }
+    else
+        printf("Error: Too many colors defined in the file\n");
+    return (-1);
 }
 
 int parse_colors(t_map *map, t_colors *colors)
@@ -106,24 +151,25 @@ int parse_colors(t_map *map, t_colors *colors)
         line = get_next_line(fd);
     }
     close(fd);
+    check_colors(color_found);
     return (0);
 }
 
-int check_colors(t_colors *colors)
-{
-    if (!colors->ceiling != NULL && colors->floor != NULL)
-    {
-        printf("Colors ok!\n");
-        return (0);
-    }
-    if (colors->ceiling == NULL && colors->floor == NULL)
-    {
-        printf("Error: no colors defined in the file");
-        return (-1);
-    }
-    if (colors->floor == NULL)
-        printf("Error: color for the floor is missing in the file\n");
-    if (colors->ceiling == NULL)
-        printf("Error: color for the ceiling is missing in the file\n");
-    return (-1);  
-}
+// int check_colors(t_colors *colors)
+// {
+//     if (!colors->ceiling != NULL && colors->floor != NULL)
+//     {
+//         printf("Colors ok!\n");
+//         return (0);
+//     }
+//     if (colors->ceiling == NULL && colors->floor == NULL)
+//     {
+//         printf("Error: no colors defined in the file");
+//         return (-1);
+//     }
+//     if (colors->floor == NULL)
+//         c
+//     if (colors->ceiling == NULL)
+//         printf("Error: color for the ceiling is missing in the file\n");
+//     return (-1);  
+// }
