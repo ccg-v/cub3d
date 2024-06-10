@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/07 21:55:59 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/10 23:25:29 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,16 @@ void store_rgb_color(char *line, int *color)
     i = -1;
     values_count = 0;
     rgb_values = ft_split(line, ',');
-    if (!rgb_values) {
+    if (!rgb_values)
+    {
         printf("Error: Failed to split RGB values.\n");
         return;
     }
-    while (rgb_values[values_count] != NULL)
-        values_count++;
+    while (rgb_values[values_count] != NULL
+        && ft_strncmp(rgb_values[values_count], "\n", 1)
+        && ft_strncmp(rgb_values[values_count], " ", 1))
+
+            values_count++;
     if (values_count == 3)
     {
         while (++i < values_count)

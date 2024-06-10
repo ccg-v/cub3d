@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/07 19:52:57 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:17:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void  init_textures(t_textures *textures)
 
 void  init_colors(t_colors *colors)
 {
-  colors->floor[0] = 0;
-  colors->floor[1] = 0;
-  colors->floor[2] = 0;
-  colors->ceiling[0] = 0; 
-  colors->ceiling[1] = 0;
-  colors->ceiling[2] = 0;
+  colors->floor[0] = -1;
+  colors->floor[1] = -1;
+  colors->floor[2] = -1;
+  colors->ceiling[0] = -1; 
+  colors->ceiling[1] = -1;
+  colors->ceiling[2] = -1;
 }
 
 // int	main(int argc, char **argv)
