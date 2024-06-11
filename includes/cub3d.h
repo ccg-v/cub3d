@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/07 19:51:26 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/11 22:52:03 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int 	all_chars_are_valid(t_map *map);
 bool	check_navigability(t_map *map);
 
 //	parse_file_data.c
-int 	parse_textures(t_map *map, t_textures *textures);
-int 	check_textures(t_textures *textures);
+// int 	parse_textures(t_map *map, t_textures *textures);
+// int 	check_textures(t_textures *textures);
 int		parse_colors(t_map *map, t_colors *colors);
 // int 	check_colors(t_colors *colors);
-int 	check_colors(int color_found);
+// int 	check_colors(int color_found);
 
 //	parse_file_map.c
 int		find_map_starting_line_and_height (t_map *map);

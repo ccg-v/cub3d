@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/10 21:17:28 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/11 21:59:59 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 
 
 
-    parse_textures(&map, &textures);
+    // parse_textures(&map, &textures);
 
     parse_colors(&map, &colors);
 
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
     // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
  
-    check_textures(&textures);
+    // check_textures(&textures);
     // check_colors(&colors);
     // Free the allocated memory for texture paths
     free(textures.north);

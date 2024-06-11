@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/06 21:30:16 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/11 12:46:01 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ NAME			=		cub3d
 
 # --- Compiler flags --------------------------------------------------------- #
 
-CFLAGS			=		-MMD -Wall -Wextra -Werror -g #-fPIE
-#LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
+CFLAGS			=		-MMD -Wall -Wextra -Werror -g
+LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
 
 # --- Directories ------------------------------------------------------------ #
 
-LIBMLX_DIR		=		libraries/minilibx_linux/
+LIBMLX_DIR		=		libraries/minilibx_macos/
 LIBFT_DIR		=		libraries/libft/
 INC_DIR			=		includes/
 SRC_DIR			=		sources/
@@ -66,7 +66,7 @@ all:
 		$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_PATH) $(LIBMLX_PATH) Makefile
-	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE)
+	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE) $(LIBMLX_FLAGS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -c $< -o $@
@@ -77,7 +77,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 clean:	
 			rm -f $(OBJ_PATH) $(DEP_PATH)
-			rm -rf $(OBJ_DIR)c
+			rm -rf $(OBJ_DIR)
 			$(MAKE) -C $(LIBFT_DIR) clean
 			$(MAKE) -C $(LIBMLX_DIR) clean
 
