@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/11 12:46:01 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/12 19:36:00 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ NAME			=		cub3d
 
 # --- Compiler flags --------------------------------------------------------- #
 
-CFLAGS			=		-MMD -Wall -Wextra -Werror -g
-LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
+CFLAGS			=		-MMD -Wall -Wextra -Werror -g #-fPIE
+#LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
 
 # --- Directories ------------------------------------------------------------ #
 
-LIBMLX_DIR		=		libraries/minilibx_macos/
+LIBMLX_DIR		=		libraries/minilibx_linux/
 LIBFT_DIR		=		libraries/libft/
 INC_DIR			=		includes/
 SRC_DIR			=		sources/
@@ -45,7 +45,8 @@ SRC_FILES		=		main.c \
 						parse/check_file_data.c \
 						parse/check_file_map.c \
 						parse/check_player.c \
-						parse/parse_file_data.c \
+						parse/parse_colors.c \
+						parse/parse_textures.c \
 						parse/parse_file_map.c \
 						parse/parse_utils.c \
 						debug.c
@@ -66,7 +67,7 @@ all:
 		$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_PATH) $(LIBMLX_PATH) Makefile
-	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE) $(LIBMLX_FLAGS)
+	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -c $< -o $@
@@ -77,7 +78,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 clean:	
 			rm -f $(OBJ_PATH) $(DEP_PATH)
-			rm -rf $(OBJ_DIR)
+			rm -rf $(OBJ_DIR)c
 			$(MAKE) -C $(LIBFT_DIR) clean
 			$(MAKE) -C $(LIBMLX_DIR) clean
 

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/11 21:59:59 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:29:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,11 @@ int main(int argc, char **argv)
     t_textures    textures;
     t_colors  colors;
 
-    (void)argc;
+    if (argc!= 2)
+    {
+      printf("Error: Wrong arguments (usage: ./cub3d <path_to_file>)\n");
+      return (0);
+    }
     init_map(&map, argv[1]);
     init_textures(&textures);
     init_colors(&colors);
@@ -93,11 +97,11 @@ int main(int argc, char **argv)
 
 
 
-    // parse_textures(&map, &textures);
+    parse_textures(&map, &textures);
 
     parse_colors(&map, &colors);
 
-    // Now you have all the textures and colors parsed
+ 
     // printf("North texture: %s\n", textures.north);
     // printf("South texture: %s\n", textures.south);
     // printf("West texture: %s\n", textures.west);
@@ -105,8 +109,7 @@ int main(int argc, char **argv)
     // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
     // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
  
-    // check_textures(&textures);
-    // check_colors(&colors);
+    check_textures(&textures);
     // Free the allocated memory for texture paths
     free(textures.north);
     free(textures.south);
