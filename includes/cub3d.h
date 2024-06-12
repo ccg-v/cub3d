@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 19:33:42 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/12 23:44:16 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ typedef struct s_map
 
 typedef struct s_textures
 {
-	char *north;
-    char *south;
-    char *west;
-    char *east;
+	char	*north;
+    char	*south;
+    char	*west;
+    char	*east;
+	char	**texture_array[4];
+	char	*texture_ids[4];
 }	t_textures;
 
 typedef struct s_colors
@@ -61,6 +63,7 @@ int		main(int argc, char **argv);
 
 //	check_file_data.c
 int 	check_configuration_data(t_map *map);
+int		file_type_is_valid(char *filename, char *expected_extension);
 
 //	check_player.c
 int		check_player(t_map *map);

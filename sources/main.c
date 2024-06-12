@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 19:29:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/12 23:48:48 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_map(t_map *map, char *map_file)
 {
-  map->file = map_file;
+	map->file = map_file;
 	map->starting_line = 1;
 	map->width = 0;
 	map->height = 0;
@@ -31,10 +31,18 @@ void	init_map(t_map *map, char *map_file)
 
 void  init_textures(t_textures *textures)
 {
-  textures->north = NULL;
-  textures->south = NULL;
-  textures->east = NULL;
-  textures->west = NULL;
+	textures->north = NULL;
+	textures->south = NULL;
+	textures->east = NULL;
+	textures->west = NULL;
+	textures->texture_ids[0] = "NO";
+	textures->texture_ids[1] = "SO";
+	textures->texture_ids[2] = "EA";
+	textures->texture_ids[3] = "WE";
+	textures->texture_array[0] = &textures->north;
+	textures->texture_array[1] = &textures->south;
+	textures->texture_array[2] = &textures->east;
+	textures->texture_array[3] = &textures->west;	
 }
 
 void  init_colors(t_colors *colors)
@@ -89,6 +97,9 @@ int main(int argc, char **argv)
     init_map(&map, argv[1]);
     init_textures(&textures);
     init_colors(&colors);
+
+	if (!file_type_is_valid(argv[1], ".cub"))
+		printf("Error: File type not valid (must be .cub)\n");
     find_map_starting_line_and_height(&map);
     find_map_width(&map);
     allocate_map_array(&map);
@@ -98,18 +109,18 @@ int main(int argc, char **argv)
 
 
     parse_textures(&map, &textures);
-
+    check_textures(&textures);
     parse_colors(&map, &colors);
 
  
-    // printf("North texture: %s\n", textures.north);
-    // printf("South texture: %s\n", textures.south);
-    // printf("West texture: %s\n", textures.west);
-    // printf("East texture: %s\n", textures.east);
-    // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
-    // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
+    printf("North texture: %s\n", textures.north);
+    printf("South texture: %s\n", textures.south);
+    printf("West texture: %s\n", textures.west);
+    printf("East texture: %s\n", textures.east);
+    printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
+    printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
  
-    check_textures(&textures);
+
     // Free the allocated memory for texture paths
     free(textures.north);
     free(textures.south);
