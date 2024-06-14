@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:30:37 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 19:36:28 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:00:22 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	open_file(const char *file)
 {
-    int fd = open(file, O_RDONLY);
+    int fd;
+	
+	fd = open(file, O_RDONLY);
     if (fd == -1)
-    {
-        perror("Error opening file");
-    }
+		return (-1);
     return fd;
 }
 

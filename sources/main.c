@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 23:48:48 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/14 22:21:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ void  init_textures(t_textures *textures)
 	textures->texture_ids[1] = "SO";
 	textures->texture_ids[2] = "EA";
 	textures->texture_ids[3] = "WE";
-	textures->texture_array[0] = &textures->north;
-	textures->texture_array[1] = &textures->south;
-	textures->texture_array[2] = &textures->east;
-	textures->texture_array[3] = &textures->west;	
+	textures->paths_array[0] = &textures->north;
+	textures->paths_array[1] = &textures->south;
+	textures->paths_array[2] = &textures->east;
+	textures->paths_array[3] = &textures->west;	
 }
 
 void  init_colors(t_colors *colors)
@@ -109,16 +109,17 @@ int main(int argc, char **argv)
 
 
     parse_textures(&map, &textures);
-    check_textures(&textures);
+    check_textures_in_file(&textures);
+	check_textures_path(&textures);
     parse_colors(&map, &colors);
 
  
-    printf("North texture: %s\n", textures.north);
-    printf("South texture: %s\n", textures.south);
-    printf("West texture: %s\n", textures.west);
-    printf("East texture: %s\n", textures.east);
-    printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
-    printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
+    // printf("North texture: %s\n", textures.north);
+    // printf("South texture: %s\n", textures.south);
+    // printf("West texture: %s\n", textures.west);
+    // printf("East texture: %s\n", textures.east);
+    // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
+    // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
  
 
     // Free the allocated memory for texture paths

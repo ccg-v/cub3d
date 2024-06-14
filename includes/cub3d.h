@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 23:44:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/14 22:36:00 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <stdbool.h>
+# include <fcntl.h>
 # include "libft.h"
 
 /* --- Data structures ------------------------------------------------------ */
@@ -42,7 +43,7 @@ typedef struct s_textures
     char	*south;
     char	*west;
     char	*east;
-	char	**texture_array[4];
+	char	**paths_array[4];
 	char	*texture_ids[4];
 }	t_textures;
 
@@ -72,7 +73,8 @@ bool	check_navigability(t_map *map);
 
 //	parse_textures.c
 int 	parse_textures(t_map *map, t_textures *textures);
-int 	check_textures(t_textures *textures);
+int 	check_textures_in_file(t_textures *textures);
+int		check_textures_path(t_textures *textures);
 
 //	parse_colors.c
 int		parse_colors(t_map *map, t_colors *colors);
