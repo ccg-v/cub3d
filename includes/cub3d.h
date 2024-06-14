@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/14 22:36:00 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 00:18:05 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ int		main(int argc, char **argv);
 /* --- Parse ------------------------------------------------------- */
 
 //	check_file_data.c
-int 	check_configuration_data(t_map *map);
+// int 	check_configuration_data(t_map *map);
 int		file_type_is_valid(char *filename, char *expected_extension);
+int 	is_empty(char *file);
 
 //	check_player.c
 int		check_player(t_map *map);

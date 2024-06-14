@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/14 23:20:17 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/14 23:40:38 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,6 @@ int check_textures_path(t_textures *textures)
 	printf("Texture paths ok!\n");
 	return (0);
 }
-
 
 // int check_is_dir(t_textures *textures)
 // {

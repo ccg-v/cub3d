@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/14 22:21:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 00:31:29 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int main(int argc, char **argv)
     init_map(&map, argv[1]);
     init_textures(&textures);
     init_colors(&colors);
-
+	if (is_empty(map.file))
+		return (-1);
 	if (!file_type_is_valid(argv[1], ".cub"))
 		printf("Error: File type not valid (must be .cub)\n");
     find_map_starting_line_and_height(&map);
@@ -127,14 +128,14 @@ int main(int argc, char **argv)
     free(textures.south);
     free(textures.west);
     free(textures.east);
-
+	
 
     if (all_chars_are_valid(&map))
       printf("All characters in map are valid\n");
     else
       printf("Error: map contains invalid characters\n");
     check_player(&map);
-    check_configuration_data(&map);
+    // check_configuration_data(&map);
     printf("Player orientation is %c\n", map.player_orientation);
     
     free_map_array(&map);

@@ -6,25 +6,46 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 23:42:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 00:27:13 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int no_configuration(t_map *map)
+int is_empty(char *file)
 {
-    if (map->starting_line == 1)
-        return (1);
-    return (0);
+	int		fd;
+	char 	*line;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error: could not open the file\n");
+		return (-1);
+	}
+	line = get_next_line(fd);
+	if (!line)
+	{
+		printf("Error: file is empty\n");
+		close(fd);
+		return (1);
+	}
+	return (0);
 }
 
-int check_configuration_data(t_map *map)
-{
-    if (no_configuration(map))
-        printf("Error: File contains only map\n");
-    return (0);
-}
+// int no_configuration(t_map *map)
+// {
+//     if (map->starting_line == 1)
+//         return (1);
+//     return (0);
+// }
+
+// int check_configuration_data(t_map *map)
+// {
+//     if (no_configuration(map))
+//         printf("Error: File contains only map\n");
+//     return (0);
+// }
 
 int	file_type_is_valid(char *filename, char *expected_extension)
 {

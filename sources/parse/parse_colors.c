@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/12 20:03:46 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/14 23:51:49 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	valid_rgb_array(char **rgb_array, int *color)
 	{
 		if (!(is_valid_number(rgb_array[i])))
 		{
-			printf("Error: Invalid RGB color (non-numeric characters found)\n");
+			printf("Error: Invalid RGB color (negative or non-numeric characters found)\n");
 			return (0);
 		}
 		color[i] = ft_atoi(rgb_array[i]);
@@ -61,19 +61,19 @@ int	store_rgb_color(const char *line, int *color)
 
 int	check_colors(int *color_found)
 {
-	if (color_found == 0)
+	if (*color_found == 0)
 	{
 		printf("Error: No colors defined in the file\n");
 		return (-1);
 	}
 	else if (*color_found == 1)
 	{
-		printf("Error: Color for the ceiling is missing in the file\n");
+		printf("Error: Color for the ceiling is wrong or missing\n");
 		return (-1);
 	}
 	else if (*color_found == 2)
 	{
-		printf("Error: Color for the floor is missing in the file\n");
+		printf("Error: Color for the floor is wrong or missing\n");
 		return (-1);
 	}
 	else if (*color_found == 3)
