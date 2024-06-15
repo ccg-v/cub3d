@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/15 21:47:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/16 00:34:08 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_map(t_map *map, char *map_file)
 {
 	map->file = map_file;
 	map->starting_line = 1;
+	map->ending_line = 1;
 	map->width = 0;
 	map->height = 0;
 	map->array = NULL;
@@ -119,7 +120,8 @@ int main(int argc, char **argv)
 		printf("Error: Wrong file type (must be .cub)\n");
 	if (is_empty(map.file))
 		return (-1);
-    find_map_starting_line_and_height(&map);
+    find_map_starting_line(&map);
+	find_map_height(&map);
     find_map_width(&map);
     allocate_map_array(&map);
     fill_map_array(&map);

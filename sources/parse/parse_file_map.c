@@ -6,63 +6,49 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/15 22:44:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/16 00:33:55 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	find_map_starting_line_and_height(t_map *map)
+int	find_map_starting_line(t_map *map)
 {
 	int		fd;
 	char	*line;
 
-	fd = open_file(map->file);
+	fd = open(map->file, O_RDONLY);
 	if (fd == -1)
 		return (-1);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (((line[0] != ' ' && line[0] != '1')
-			|| (line[0] == ' ' &&  ft_strchr(line, '1') == NULL))
-			&& map->height == 0)
+		if (((line[0] != ' ' && line[0] != '1') || (line[0] == ' ' && 
+		ft_strchr(line, '1') == NULL)) && map->height == 0)
 				++map->starting_line;
 		else
-		{
-			if (line[0] != '\n') // ignore newlines after map
-			// {
-			// 	find_map_width(map, line);
-				map->height++;
-			// }
-		}
+			break;
 		free(line);
 		line = get_next_line(fd);
+	}
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);		
 	}
 	free(line);
 	close(fd);
 	return (0);
 }
 
-// // WORKS BUT MUST BE CALLED FROM 'find_map_starting_line_and_height()'
-//
-// void	find_map_width(t_map *map, char *line)
-// {
-// 	size_t	len;
-
-// 	len = ft_strlen(line);
-// 	if (len > map->width)
-// 		map->width = len;
-// }
-
 int	find_map_width(t_map *map)
 {
 	int		fd;
 	char	*line;
-	// size_t	i;
 	size_t	len;
 
 	map->i = 0;
-	fd = open_file(map->file);
+	fd = open(map->file, O_RDONLY);
 	if (fd == -1)
 		return (-1);
 	while (map->i++ < map->starting_line)
@@ -108,7 +94,7 @@ int fill_map_array(t_map *map)
     char    *line;
     size_t  len;
 
-    fd = open_file(map->file);
+	fd = open(map->file, O_RDONLY);
     if (fd == -1)
         return (-1);
     map->i = 1;
@@ -146,32 +132,56 @@ int fill_map_array(t_map *map)
     return (0);
 }
 
-//	// NOT NEEDED: height is calculated in search_map_starting_line_and_height()
-// int	search_map_height(t_map *map)
-// {
-// 	int		fd;
-// 	int 	current_line;
-// 	char	*line;
+// ' ' space, '\t' horizontal tab, '\r' return carriage
+// '\v' vertical tab, '\f' form feed
+int	is_whitespace(char c)
+{
+	if (c == ' ' ||
+		c == '\t' ||
+		c == '\r' ||
+		c == '\v' ||
+		c == '\f') 
+		return (1);
+	return (0);
+}
 
-// 	fd = open_file(map->file);
-// 	if (fd == -1)
-// 		return (-1);
-// 	current_line = 0;
-// 	line = get_next_line(fd);
-//     while (current_line < map->starting_line && line != NULL)
-// 	{
-//         free(line);
-//         current_line++;
-//         if (current_line < map->starting_line) {
-//             line = get_next_line(fd);
-//         }
-//     }
-//     while (line != NULL) {
-// 		if (line[0] != '\n')
-//         	map->height++;
-// 		line = get_next_line(fd);
-// 		free(line);
-//     }
-//     close(fd);
-// 	return (0);
-// }
+int	find_map_height(t_map *map)
+{
+	int		fd;
+	size_t 	current_line;
+	char	*line;
+	int		i;
+
+	fd = open(map->file, O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	current_line = 0;
+	line = get_next_line(fd);
+    while (current_line < map->starting_line && line != NULL)
+	{
+        current_line++;
+        if (current_line < map->starting_line)
+		{
+			free(line);
+            line = get_next_line(fd);
+        }
+    }
+	while (line[0] != '\n')
+	{
+		i = 0;
+		while (is_whitespace(line[i]))
+			i++;
+		if (line[i] == '1')
+			map->height++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);		
+	}
+	free(line);
+	close(fd);
+	return (0);
+}

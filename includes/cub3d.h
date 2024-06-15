@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/15 00:18:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/16 00:34:27 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_map
 {
 	char		*file;
 	size_t		starting_line;
+	size_t		ending_line;
 	size_t		width;
 	size_t		height;
 	char		**array;
@@ -81,7 +82,8 @@ int		check_textures_path(t_textures *textures);
 int		parse_colors(t_map *map, t_colors *colors);
 
 //	parse_file_map.c
-int		find_map_starting_line_and_height (t_map *map);
+int		find_map_starting_line(t_map *map);
+int		find_map_height(t_map *map);
 int		find_map_width(t_map *map);
 char	**allocate_map_array(t_map *map);
 int		fill_map_array(t_map *map);
