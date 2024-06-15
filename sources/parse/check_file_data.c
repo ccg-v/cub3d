@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/15 00:27:13 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:30:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,16 @@ int is_empty(char *file)
 	{
 		printf("Error: file is empty\n");
 		close(fd);
+		free(line);
 		return (1);
 	}
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+	printf("File is NOT empty\n");
 	return (0);
 }
 

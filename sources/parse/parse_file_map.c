@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/06 19:55:40 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 22:44:49 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	find_map_starting_line_and_height(t_map *map)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-
 		if (((line[0] != ' ' && line[0] != '1')
 			|| (line[0] == ' ' &&  ft_strchr(line, '1') == NULL))
 			&& map->height == 0)
@@ -121,7 +120,7 @@ int fill_map_array(t_map *map)
         map->i++;
     }
 	map->i = 0;
-    while (map->i < map->height)
+    while (line && map->i < map->height)
     {
         map->j = 0;
         // Ensure line does not contain a newline at the end

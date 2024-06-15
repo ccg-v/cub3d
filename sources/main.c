@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/15 00:31:29 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:47:16 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,23 @@ void  init_colors(t_colors *colors)
 // 	return (0);
 // }
 
+
+int check_is_dir(char *str)
+{
+    int fd;
+
+	fd = open(str, O_DIRECTORY);
+	printf("fd = %d\n", fd);
+	if (fd < 0)
+	{
+		printf("%s is a file\n", str);
+		return (1);
+	}
+	printf("Error: %s is a directory, not a file\n", str);
+	close(fd);
+    return (0);
+}
+
 int main(int argc, char **argv)
 {
     t_map         map;
@@ -97,10 +114,11 @@ int main(int argc, char **argv)
     init_map(&map, argv[1]);
     init_textures(&textures);
     init_colors(&colors);
+	check_is_dir(argv[1]);
+	if (!file_type_is_valid(argv[1], ".cub"))
+		printf("Error: Wrong file type (must be .cub)\n");
 	if (is_empty(map.file))
 		return (-1);
-	if (!file_type_is_valid(argv[1], ".cub"))
-		printf("Error: File type not valid (must be .cub)\n");
     find_map_starting_line_and_height(&map);
     find_map_width(&map);
     allocate_map_array(&map);
