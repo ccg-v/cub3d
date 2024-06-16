@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 00:34:08 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:15:09 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,15 @@ int main(int argc, char **argv)
     init_colors(&colors);
 	check_is_dir(argv[1]);
 	if (!file_type_is_valid(argv[1], ".cub"))
+	{
 		printf("Error: Wrong file type (must be .cub)\n");
+		exit(-1);
+	}
 	if (is_empty(map.file))
 		return (-1);
     find_map_starting_line(&map);
 	find_map_height(&map);
+	map_is_last(&map);
     find_map_width(&map);
     allocate_map_array(&map);
     fill_map_array(&map);

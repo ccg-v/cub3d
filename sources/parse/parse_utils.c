@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:30:37 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/14 19:00:22 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:19:18 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,29 @@ int is_valid_number(const char *str)
         str++;
     }
     return (1);
+}
+
+size_t	find_file_length(char *file)
+{
+	int		fd;
+	char	*line;
+	int		len;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error: could not open the file\n");
+		return (-1);
+	}
+	len = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		free(line);
+		len++;
+		line = get_next_line(fd);
+	}
+	free(line);
+	close(fd);
+	return (len);
 }
