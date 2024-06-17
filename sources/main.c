@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 14:15:09 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/18 01:09:12 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,21 +131,17 @@ int main(int argc, char **argv)
     fill_map_array(&map);
     print_map_array(&map);
 
-
-
     parse_textures(&map, &textures);
     check_textures_in_file(&textures);
 	check_textures_path(&textures);
     parse_colors(&map, &colors);
 
- 
     // printf("North texture: %s\n", textures.north);
     // printf("South texture: %s\n", textures.south);
     // printf("West texture: %s\n", textures.west);
     // printf("East texture: %s\n", textures.east);
     // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
     // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
- 
 
     // Free the allocated memory for texture paths
     free(textures.north);
@@ -159,8 +155,21 @@ int main(int argc, char **argv)
     else
       printf("Error: map contains invalid characters\n");
     check_player(&map);
+printf("Player position is (%ld, %ld)\n", map.player_y, map.player_x);
     // check_configuration_data(&map);
     printf("Player orientation is %c\n", map.player_orientation);
+
+	if (is_map_closed(&map))
+		printf("Map is closed and walkable\n");
+	else
+		printf("Map is not closed\n");
+	printf("\n1_Visited map:\n");
+	print_visited_map(&map);
+
+	// if (check_navigability(&map))
+	// 	printf("Map is closed and reachable\n");
+	// else
+	// 	printf("Map is not closed\n");
     
     free_map_array(&map);
     return 0;

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:00:12 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/06 19:59:22 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:56:36 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,24 +92,44 @@
 //     }
 // }
 
-void dfs(t_map *map, size_t x, size_t y) // Keep original types for function parameters
+// void print_visited_map(t_map *map)
+// {
+// 	printf("\nVisited map:\n");
+// 	size_t 	i = 0;
+
+// 	while (i < map->height)
+// 	{
+// 		size_t j = 0;
+// 		while (j < ft_strlen(map->visited[i]))
+// 		{
+// 			printf("%c", map->array[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// }
+
+void dfs(t_map *map, size_t x, size_t y)
 {
-    int i;
+	int i;
     int new_x;
     int new_y;
     static int dx[] = {0, 0, -1, 1}; // Changes in x for moving up, down, left, right
     static int dy[] = {-1, 1, 0, 0}; // Changes in y for moving up, down, left, right
 
-    // Corrected boundary check with casted coordinates
+    // Boundary check
     if ((int)x < 0 || (int)y < 0 || (int)x >= (int)map->width || (int)y >= (int)map->height)
     {
         map->closed = false;
         return;
     }
-    
+	//	Mark player cell as visited
     map->visited[y][x] = true;
-
-    for (i = 0; i < 4; ++i)
+	
+	//	Check the adjacent cells (above, below, left and right)
+	i = 0;
+    while (i < 4)
     {
         new_x = (int)x + dx[i];
         new_y = (int)y + dy[i];
@@ -118,21 +138,9 @@ void dfs(t_map *map, size_t x, size_t y) // Keep original types for function par
         {
             dfs(map, (size_t)new_x, (size_t)new_y);
         }
+		i++;
     }
-
-	printf("\nVisited map:\n");
-	size_t k = 0;
-	while (map->visited[k])
-	{
-		size_t j = 0;
-		while (j < ft_strlen(map->visited[k]))
-		{
-			printf("%c", map->array[k][j]);
-			j++;
-		}
-		printf("\n");
-		k++;
-	}
+	print_visited_map(map);
 }
 
 bool	check_navigability(t_map *map)
@@ -160,5 +168,3 @@ bool	check_navigability(t_map *map)
 	free(map->visited);
 	return (map->closed);
 }
-
-

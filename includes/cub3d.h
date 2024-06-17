@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 14:16:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:28:01 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,10 @@ int		map_is_last(t_map *map);
 int		check_player(t_map *map);
 int 	all_chars_are_valid(t_map *map);
 bool	check_navigability(t_map *map);
+
+//	check_walls.c
+void 	print_visited_map(t_map *map);
+bool	is_map_closed(t_map *map);
 
 //	parse_textures.c
 int 	parse_textures(t_map *map, t_textures *textures);
