@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/17 22:28:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/22 01:15:50 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,21 @@
 
 # include <stdbool.h>
 # include <fcntl.h>
+# include <unistd.h>
 # include "libft.h"
+
+/* --- ANSI escape codes ---------------------------------------------------- */
+
+# define MAGENTA "\033[0;35m"
+# define RESET "\x1B[0m"
+# define GREEN "\033[0;32m"
+# define INTENSE_GREEN "\033[0;92m"
+# define BRIGHT_GREEN "\033[0;92m"
+# define BRIGHT_RED "\033[0;91m"
+# define BOLD_GREEN "\033[1;32m"
+# define BOLD_RED "\033[1;31m"
+# define BOLD_BRIGHT_RED "\033[1;91m"
+# define BOLD_BRIGHT_GREEN "\033[1;92m"
 
 /* --- Data structures ------------------------------------------------------ */
 
@@ -29,7 +43,7 @@ typedef struct s_map
 	char		**array;
 	size_t		i;
 	size_t		j;
-	char		**visited;
+	char		**visited_array;
 	size_t		player_x;
 	size_t		player_y;
 	char		player_orientation;
@@ -75,8 +89,10 @@ int 	all_chars_are_valid(t_map *map);
 bool	check_navigability(t_map *map);
 
 //	check_walls.c
-void 	print_visited_map(t_map *map);
-bool	is_map_closed(t_map *map);
+void	print_visited_map(t_map *map);
+void	dfs(t_map *map, int row, int column);
+int		is_map_closed(t_map *map);
+int		is_fully_walkable(t_map *map);
 
 //	parse_textures.c
 int 	parse_textures(t_map *map, t_textures *textures);
@@ -92,6 +108,7 @@ int		find_map_height(t_map *map);
 int		find_map_width(t_map *map);
 char	**allocate_map_array(t_map *map);
 int		fill_map_array(t_map *map);
+void	allocate_visited_array(t_map *map);
 
 //	parse_utils.c
 int 	open_file(const char *file);

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:15:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/21 17:34:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:32:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	print_map(char **map_array, int map_height, int map_width)
 {
 	int	row = 0;
-	// system("clear");
+	system("clear");
 	
 	while (row < map_height)
 	{

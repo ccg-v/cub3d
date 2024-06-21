@@ -1,85 +1,108 @@
 #include "cub3d.h"
 
-// void print_visited_map(t_map *map)
-// {
-// 	size_t	i = 0;
-// 	// int	len = 0;
-// 	while (i < map->height)
-// 	{
-// 		size_t j = 0;
-// 		// len = ft_strlen(map->visited[i]);
-// 		// while ((int)j < len)
-// 		while (j < map->width)
-// 		{
-// 			printf("%c", map->visited[i][j]);
-// 			j++;
-// 		}
-// 		printf("\n");
-// 		i++;
-// 	}
-// }
-
-void print_visited_map(t_map *map) {
-    printf("Visited Map:\n");
-    for (size_t i = 0; i < map->height; ++i) {
-        for (size_t j = 0; j < map->width; ++j) {
-            printf("%d", map->visited[i][j] ? 1 : 0);
-        }
-        printf("\n");
-    }
-}
-
-void	dfs2(t_map *map, int x, int y)
+void	print_visited_map(t_map *map)
 {
-	int			i;
-	int			nx;
-	int			ny;
-	static int	dx[] = {0, 0, -1, 1};
-	static int	dy[] = {-1, 1, 0, 0};
-
-	if ((int)x <= 0 || (int)y <= 0 || (int)x >= (int)(map->width - 1) || (int)y >= (int)(map->height - 1))
+	size_t	row;
+	size_t	column;
+	size_t	visited_height;
+	size_t	visited_width;
+	
+	visited_height = map->height + 2;
+	visited_width = map->width + 1;	
+	row = 0;
+	system("clear");
+	while (row < visited_height)
 	{
-		map->closed = false;
-		return ;
-	}
-	map->visited[y][x] = true;
-	map->width = ft_strlen(map->array[y]);
-	i = -1;
-	while (++i < 4)
-	{
-		nx = x + dx[i];
-		ny = y + dy[i];
-		if ((int)nx >= 0 && (int)ny >= 0 && (int)nx <= (int)map->width && (int)ny <= (int)map->height
-			&& !(map->visited[ny][nx]) && map->array[ny][nx] == '0')
-			dfs2(map, nx, ny);
+		column = 0;
+		while (column < visited_width)
+		{
+			if (map->visited_array[row][column] == '@')
+				printf(BOLD_BRIGHT_GREEN "%c" RESET, map->visited_array[row][column]);
+			else if (map->visited_array[row][column] == '0')
+				printf(BOLD_BRIGHT_RED "%c" RESET, map->visited_array[row][column]);
+			else
+				printf("%c", map->visited_array[row][column]);
+			column++;			
+		}
+		row++;
+		printf("\n");
 	}
 }
 
-bool	is_map_closed(t_map *map)
+void	dfs(t_map *map, int row, int column)
 {
-	int	i;
-	int	j;
+	int visited_height;
+	int visited_width;
+	
+	visited_height = map->height + 2;
+	visited_width = map->width + 1;
 
-	map->visited = ft_calloc(sizeof(char *), map->height);
-	if (map->visited == NULL)
-		return (false);
-	i = -1;
-	while (++i < (int)map->height)
+	if ( row < 0 || row >= visited_height || column < 0 || column >= visited_width 
+		|| map->visited_array[row][column] == ' ' 
+		|| map->visited_array[row][column] == '1' 
+		|| map->visited_array[row][column] == '@' )
+		return;
+
+	map->visited_array[row][column] = '@';
+	usleep(25000);
+	print_visited_map(map);
+	
+	dfs(map, row -1, column);
+	dfs(map, row, column + 1);
+	dfs(map, row + 1, column);
+	dfs(map, row, column - 1);
+}
+
+int	is_map_closed(t_map *map)
+{
+	size_t	row;
+	size_t	column;
+	size_t	visited_height;
+	size_t	visited_width;
+	
+	visited_height = map->height + 2;
+	visited_width = map->width + 1;
+	row = 0;
+	while (row < visited_height)
 	{
-		map->visited[i] = ft_calloc(sizeof(char), map->width);
-		if (map->visited[i] == NULL)
-			return (false);
-		j = -1;
-		while (++j < (int)map->width)
-			map->visited[i][j] = '0';
+		column = 0;
+		while (column < visited_width)
+		{
+			if (map->visited_array[row][column] == '@')
+			{
+				if ((row > 0 && map->visited_array[row - 1][column] == ' ')
+					|| (row < (visited_height - 1) && map->visited_array[row + 1][column] == ' ')
+					|| (column > 0 && map->visited_array[row][column - 1] == ' ')
+					|| (column < (visited_width - 1) && map->visited_array[row][column + 1] == ' '))
+					return (0);
+			}
+			column++;
+		}
+		row++;
 	}
-	map->visited[i][j] = '\0';
-printf("0_Visited_map:\n");
-print_visited_map(map);
-	dfs2(map, map->player_x, map->player_y);
-	i = -1;
-	while (++i < (int)map->height)
-		free(map->visited[i]);
-	free(map->visited);
-	return (map->closed);
+	return (1);
+}
+
+int	is_fully_walkable(t_map *map)
+{
+	size_t	row;
+	size_t	column;
+	size_t	visited_height;
+	size_t	visited_width;
+	
+	visited_height = map->height + 2;
+	visited_width = map->width + 1;
+	row = 0;
+	while (row < visited_height)
+	{
+		column = 0;
+		while (column < visited_width)
+		{
+			if (map->visited_array[row][column] == '0')
+					return (0);
+			column++;
+		}
+		row++;
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 20:00:12 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/17 20:56:36 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/21 21:44:03 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,61 +110,61 @@
 // 	}
 // }
 
-void dfs(t_map *map, size_t x, size_t y)
-{
-	int i;
-    int new_x;
-    int new_y;
-    static int dx[] = {0, 0, -1, 1}; // Changes in x for moving up, down, left, right
-    static int dy[] = {-1, 1, 0, 0}; // Changes in y for moving up, down, left, right
+// void dfs(t_map *map, size_t x, size_t y)
+// {
+// 	int i;
+//     int new_x;
+//     int new_y;
+//     static int dx[] = {0, 0, -1, 1}; // Changes in x for moving up, down, left, right
+//     static int dy[] = {-1, 1, 0, 0}; // Changes in y for moving up, down, left, right
 
-    // Boundary check
-    if ((int)x < 0 || (int)y < 0 || (int)x >= (int)map->width || (int)y >= (int)map->height)
-    {
-        map->closed = false;
-        return;
-    }
-	//	Mark player cell as visited
-    map->visited[y][x] = true;
+//     // Boundary check
+//     if ((int)x < 0 || (int)y < 0 || (int)x >= (int)map->width || (int)y >= (int)map->height)
+//     {
+//         map->closed = false;
+//         return;
+//     }
+// 	//	Mark player cell as visited
+//     map->visited_array[y][x] = true;
 	
-	//	Check the adjacent cells (above, below, left and right)
-	i = 0;
-    while (i < 4)
-    {
-        new_x = (int)x + dx[i];
-        new_y = (int)y + dy[i];
-        if (new_x >= 0 && new_y >= 0 && new_x < (int)map->width && new_y < (int)map->height
-            && !map->visited[new_y][new_x] && map->array[new_y][new_x] == '1')
-        {
-            dfs(map, (size_t)new_x, (size_t)new_y);
-        }
-		i++;
-    }
-	print_visited_map(map);
-}
+// 	//	Check the adjacent cells (above, below, left and right)
+// 	i = 0;
+//     while (i < 4)
+//     {
+//         new_x = (int)x + dx[i];
+//         new_y = (int)y + dy[i];
+//         if (new_x >= 0 && new_y >= 0 && new_x < (int)map->width && new_y < (int)map->height
+//             && !map->visited_array[new_y][new_x] && map->array[new_y][new_x] == '1')
+//         {
+//             dfs(map, (size_t)new_x, (size_t)new_y);
+//         }
+// 		i++;
+//     }
+// 	print_visited_map(map);
+// }
 
 bool	check_navigability(t_map *map)
 {
 	size_t	i;
 	size_t	j;
 
-	map->visited = ft_calloc(sizeof(char *), map->height);
-	if (map->visited == NULL)
+	map->visited_array = ft_calloc(sizeof(char *), map->height);
+	if (map->visited_array == NULL)
 		return (false);
 	i = -1;
 	while (++i < map->height)
 	{
-		map->visited[i] = ft_calloc(sizeof(char), map->width);
-		if (map->visited[i] == NULL)
+		map->visited_array[i] = ft_calloc(sizeof(char), map->width);
+		if (map->visited_array[i] == NULL)
 			return (false);
 		j = -1;
 		while (++j < map->width)
-			map->visited[i][j] = false;
+			map->visited_array[i][j] = false;
 	}
 	dfs(map, map->player_x, map->player_y);
 	i = -1;
 	while (++i < map->height)
-		free(map->visited[i]);
-	free(map->visited);
+		free(map->visited_array[i]);
+	free(map->visited_array);
 	return (map->closed);
 }

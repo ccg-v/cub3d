@@ -6,11 +6,19 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 12:55:27 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/22 01:46:37 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int		find_map_starting_line(t_map *map);
+int		find_map_width(t_map *map);
+char 	**allocate_map_array(t_map *map);
+int 	fill_map_array(t_map *map);
+int		is_whitespace(char c);
+int		find_map_height(t_map *map);
+void	allocate_expanded_array(t_map *map);
 
 int	find_map_starting_line(t_map *map)
 {
@@ -176,7 +184,8 @@ int	find_map_height(t_map *map)
 		i = 0;
 		while (is_whitespace(line[i]))
 			i++;
-		if (line[i] == '1')
+		// if (line[i] == '1')
+		if (line[i] == '1' || line[i] == '0')
 			map->height++;
 		free(line);
 		line = get_next_line(fd);
@@ -189,4 +198,76 @@ int	find_map_height(t_map *map)
 	free(line);
 	close(fd);
 	return (0);
+}
+
+/*	
+ *	allocate_visited_array()
+ *
+ *	Visited_array is initially a copy of the map_array, but expanding
+ *	it two rows (one on the top, one on the bottom) and two columns
+ *	(one on the left, one on the right). Those columns will be filled
+ *	width whitespaces.
+ */
+void allocate_visited_array(t_map *map) \
+{
+    size_t i;
+    size_t j;
+
+    // Allocate memory for visited_array and fill it with dots ('.')
+	map->visited_array = malloc((map->height + 2) * sizeof(char *));
+	if (!map->visited_array)
+		return ;
+	i = 0;
+    while (i < map->height + 2)
+	{
+        map->visited_array[i] = malloc((map->width + 1) * sizeof(char));
+        if (!map->visited_array[i])	// Free previously allocated memory in case of failure
+		{
+            while (i > 0)
+			{
+                free(map->visited_array[--i]);
+            }
+            free(map->visited_array);
+            return;
+        }
+        ft_memset(map->visited_array[i], ' ', (map->width + 1));
+		i++;
+    }
+
+    // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
+    i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+        while (j < map->width)
+		{
+            // Copy each character except the null-terminator
+            if (map->array[i][j] != '\0')
+                map->visited_array[i + 1][j + 1] = map->array[i][j];
+            j++;
+        }
+		i++;
+    }
+
+    // Print the expanded array (REMOVE)
+    for (i = 0; i < map->height + 2; i++) 
+	{
+        for (j = 0; j < map->width + 1; j++) 
+		{
+			if (map->visited_array[i][j] == ' ')
+				printf(".");
+			else
+            	printf("%c", map->visited_array[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Free the memory allocated for the new array
+	i = 0;
+    // while (i < map->height + 2)
+	// {
+    //     free(map->visited_array[i]);
+	// 	i++;
+    // }
+    // free(map->visited_array);
 }

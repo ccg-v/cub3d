@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:58:55 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 23:30:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/21 23:08:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int player_count(t_map *map)
             if (ft_strchr(valid_directions, map->array[map->i][map->j]))
             {
                 map->player_orientation = map->array[map->i][map->j];
-				map->player_x = map->i;
-				map->player_y = map->j;
+				map->player_x = map->j;
+				map->player_y = map->i;
                 player_counter++;
             }
             map->j++;

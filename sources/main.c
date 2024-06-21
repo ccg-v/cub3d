@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/18 01:09:12 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/22 01:17:25 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_map(t_map *map, char *map_file)
 	map->array = NULL;
 	map->i = 0;
 	map->j = 0;
-	map->visited = NULL;
+	map->visited_array = NULL;
 	map->player_x = 0;
 	map->player_y = 0;
 	map->closed = true;
@@ -155,22 +155,60 @@ int main(int argc, char **argv)
     else
       printf("Error: map contains invalid characters\n");
     check_player(&map);
+printf("Player's row (y) = %ld; Player's column (x) = %ld\n", map.player_y, map.player_x);	
 printf("Player position is (%ld, %ld)\n", map.player_y, map.player_x);
     // check_configuration_data(&map);
     printf("Player orientation is %c\n", map.player_orientation);
 
-	if (is_map_closed(&map))
-		printf("Map is closed and walkable\n");
-	else
-		printf("Map is not closed\n");
-	printf("\n1_Visited map:\n");
-	print_visited_map(&map);
+	// if (is_map_closed(&map))
+	// 	printf("Map is closed and walkable\n");
+	// else
+	// 	printf("Map is not closed\n");
+	// printf("\n1_Visited map:\n");
+	// print_visited_map(&map);
 
 	// if (check_navigability(&map))
 	// 	printf("Map is closed and reachable\n");
 	// else
 	// 	printf("Map is not closed\n");
-    
+
+
+
+	allocate_visited_array(&map);
+
+	//	Start the dfs search from the player's position (replace all
+	//	walkable cells (that is, zeros) with '@')
+	size_t row = map.player_y + 1;
+	while (row < (map.height + 2))
+	{
+		size_t	column = map.player_x + 1;
+		while (column < (map.width + 1))
+		{
+			dfs(&map, row, column);
+			column++;
+		}
+		row++;
+	}
+
+	//	Print visited map
+	// for (size_t i = 0; i < (map.height + 2); ++i)
+	// 	printf("%s\n", map.visited_array[i]);
+
+	//	Search if the map is closed (all visited cells ('@' should be
+	//	adjacent to other visited cells or walls ('@', '1'), never to 
+	//	a whitespace)
+	if (!is_map_closed(&map))
+		printf("Error: Map is not closed\n");
+	else
+		printf("Map is closed!\n");
+		
+	//	Search if the map has non-reachable areas in the map (any cell
+	//	remaining with zero value after running dfs)
+	if (!is_fully_walkable(&map))
+		printf("Warning: Map has non-reachable areas\n");
+	else
+		printf("Map is fully walkable!\n");
+		
     free_map_array(&map);
     return 0;
 }
