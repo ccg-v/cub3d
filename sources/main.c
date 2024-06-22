@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/22 01:17:25 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 01:36:21 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,6 @@ int main(int argc, char **argv)
 	check_textures_path(&textures);
     parse_colors(&map, &colors);
 
-    // printf("North texture: %s\n", textures.north);
-    // printf("South texture: %s\n", textures.south);
-    // printf("West texture: %s\n", textures.west);
-    // printf("East texture: %s\n", textures.east);
-    // printf("Floor color: %d,%d,%d\n", colors.floor[0], colors.floor[1], colors.floor[2]);
-    // printf("Ceiling color: %d,%d,%d\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2]);
-
     // Free the allocated memory for texture paths
     free(textures.north);
     free(textures.south);
@@ -155,24 +148,9 @@ int main(int argc, char **argv)
     else
       printf("Error: map contains invalid characters\n");
     check_player(&map);
-printf("Player's row (y) = %ld; Player's column (x) = %ld\n", map.player_y, map.player_x);	
-printf("Player position is (%ld, %ld)\n", map.player_y, map.player_x);
+
     // check_configuration_data(&map);
     printf("Player orientation is %c\n", map.player_orientation);
-
-	// if (is_map_closed(&map))
-	// 	printf("Map is closed and walkable\n");
-	// else
-	// 	printf("Map is not closed\n");
-	// printf("\n1_Visited map:\n");
-	// print_visited_map(&map);
-
-	// if (check_navigability(&map))
-	// 	printf("Map is closed and reachable\n");
-	// else
-	// 	printf("Map is not closed\n");
-
-
 
 	allocate_visited_array(&map);
 
@@ -184,7 +162,8 @@ printf("Player position is (%ld, %ld)\n", map.player_y, map.player_x);
 		size_t	column = map.player_x + 1;
 		while (column < (map.width + 1))
 		{
-			dfs(&map, row, column);
+			if (map.visited_array[row][column] != '0')
+				dfs(&map, row, column);
 			column++;
 		}
 		row++;
@@ -205,10 +184,12 @@ printf("Player position is (%ld, %ld)\n", map.player_y, map.player_x);
 	//	Search if the map has non-reachable areas in the map (any cell
 	//	remaining with zero value after running dfs)
 	if (!is_fully_walkable(&map))
-		printf("Warning: Map has non-reachable areas\n");
+		printf("Warning: Map has walkable but non-reachable cells\n");
 	else
 		printf("Map is fully walkable!\n");
-		
-    free_map_array(&map);
+
+printf("map height is %ld\n", map.height);
+    free_array(map.array, map.height);
+	free_array(map.visited_array, (map.height + 2));
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/22 01:15:50 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/22 23:24:21 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define BOLD_RED "\033[1;31m"
 # define BOLD_BRIGHT_RED "\033[1;91m"
 # define BOLD_BRIGHT_GREEN "\033[1;92m"
+# define BACKGROUND_BRIGHT_GREEN "\033[0;102m"
+# define BACKGROUND_BRIGHT_RED "\033[0;101m"
 
 /* --- Data structures ------------------------------------------------------ */
 
@@ -112,7 +114,7 @@ void	allocate_visited_array(t_map *map);
 
 //	parse_utils.c
 int 	open_file(const char *file);
-void 	free_map_array(t_map *map);
+void 	free_array(char **array, size_t height);
 void	free_rgb_values(char **rgb_array);
 int 	is_valid_number(const char *str);
 size_t	find_file_length(char *file);

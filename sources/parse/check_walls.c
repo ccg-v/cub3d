@@ -11,13 +11,20 @@ void	print_visited_map(t_map *map)
 	visited_width = map->width + 1;	
 	row = 0;
 	system("clear");
+	printf ("Checking map...\n");
 	while (row < visited_height)
 	{
 		column = 0;
 		while (column < visited_width)
 		{
 			if (map->visited_array[row][column] == '@')
-				printf(BOLD_BRIGHT_GREEN "%c" RESET, map->visited_array[row][column]);
+			{
+				if ((map->visited_array[row - 1][column] == ' ') || (map->visited_array[row][column + 1] == ' ')
+					|| (map->visited_array[row + 1][column] == ' ') || (map->visited_array[row][column - 1] == ' '))
+					printf(BACKGROUND_BRIGHT_RED "%c" RESET, map->visited_array[row][column]);				
+				else
+					printf(BOLD_BRIGHT_GREEN "%c" RESET, map->visited_array[row][column]);
+			}
 			else if (map->visited_array[row][column] == '0')
 				printf(BOLD_BRIGHT_RED "%c" RESET, map->visited_array[row][column]);
 			else
@@ -44,7 +51,7 @@ void	dfs(t_map *map, int row, int column)
 		return;
 
 	map->visited_array[row][column] = '@';
-	usleep(25000);
+	usleep(100000);
 	print_visited_map(map);
 	
 	dfs(map, row -1, column);

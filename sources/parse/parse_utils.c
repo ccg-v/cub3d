@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:30:37 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 14:19:18 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:45:36 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,31 @@ int	open_file(const char *file)
     return fd;
 }
 
-void	free_map_array(t_map *map)
+// void	free_map_array(t_map *map)
+// {
+// 	size_t	i;
+
+// 	i = 0;
+// 	while (i < map->height)
+// 	{
+// 		// printf("freeing map->array[%zu] = '%s'\n", i, map->array[i]);
+// 		free(map->array[i]);
+// 		i++;
+// 	}
+// 	free(map->array);
+// }
+
+void	free_array(char **array, size_t height)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < map->height)
+	while (i < height)
 	{
-		// printf("freeing map->array[%zu] = '%s'\n", i, map->array[i]);
-		free(map->array[i]);
+		free(array[i]);
 		i++;
 	}
-	free(map->array);
+	free(array);
 }
 
 void	free_rgb_values(char **rgb_array)
