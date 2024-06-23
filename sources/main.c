@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 12:04:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:20:12 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ result	check_args(int argc)
 	return (SUCCESS);
 }
 
+void	init(char *file_name, t_map *map, t_textures *textures, t_colors *colors)
+{
+    init_map(map, file_name);
+    init_textures(textures);
+    init_colors(colors);	
+}
+
 int main(int argc, char **argv)
 {
     t_map         map;
@@ -46,9 +53,7 @@ int main(int argc, char **argv)
 
 	if (check_args(argc) == FAIL)
 		return (0);
-    init_map(&map, argv[1]);
-    init_textures(&textures);
-    init_colors(&colors);
+	init(argv[1], &map, &textures, &colors);
 	check_is_dir(argv[1]);
 	if (!file_type_is_valid(argv[1], ".cub"))
 	{
