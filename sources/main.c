@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 21:17:09 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:09:13 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,23 @@ int main(int argc, char **argv)
     fill_map_array(&map);
     // print_map_array(&map);
 
-    // parse_textures(&map, &textures);
-    // check_textures_in_file(&textures);
-	// check_textures_path(&textures);
 	if (check_textures(&map, &textures) == 	FAIL)
 		return (FAIL);
-
-    parse_colors(&map, &colors);
-
     // Free the allocated memory for texture paths
     free(textures.north);
     free(textures.south);
     free(textures.west);
     free(textures.east);
 	
+    if (check_colors(&map, &colors) == FAIL)
+		return (FAIL);
 
     if (all_chars_are_valid(&map))
       printf("All characters in map are valid\n");
     else
       printf("Error: map contains invalid characters\n");
-    check_player(&map);
 
-    // check_configuration_data(&map);
+    check_player(&map);
     printf("Player orientation is %c\n", map.player_orientation);
 
 	allocate_visited_array(&map);
@@ -112,7 +107,6 @@ int main(int argc, char **argv)
 	else
 		printf("Map is fully walkable!\n");
 
-printf("map height is %ld\n", map.height);
     free_array(map.array, map.height);
 	free_array(map.visited_array, (map.height + 2));
     return 0;

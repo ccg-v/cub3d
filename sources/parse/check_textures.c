@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 21:29:48 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:21:37 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static result	create_textures_array(t_map *map, t_textures *textures)
     return (SUCCESS);
 }
 
-static boolean are_all_textures_defined(t_textures *textures)
+static boolean	are_all_textures_defined(t_textures *textures)
 {
     if (textures->north != NULL && textures->south != NULL
         && textures->east != NULL && textures->west != NULL)
@@ -119,10 +119,10 @@ static boolean	are_texture_paths_valid(t_textures *textures)
     	fd = open(path, O_DIRECTORY);
     	if (fd >= 0)
 		{
+			close(fd);
       		printf("Error: '%s' is a directory\n", path);
       		return (FALSE);  // Early exit on error
     	}
-		close(fd);
     	fd = open(path, O_RDONLY);
     	if (fd < 0)
 		{
@@ -132,7 +132,6 @@ static boolean	are_texture_paths_valid(t_textures *textures)
     	close(fd);
     	i++;
   	}
-	printf("Texture paths ok!\n");
 	return (TRUE);
 }
 

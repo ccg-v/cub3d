@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:33:05 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 20:15:29 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:36:44 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ boolean is_directory(char *str)
 	fd = open(str, O_DIRECTORY);
 	if (fd < 0)
 		return (FALSE);
-	printf("Error: %s is a directory, not a file\n", str);
+	printf("Error: '%s' is a directory, not a file\n", str);
 	close(fd);
     return (TRUE);
 }

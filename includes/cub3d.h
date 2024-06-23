@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 21:19:22 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 23:08:00 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,14 @@ result	file_check(char *file_name);
 //	check_scene_description
 result	check_scene_description(t_map *map);
 
+//	check_textures.c
+result	check_textures(t_map *map, t_textures *textures);
+// int 	check_textures_in_file(t_textures *textures);
+// int		check_textures_path(t_textures *textures);
+
+//	check_colors.c
+result	check_colors(t_map *map, t_colors *colors);
+
 //	check_player.c
 int		check_player(t_map *map);
 int 	all_chars_are_valid(t_map *map);
@@ -115,14 +123,6 @@ void	print_visited_map(t_map *map);
 void	dfs(t_map *map, int row, int column);
 int		is_map_closed(t_map *map);
 int		is_fully_walkable(t_map *map);
-
-//	parse_textures.c
-result	check_textures(t_map *map, t_textures *textures);
-int 	check_textures_in_file(t_textures *textures);
-int		check_textures_path(t_textures *textures);
-
-//	parse_colors.c
-int		parse_colors(t_map *map, t_colors *colors);
 
 //	parse_file_map.c
 int		find_map_starting_line(t_map *map);
