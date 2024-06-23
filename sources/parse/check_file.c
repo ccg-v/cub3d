@@ -6,32 +6,45 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:33:05 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 12:47:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:15:29 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-result check_is_dir(char *str)
+boolean is_directory(char *str)
 {
     int fd;
 
 	fd = open(str, O_DIRECTORY);
 	if (fd < 0)
-	{
-		// printf("%s is a file\n", str);
-		return (FAIL);
-	}
+		return (FALSE);
 	printf("Error: %s is a directory, not a file\n", str);
 	close(fd);
-    return (SUCCESS);
+    return (TRUE);
+}
+
+boolean can_open_file(char *str)
+{
+	int	fd;
+
+	fd = open(str, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error: '%s': Could not open the file\n", str);
+		return (FALSE);
+	}
+	close(fd);
+	return (TRUE);
 }
 
 result	file_check(char *file_name)
 {
-	if (check_is_dir(file_name) == SUCCESS)
+	if (is_directory(file_name) == TRUE)
 		return (FAIL);
-	if (!file_type_is_valid(file_name, ".cub"))
+	if (can_open_file(file_name)== FALSE)
+		return (FAIL);
+	if (!is_file_type_valid(file_name, ".cub"))
 	{
 		printf("Error: Wrong file type (must be .cub)\n");
 		return (FAIL);

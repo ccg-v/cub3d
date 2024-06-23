@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_file_data.c                                  :+:      :+:    :+:   */
+/*   check_scene_description.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/16 14:22:37 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:25:01 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// int no_configuration(t_map *map)
-// {
-//     if (map->starting_line == 1)
-//         return (1);
-//     return (0);
-// }
-
-// int check_configuration_data(t_map *map)
-// {
-//     if (no_configuration(map))
-//         printf("Error: File contains only map\n");
-//     return (0);
-// }
-
-int is_empty(char *file)
+static boolean	is_map_empty(char *file)
 {
 	int		fd;
-	char 	*line;
+	char	*line;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
@@ -51,79 +37,67 @@ int is_empty(char *file)
 		line = get_next_line(fd);
 	}
 	free(line);
-	printf("File is NOT empty\n");
 	return (0);
 }
 
-int	map_is_last(t_map *map)
+static result	find_textures_and_colors(t_map *map)
 {
-	int		fd;
-	char	*line;
-	int		map_end_line;
-	int		i;
-	int		flag;
-
-	flag = 0;
 	if (map->starting_line == 1)
 	{
 		if (map->height == find_file_length(map->file))
 			printf("Error: Textures and colors not defined in the file\n");
 		else
 			printf("Error: Wrong map position (placed first in file)\n");
-		return (flag);
+		return (FAIL);
 	}
+	return (SUCCESS);
+}
+
+static result	find_map(t_map *map)
+{
 	if (map->height == 0)
 	{
 		printf("Error: No map found in the file\n");
-		return (flag);
+		return (FAIL);
 	}
-	fd = open(map->file, O_RDONLY);
+	return (SUCCESS);
+}
+
+static boolean	is_map_last(t_map *map)
+{
+	int		fd;
+	char	*line;
+	int		map_end_line;
+	int		flag;
+
+	flag = TRUE;
+	fd = open_file(map->file);
 	if (fd < 0)
-	{
-		printf("Error: could not open the file\n");
-		return (-1);
-	}
+		return (FALSE);
 	line = get_next_line(fd);
-	i = 0;
-	map_end_line = map->starting_line + map->height;
-	while (i < map_end_line)
+	map_end_line = map->starting_line + map->height -1;
+	read_until_line(fd, &line, map_end_line);
+	while (line != NULL && flag == TRUE)
 	{
-		free(line);
-		line = get_next_line(fd);
-		i++;
-	}
-	while (line != NULL && flag == 0)
-	{
-		if (*line != '\n')
+		if (line[0] != '\n')
 		{
 			printf("Error: Wrong map position (not placed last in file)\n");
-			flag = 1;
+			flag = FALSE;
 		}
 		free(line);
 		line = get_next_line(fd);
 	}
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-	free(line);
+	read_until_end_of_file(fd, &line);
 	close(fd);
 	return (flag);
 }
 
-int	file_type_is_valid(char *filename, char *expected_extension)
+result	check_scene_description(t_map *map)
 {
-	size_t	len;
-	char	*file_extension;
-
-	len = ft_strlen(filename);
-	file_extension = ft_substr(filename, len - 4, 4);
-	if (ft_strncmp(file_extension, expected_extension, 4) != 0)
-	{
-		free(file_extension);
-		return (0);
-	}
-	free(file_extension);
-	return (1);
+	if (is_map_empty(map->file) == TRUE
+		|| find_textures_and_colors(map) == FAIL
+		|| find_map(map) == FAIL
+		|| is_map_last(map) == FALSE)
+		return (FAIL);
+	return (SUCCESS);
 }

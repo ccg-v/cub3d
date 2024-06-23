@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 12:44:05 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:15:27 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,18 @@ typedef enum
     SUCCESS = 1
 } result;
 
+typedef enum
+{
+	FALSE = 0,
+	TRUE = 1
+} boolean;
+
 /* --- ANSI escape codes ---------------------------------------------------- */
 
-// # define MAGENTA "\033[0;35m"
-# define RESET "\x1B[0m"
-// # define GREEN "\033[0;32m"
-// # define INTENSE_GREEN "\033[0;92m"
-// # define BRIGHT_GREEN "\033[0;92m"
-// # define BRIGHT_RED "\033[0;91m"
-// # define BOLD_GREEN "\033[1;32m"
-// # define BOLD_RED "\033[1;31m"
-# define BOLD_BRIGHT_RED "\033[1;91m"
 # define BOLD_BRIGHT_GREEN "\033[1;92m"
-// # define BACKGROUND_BRIGHT_GREEN "\033[0;102m"
+# define BOLD_BRIGHT_RED "\033[1;91m"
 # define BACKGROUND_BRIGHT_RED "\033[0;101m"
-
-
+# define RESET "\x1B[0m"   // resets all terminal attributes to default settings
 
 /* --- Data structures ------------------------------------------------------ */
 
@@ -92,23 +88,22 @@ typedef struct s_colors
 void	init_map(t_map *map, char *map_file);
 int		main(int argc, char **argv);
 
-/* --- Init -------------------------------------------------------- */
+/* --- Init ----------------------------------------------------------------- */
 
 //	init.c
 void	init_map(t_map *map, char *map_file);
 void  	init_textures(t_textures *textures);
 void  	init_colors(t_colors *colors);
 
-/* --- Parse ------------------------------------------------------- */
+/* --- Parse ---------------------------------------------------------------- */
 
 //	check_file
-result 	check_is_dir(char *str);
+boolean is_directory(char *str);
+boolean can_open_file(char *str);
 result	file_check(char *file_name);
 
-// int 	check_configuration_data(t_map *map);
-int		file_type_is_valid(char *filename, char *expected_extension);
-int 	is_empty(char *file);
-int		map_is_last(t_map *map);
+//	check_scene_description
+result	check_scene_description(t_map *map);
 
 //	check_player.c
 int		check_player(t_map *map);
@@ -138,11 +133,18 @@ int		fill_map_array(t_map *map);
 void	allocate_visited_array(t_map *map);
 
 //	parse_utils.c
-int 	open_file(const char *file);
+int		is_file_type_valid(char *filename, char *expected_extension);
 void 	free_array(char **array, size_t height);
 void	free_rgb_values(char **rgb_array);
 int 	is_valid_number(const char *str);
 size_t	find_file_length(char *file);
+
+//	reading_utils.c
+// void	read_until_line(int fd, char *line, int endline_index);
+// void	read_until_end_of_file(int fd, char *line);
+int 	open_file(const char *file_path);
+void	read_until_line(int fd, char **line, int endline_index);
+void	read_until_end_of_file(int fd, char **line);
 
 /* --- Debug ------------------------------------------------------- */
 

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/14 23:51:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 13:18:07 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,13 @@ int	parse_colors(t_map *map, t_colors *colors)
 	char	*original_line;
 	int		colors_found;
 
-	fd = open_file(map->file);
+	fd = open(map->file, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error: could not open the file\n");
+		return (-1);		
+	}
 	colors_found = 0;
-	if (fd == -1)
-		return (-1);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{

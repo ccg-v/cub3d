@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 13:05:46 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:15:31 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ int main(int argc, char **argv)
 	if (file_check(argv[1]) == FAIL)
 		return (FAIL);
 
-	if (is_empty(map.file))
-		return (-1);
     find_map_starting_line(&map);
 	find_map_height(&map);
-	map_is_last(&map);
     find_map_width(&map);
+	
+	if (check_scene_description(&map) == FAIL)
+		return (FAIL);
+
     allocate_map_array(&map);
     fill_map_array(&map);
-    print_map_array(&map);
+    // print_map_array(&map);
 
     parse_textures(&map, &textures);
     check_textures_in_file(&textures);

@@ -6,35 +6,27 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:30:37 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/22 22:45:36 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 13:33:54 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	open_file(const char *file)
+int	is_file_type_valid(char *filename, char *expected_extension)
 {
-    int fd;
-	
-	fd = open(file, O_RDONLY);
-    if (fd == -1)
-		return (-1);
-    return fd;
+	size_t	len;
+	char	*file_extension;
+
+	len = ft_strlen(filename);
+	file_extension = ft_substr(filename, len - 4, 4);
+	if (ft_strncmp(file_extension, expected_extension, 4) != 0)
+	{
+		free(file_extension);
+		return (0);
+	}
+	free(file_extension);
+	return (1);
 }
-
-// void	free_map_array(t_map *map)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (i < map->height)
-// 	{
-// 		// printf("freeing map->array[%zu] = '%s'\n", i, map->array[i]);
-// 		free(map->array[i]);
-// 		i++;
-// 	}
-// 	free(map->array);
-// }
 
 void	free_array(char **array, size_t height)
 {
