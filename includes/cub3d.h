@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/22 23:24:21 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 11:54:29 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,35 @@
 # include <unistd.h>
 # include "libft.h"
 
+// /* --- Define preprocessor directives ------------------------------------ */
+
+// #define SUCCESS 1
+// #define FAIL 0
+
+/* --- Enum definitions ----------------------------------------------------- */
+
+typedef enum 
+{
+    FAIL = 0,
+    SUCCESS = 1
+} result;
+
 /* --- ANSI escape codes ---------------------------------------------------- */
 
-# define MAGENTA "\033[0;35m"
+// # define MAGENTA "\033[0;35m"
 # define RESET "\x1B[0m"
-# define GREEN "\033[0;32m"
-# define INTENSE_GREEN "\033[0;92m"
-# define BRIGHT_GREEN "\033[0;92m"
-# define BRIGHT_RED "\033[0;91m"
-# define BOLD_GREEN "\033[1;32m"
-# define BOLD_RED "\033[1;31m"
+// # define GREEN "\033[0;32m"
+// # define INTENSE_GREEN "\033[0;92m"
+// # define BRIGHT_GREEN "\033[0;92m"
+// # define BRIGHT_RED "\033[0;91m"
+// # define BOLD_GREEN "\033[1;32m"
+// # define BOLD_RED "\033[1;31m"
 # define BOLD_BRIGHT_RED "\033[1;91m"
 # define BOLD_BRIGHT_GREEN "\033[1;92m"
-# define BACKGROUND_BRIGHT_GREEN "\033[0;102m"
+// # define BACKGROUND_BRIGHT_GREEN "\033[0;102m"
 # define BACKGROUND_BRIGHT_RED "\033[0;101m"
+
+
 
 /* --- Data structures ------------------------------------------------------ */
 

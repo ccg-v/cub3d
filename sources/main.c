@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 01:36:21 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 11:55:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,34 +56,6 @@ void  init_colors(t_colors *colors)
   colors->ceiling[2] = -1;
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	t_map	map;
-
-// 	(void)argc;
-// 	init_map(&map, argv[1]);
-// 	find_map_starting_line_and_height(&map);
-// 	find_map_width(&map);
-// 	allocate_map_array(&map);
-// 	fill_map_array(&map);
-// 	print_map_array(&map);
-
-// printf("Number of players: %d\n", check_player(&map));
-
-// 	// if (check_navigability(&map))
-// 	// 	printf("Map is closed and reachable\n");
-// 	// else
-// 	// 	printf("Map is not closed\n");
-
-// printf("map file is %s\n", map.file);
-// printf("map starting line is %zu\n", map.starting_line);
-// printf("map height is %zu\n", map.height);
-// printf("map width is %zu\n", map.width);
-
-// 	free_map_array(&map);
-// 	return (0);
-// }
-
 
 int check_is_dir(char *str)
 {
@@ -101,17 +73,24 @@ int check_is_dir(char *str)
     return (0);
 }
 
+result	check_args(int argc)
+{
+    if (argc!= 2)
+    {
+      printf("Error: Wrong arguments (usage: ./cub3d <path_to_file>)\n");
+      return (FAIL);
+    }
+	return (SUCCESS);
+}
+
 int main(int argc, char **argv)
 {
     t_map         map;
     t_textures    textures;
     t_colors  colors;
 
-    if (argc!= 2)
-    {
-      printf("Error: Wrong arguments (usage: ./cub3d <path_to_file>)\n");
-      return (0);
-    }
+	if (check_args(argc) == FAIL)
+		return (0);
     init_map(&map, argv[1]);
     init_textures(&textures);
     init_colors(&colors);
