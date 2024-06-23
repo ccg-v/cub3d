@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 11:54:29 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:05:57 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,13 @@ typedef struct s_colors
 //	main.c
 void	init_map(t_map *map, char *map_file);
 int		main(int argc, char **argv);
+
+/* --- Init -------------------------------------------------------- */
+
+//	init.c
+void	init_map(t_map *map, char *map_file);
+void  	init_textures(t_textures *textures);
+void  	init_colors(t_colors *colors);
 
 /* --- Parse ------------------------------------------------------- */
 

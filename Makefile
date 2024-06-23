@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/17 20:03:02 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/23 12:07:36 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR)
 OBJ_FILES 		= 		$(SRC_FILES:.c=.o)
 DEP_FILES 		= 		$(SRC_FILES:.c=.d)
 SRC_FILES		=		main.c \
+						init/init.c \
 						parse/check_file_data.c \
 						parse/check_file_map.c \
 						parse/check_player.c \
@@ -62,7 +63,7 @@ DEP_PATH		=		$(addprefix $(DEP_DIR), $(DEP_FILES))
 # --- Compilation rules ------------------------------------------------------ #
 
 all:
-		mkdir -p $(OBJ_DIR) $(OBJ_DIR)/parse
+		mkdir -p $(OBJ_DIR) $(OBJ_DIR)/parse $(OBJ_DIR)/init
 		$(MAKE) -C $(LIBFT_DIR)
 		$(MAKE) -C $(LIBMLX_DIR)
 		$(MAKE) $(NAME)
