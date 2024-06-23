@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 12:05:57 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 12:44:05 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ void  	init_colors(t_colors *colors);
 
 /* --- Parse ------------------------------------------------------- */
 
-//	check_file_data.c
+//	check_file
+result 	check_is_dir(char *str);
+result	file_check(char *file_name);
+
 // int 	check_configuration_data(t_map *map);
 int		file_type_is_valid(char *filename, char *expected_extension);
 int 	is_empty(char *file);

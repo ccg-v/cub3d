@@ -6,27 +6,11 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 12:20:12 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 13:05:46 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int check_is_dir(char *str)
-{
-    int fd;
-
-	fd = open(str, O_DIRECTORY);
-	printf("fd = %d\n", fd);
-	if (fd < 0)
-	{
-		printf("%s is a file\n", str);
-		return (1);
-	}
-	printf("Error: %s is a directory, not a file\n", str);
-	close(fd);
-    return (0);
-}
 
 result	check_args(int argc)
 {
@@ -52,14 +36,11 @@ int main(int argc, char **argv)
     t_colors  colors;
 
 	if (check_args(argc) == FAIL)
-		return (0);
+		return (FAIL);
 	init(argv[1], &map, &textures, &colors);
-	check_is_dir(argv[1]);
-	if (!file_type_is_valid(argv[1], ".cub"))
-	{
-		printf("Error: Wrong file type (must be .cub)\n");
-		exit(-1);
-	}
+	if (file_check(argv[1]) == FAIL)
+		return (FAIL);
+
 	if (is_empty(map.file))
 		return (-1);
     find_map_starting_line(&map);
