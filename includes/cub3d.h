@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 20:15:27 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:19:22 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int		is_map_closed(t_map *map);
 int		is_fully_walkable(t_map *map);
 
 //	parse_textures.c
-int 	parse_textures(t_map *map, t_textures *textures);
+result	check_textures(t_map *map, t_textures *textures);
 int 	check_textures_in_file(t_textures *textures);
 int		check_textures_path(t_textures *textures);
 
@@ -140,8 +140,6 @@ int 	is_valid_number(const char *str);
 size_t	find_file_length(char *file);
 
 //	reading_utils.c
-// void	read_until_line(int fd, char *line, int endline_index);
-// void	read_until_end_of_file(int fd, char *line);
 int 	open_file(const char *file_path);
 void	read_until_line(int fd, char **line, int endline_index);
 void	read_until_end_of_file(int fd, char **line);

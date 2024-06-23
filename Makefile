@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/23 14:27:30 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/23 21:18:53 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,10 @@ SRC_FILES		=		main.c \
 						init/init.c \
 						parse/check_file.c \
 						parse/check_scene_description.c \
-						parse/check_file_map.c \
+						parse/check_textures.c \
 						parse/check_player.c \
 						parse/check_walls.c \
 						parse/parse_colors.c \
-						parse/parse_textures.c \
 						parse/parse_file_map.c \
 						parse/parse_utils.c \
 						parse/reading_utils.c \

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 20:15:31 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:17:09 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,12 @@ int main(int argc, char **argv)
     fill_map_array(&map);
     // print_map_array(&map);
 
-    parse_textures(&map, &textures);
-    check_textures_in_file(&textures);
-	check_textures_path(&textures);
+    // parse_textures(&map, &textures);
+    // check_textures_in_file(&textures);
+	// check_textures_path(&textures);
+	if (check_textures(&map, &textures) == 	FAIL)
+		return (FAIL);
+
     parse_colors(&map, &colors);
 
     // Free the allocated memory for texture paths
