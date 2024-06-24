@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 13:21:09 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 20:19:15 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,6 @@ void	read_until_end_of_file(int fd, char **line);
 /* --- Debug ------------------------------------------------------- */
 
 //	debug.c
-void	print_map_array(t_map *map);
+void	print_map_array(char **array, size_t height, size_t width);
 
 #endif

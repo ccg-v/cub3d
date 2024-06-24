@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 01:22:28 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 20:20:47 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 
     allocate_map_array(&map);
     fill_map_array(&map);
-    // print_map_array(&map);
+    // print_map_array(map.array, map.height, map.width);
 
 	if (check_textures(&map, &textures) == 	FAIL)
 		return (FAIL);
@@ -91,6 +91,7 @@ int main(int argc, char **argv)
 	//	Print visited map
 	// for (size_t i = 0; i < (map.height + 2); ++i)
 	// 	printf("%s\n", map.visited_array[i]);
+	print_map_array(map.visited_array, map.height + 2, map.width + 1);
 
 	//	Search if the map is closed (all visited cells ('@' should be
 	//	adjacent to other visited cells or walls ('@', '1'), never to 

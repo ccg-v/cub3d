@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 13:20:40 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 20:29:20 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,13 @@ int	find_map_height(t_map *map)
 	int		fd;
 	char	*line;
 	int		i;
+	// size_t	current_line;
 
 	fd = open_file(map->file);
 	if (fd < 0)
 		return (-1);
 	line = get_next_line(fd);
+	// current_line = 0;
     // while (current_line < map->starting_line && line != NULL)
 	// {
     //     current_line++;
@@ -170,9 +172,8 @@ int	find_map_height(t_map *map)
 		i = 0;
 		while (is_whitespace(line[i]))
 			i++;
-		// if (line[i] == '1')
 		if (line[i] == '1' || line[i] == '0')
-			map->height++;
+			++map->height;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -187,6 +188,60 @@ int	find_map_height(t_map *map)
 	return (0);
 }
 
+// void	calculate_map_height_and_cleanup(t_map *map, int fd, char *line)
+// {
+// 	int i;
+
+// 	while (line && line[0] != '\n')
+// 	{
+// 		i = 0;
+// 		while (is_whitespace(line[i]))
+// 			i++;
+// 		if (line[i] == '1' || line[i] == '0')
+// 			++map->height;
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	while (line != NULL)
+// 	{
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	free(line);
+// 	close(fd);
+// }
+
+// void	process_pre_map_lines(t_map *map, int fd, char **line)
+// {
+// 	size_t current_line = 0;
+
+// 	while (current_line < map->starting_line && *line != NULL)
+// 	{
+// 		current_line++;
+// 		if (current_line < map->starting_line)
+// 		{
+// 			free(*line);
+// 			*line = get_next_line(fd);
+// 		}
+// 	}
+// }
+
+// int	find_map_height(t_map *map)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	fd = open_file(map->file);
+// 	if (fd < 0)
+// 		return (-1);
+// 	line = get_next_line(fd);
+
+// 	process_pre_map_lines(map, fd, &line);
+// 	calculate_map_height_and_cleanup(map, fd, line);
+// 	return (0);
+// }
+
+
 /*	
  *	allocate_visited_array()
  *
@@ -195,43 +250,73 @@ int	find_map_height(t_map *map)
  *	(one on the left, one on the right). Those columns will be filled
  *	with whitespaces.
  */
+// void allocate_visited_array(t_map *map)
+// {
+//     size_t i;
+//     size_t j;
+
+// 	map->visited_array = malloc((map->height + 2) * sizeof(char *));
+// 	if (!map->visited_array)
+// 		return ;
+// 	i = 0;
+//     while (i < map->height + 2)
+// 	{
+//         map->visited_array[i] = malloc((map->width + 1) * sizeof(char));
+//         if (!map->visited_array[i])
+// 		{
+//             while (i > 0)
+//                 free(map->visited_array[--i]);
+//             free(map->visited_array);
+//             return;
+//         }
+//         ft_memset(map->visited_array[i], ' ', (map->width + 1));
+// 		i++;
+//     }
+//     // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
+//     i = 0;
+// 	while (i < map->height)
+// 	{
+// 		j = 0;
+//         while (j < map->width)
+// 		{
+//             // Copy each character except the null-terminator
+//             if (map->array[i][j] != '\0')
+//                 map->visited_array[i + 1][j + 1] = map->array[i][j];
+//             j++;
+//         }
+// 		i++;
+//     }
+// }
 void allocate_visited_array(t_map *map)
 {
     size_t i;
     size_t j;
 
-	map->visited_array = malloc((map->height + 2) * sizeof(char *));
-	if (!map->visited_array)
-		return ;
-	i = 0;
-    while (i < map->height + 2)
-	{
-        map->visited_array[i] = malloc((map->width + 1) * sizeof(char));
-        if (!map->visited_array[i])
-		{
+    // Allocate memory for the visited array with an additional row and column
+    map->visited_array = malloc((map->height + 2) * sizeof(char *));
+    if (!map->visited_array)
+        return;
+    for (i = 0; i < map->height + 2; i++) {
+        map->visited_array[i] = malloc((map->width + 2) * sizeof(char)); // Allocate additional column
+        if (!map->visited_array[i]) {
             while (i > 0)
                 free(map->visited_array[--i]);
             free(map->visited_array);
             return;
         }
-        ft_memset(map->visited_array[i], ' ', (map->width + 1));
-		i++;
+        ft_memset(map->visited_array[i], ' ', (map->width + 2)); // Initialize with extra space
     }
+
     // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
-    i = 0;
-	while (i < map->height)
-	{
-		j = 0;
-        while (j < map->width)
-		{
-            // Copy each character except the null-terminator
+    for (i = 0; i < map->height; i++) {
+        for (j = 0; j < map->width; j++) {
             if (map->array[i][j] != '\0')
                 map->visited_array[i + 1][j + 1] = map->array[i][j];
-            j++;
         }
-		i++;
     }
 }
+
+
 
     // // Print the expanded array (REMOVE)
     // for (i = 0; i < map->height + 2; i++) 
