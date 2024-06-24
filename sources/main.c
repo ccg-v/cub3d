@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 23:09:13 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 01:22:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 	//	Search if the map has non-reachable areas in the map (any cell
 	//	remaining with zero value after running dfs)
 	if (!is_fully_walkable(&map))
-		printf("Warning: Map has walkable but non-reachable cells\n");
+		printf("Warning: Map has walkable but non-reachable parts\n");
 	else
 		printf("Map is fully walkable!\n");
 

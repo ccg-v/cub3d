@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 23:08:00 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 01:22:59 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ result	check_scene_description(t_map *map);
 
 //	check_textures.c
 result	check_textures(t_map *map, t_textures *textures);
-// int 	check_textures_in_file(t_textures *textures);
-// int		check_textures_path(t_textures *textures);
 
 //	check_colors.c
 result	check_colors(t_map *map, t_colors *colors);

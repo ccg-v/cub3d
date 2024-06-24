@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/23 23:08:26 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/24 01:20:17 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME			=		cub3D
 
 # --- Compiler flags --------------------------------------------------------- #
 
-CFLAGS			=		-MMD -Wall -Wextra -Werror -g
+CFLAGS			=		-MMD -Wall -Wextra -Werror -g #-fsanitize=address 
 #LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
 
 # --- Directories ------------------------------------------------------------ #

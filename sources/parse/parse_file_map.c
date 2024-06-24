@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/22 01:46:37 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 01:49:23 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char 	**allocate_map_array(t_map *map);
 int 	fill_map_array(t_map *map);
 int		is_whitespace(char c);
 int		find_map_height(t_map *map);
-void	allocate_expanded_array(t_map *map);
+void	allocate_visited_array(t_map *map);
 
 int	find_map_starting_line(t_map *map)
 {
@@ -161,24 +161,23 @@ int	is_whitespace(char c)
 int	find_map_height(t_map *map)
 {
 	int		fd;
-	size_t 	current_line;
 	char	*line;
 	int		i;
 
-	fd = open(map->file, O_RDONLY);
-	if (fd == -1)
+	fd = open_file(map->file);
+	if (fd < 0)
 		return (-1);
-	current_line = 0;
 	line = get_next_line(fd);
-    while (current_line < map->starting_line && line != NULL)
-	{
-        current_line++;
-        if (current_line < map->starting_line)
-		{
-			free(line);
-            line = get_next_line(fd);
-        }
-    }
+    // while (current_line < map->starting_line && line != NULL)
+	// {
+    //     current_line++;
+    //     if (current_line < map->starting_line)
+	// 	{
+	// 		free(line);
+    //         line = get_next_line(fd);
+    //     }
+    // }
+	read_until_line(fd, &line, map->starting_line);
 	while (line && line[0] != '\n')
 	{
 		i = 0;
@@ -190,11 +189,12 @@ int	find_map_height(t_map *map)
 		free(line);
 		line = get_next_line(fd);
 	}
-	while (line != NULL)
-	{
-		free(line);
-		line = get_next_line(fd);		
-	}
+	// while (line != NULL)
+	// {
+	// 	free(line);
+	// 	line = get_next_line(fd);		
+	// }
+	read_until_end_of_file(fd, &line);
 	free(line);
 	close(fd);
 	return (0);
@@ -206,14 +206,13 @@ int	find_map_height(t_map *map)
  *	Visited_array is initially a copy of the map_array, but expanding
  *	it two rows (one on the top, one on the bottom) and two columns
  *	(one on the left, one on the right). Those columns will be filled
- *	width whitespaces.
+ *	with whitespaces.
  */
-void allocate_visited_array(t_map *map) \
+void allocate_visited_array(t_map *map)
 {
     size_t i;
     size_t j;
 
-    // Allocate memory for visited_array and fill it with dots ('.')
 	map->visited_array = malloc((map->height + 2) * sizeof(char *));
 	if (!map->visited_array)
 		return ;
@@ -221,19 +220,16 @@ void allocate_visited_array(t_map *map) \
     while (i < map->height + 2)
 	{
         map->visited_array[i] = malloc((map->width + 1) * sizeof(char));
-        if (!map->visited_array[i])	// Free previously allocated memory in case of failure
+        if (!map->visited_array[i])
 		{
             while (i > 0)
-			{
                 free(map->visited_array[--i]);
-            }
             free(map->visited_array);
             return;
         }
         ft_memset(map->visited_array[i], ' ', (map->width + 1));
 		i++;
     }
-
     // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
     i = 0;
 	while (i < map->height)
@@ -248,26 +244,27 @@ void allocate_visited_array(t_map *map) \
         }
 		i++;
     }
+}
 
-    // Print the expanded array (REMOVE)
-    for (i = 0; i < map->height + 2; i++) 
-	{
-        for (j = 0; j < map->width + 1; j++) 
-		{
-			if (map->visited_array[i][j] == ' ')
-				printf(".");
-			else
-            	printf("%c", map->visited_array[i][j]);
-        }
-        printf("\n");
-    }
+    // // Print the expanded array (REMOVE)
+    // for (i = 0; i < map->height + 2; i++) 
+	// {
+    //     for (j = 0; j < map->width + 1; j++) 
+	// 	{
+	// 		if (map->visited_array[i][j] == ' ')
+	// 			printf(".");
+	// 		else
+    //         	printf("%c", map->visited_array[i][j]);
+    //     }
+    //     printf("\n");
+    // }
 
-    // Free the memory allocated for the new array
-	i = 0;
+    // // Free the memory allocated for the new array
+	// i = 0;
     // while (i < map->height + 2)
 	// {
     //     free(map->visited_array[i]);
 	// 	i++;
     // }
     // free(map->visited_array);
-}
+// }

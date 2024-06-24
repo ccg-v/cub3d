@@ -1,13 +1,13 @@
-   WE                            textures/wolfenstein/eagle.xpm 
-NO      textures/wolfenstein/grey_stone.xpm
+   WE                            ./textures/test/west.xpm 
+NO      textures/test/north.xpm
 
 
 
-SO textures/wolfenstein/red_brick.xpm
+SO textures/test/south.xpm
 
 F   69, 222, 199
 
-EA textures/wolfenstein/mossy.xpm
+EA textures/test/east.xpm
 
 
 

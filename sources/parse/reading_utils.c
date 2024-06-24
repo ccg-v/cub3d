@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 13:55:28 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 22:38:00 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 01:42:49 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void read_until_line(int fd, char **line, int endline_index)
     int i;
 	
 	i = 0;
-    while (i < endline_index)
+    // while (i < endline_index)
+	while (i < endline_index && *line != NULL)
     {
         free(*line);
         *line = get_next_line(fd);

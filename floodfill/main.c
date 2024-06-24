@@ -80,10 +80,10 @@ int main(void)
 	else
 		printf("Map is closed!\n");
 
-	//	Search if the map has non-reachable areas in the map (any cell
+	//	Search if the map has non-reachable parts in the map (any cell
 	//	remaining with zero value after running dfs)
-	if (!has_non_reachable_areas(map_array, map_height, map_width))
-		printf("Warning: Map has non-reachable areas\n");
+	if (!has_non_reachable_parts(map_array, map_height, map_width))
+		printf("Warning: Map has non-reachable parts\n");
 	else
 		printf("Map is fully walkable!\n");
 

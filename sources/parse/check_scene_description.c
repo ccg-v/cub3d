@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 20:25:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 02:14:25 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static boolean	is_map_last(t_map *map)
 	if (fd < 0)
 		return (FALSE);
 	line = get_next_line(fd);
-	map_end_line = map->starting_line + map->height -1;
+	map_end_line = map->starting_line + map->height;
 	read_until_line(fd, &line, map_end_line);
 	while (line != NULL && flag == TRUE)
 	{
