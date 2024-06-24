@@ -4,18 +4,16 @@ void	print_visited_map(t_map *map)
 {
 	size_t	row;
 	size_t	column;
-	size_t	visited_height;
-	size_t	visited_width;
 	
-	visited_height = map->height + 2;
-	visited_width = map->width + 1;	
+	map->visited_height = map->height + 2;
+	map->visited_width = map->width + 1;	
 	row = 0;
 	system("clear");
 	printf ("Checking map...\n");
-	while (row < visited_height)
+	while (row < map->visited_height)
 	{
 		column = 0;
-		while (column < visited_width)
+		while (column < map->visited_width)
 		{
 			if (map->visited_array[row][column] == '@')
 			{
@@ -38,13 +36,11 @@ void	print_visited_map(t_map *map)
 
 void	dfs(t_map *map, int row, int column)
 {
-	int visited_height;
-	int visited_width;
 	
-	visited_height = map->height + 2;
-	visited_width = map->width + 1;
+	map->visited_height = map->height + 2;
+	map->visited_width = map->width + 1;
 
-	if ( row < 0 || row >= visited_height || column < 0 || column >= visited_width 
+	if ( row < 0 || row >= (int)map->visited_height || column < 0 || column >= (int)map->visited_width 
 		|| map->visited_array[row][column] == ' ' 
 		|| map->visited_array[row][column] == '1' 
 		|| map->visited_array[row][column] == '@' )
@@ -64,23 +60,21 @@ int	is_map_closed(t_map *map)
 {
 	size_t	row;
 	size_t	column;
-	size_t	visited_height;
-	size_t	visited_width;
 	
-	visited_height = map->height + 2;
-	visited_width = map->width + 1;
+	map->visited_height = map->height + 2;
+	map->visited_width = map->width + 1;
 	row = 0;
-	while (row < visited_height)
+	while (row < map->visited_height)
 	{
 		column = 0;
-		while (column < visited_width)
+		while (column < map->visited_width)
 		{
 			if (map->visited_array[row][column] == '@')
 			{
 				if ((row > 0 && map->visited_array[row - 1][column] == ' ')
-					|| (row < (visited_height - 1) && map->visited_array[row + 1][column] == ' ')
+					|| (row < (map->visited_height - 1) && map->visited_array[row + 1][column] == ' ')
 					|| (column > 0 && map->visited_array[row][column - 1] == ' ')
-					|| (column < (visited_width - 1) && map->visited_array[row][column + 1] == ' '))
+					|| (column < (map->visited_width - 1) && map->visited_array[row][column + 1] == ' '))
 					return (0);
 			}
 			column++;
@@ -94,16 +88,14 @@ int	is_fully_walkable(t_map *map)
 {
 	size_t	row;
 	size_t	column;
-	size_t	visited_height;
-	size_t	visited_width;
 	
-	visited_height = map->height + 2;
-	visited_width = map->width + 1;
+	map->visited_height = map->height + 2;
+	map->visited_width = map->width + 1;
 	row = 0;
-	while (row < visited_height)
+	while (row < map->visited_height)
 	{
 		column = 0;
-		while (column < visited_width)
+		while (column < map->visited_width)
 		{
 			if (map->visited_array[row][column] == '0')
 					return (0);

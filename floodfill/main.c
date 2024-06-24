@@ -12,7 +12,7 @@ char** allocate_map(char** map, int map_width, int map_height)
 	new = malloc(sizeof(char*) * map_height);
 	for (int i = 0; i < map_height; ++i)
 	{
-		new[i] = malloc(map_width + 1);
+		new[i] = malloc(map_width + 2); // extra space to allocate null-termination
 		for (int j = 0; j < map_width; ++j)
 			new[i][j] = map[i][j];
 		new[i][map_width] = '\0';
@@ -64,6 +64,7 @@ int main(void)
 			fill(map_array, row, column, map_height, map_width);
 			column++;
 		}
+		map_array[row][column++] = '\0';
 		row++;
 	}
 

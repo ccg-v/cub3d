@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 20:19:15 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 23:46:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct s_map
 	size_t		i;
 	size_t		j;
 	char		**visited_array;
+	size_t		visited_height;
+	size_t		visited_width;
 	size_t		player_x;
 	size_t		player_y;
 	char		player_orientation;

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 20:29:20 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 00:51:22 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,73 +250,44 @@ int	find_map_height(t_map *map)
  *	(one on the left, one on the right). Those columns will be filled
  *	with whitespaces.
  */
-// void allocate_visited_array(t_map *map)
-// {
-//     size_t i;
-//     size_t j;
-
-// 	map->visited_array = malloc((map->height + 2) * sizeof(char *));
-// 	if (!map->visited_array)
-// 		return ;
-// 	i = 0;
-//     while (i < map->height + 2)
-// 	{
-//         map->visited_array[i] = malloc((map->width + 1) * sizeof(char));
-//         if (!map->visited_array[i])
-// 		{
-//             while (i > 0)
-//                 free(map->visited_array[--i]);
-//             free(map->visited_array);
-//             return;
-//         }
-//         ft_memset(map->visited_array[i], ' ', (map->width + 1));
-// 		i++;
-//     }
-//     // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
-//     i = 0;
-// 	while (i < map->height)
-// 	{
-// 		j = 0;
-//         while (j < map->width)
-// 		{
-//             // Copy each character except the null-terminator
-//             if (map->array[i][j] != '\0')
-//                 map->visited_array[i + 1][j + 1] = map->array[i][j];
-//             j++;
-//         }
-// 		i++;
-//     }
-// }
 void allocate_visited_array(t_map *map)
 {
     size_t i;
     size_t j;
 
-    // Allocate memory for the visited array with an additional row and column
-    map->visited_array = malloc((map->height + 2) * sizeof(char *));
-    if (!map->visited_array)
-        return;
-    for (i = 0; i < map->height + 2; i++) {
-        map->visited_array[i] = malloc((map->width + 2) * sizeof(char)); // Allocate additional column
-        if (!map->visited_array[i]) {
+	map->visited_array = malloc((map->height + 2) * sizeof(char *));
+	if (!map->visited_array)
+		return ;
+	i = 0;
+    while (i < map->height + 2)
+	{
+        map->visited_array[i] = malloc((map->width + 2) * sizeof(char));
+        if (!map->visited_array[i])
+		{
             while (i > 0)
                 free(map->visited_array[--i]);
             free(map->visited_array);
             return;
         }
-        ft_memset(map->visited_array[i], ' ', (map->width + 2)); // Initialize with extra space
+        ft_memset(map->visited_array[i], ' ', (map->width + 1));
+		map->visited_array[i][map->width + 1] = '\0'; // Set the last character to null-terminator
+		i++;
     }
-
     // Copy the content of the map->array to map->visited_array, ignoring '\0' at the end of each line
-    for (i = 0; i < map->height; i++) {
-        for (j = 0; j < map->width; j++) {
+    i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+        while (j < map->width)
+		{
+            // Copy each character except the null-terminator
             if (map->array[i][j] != '\0')
                 map->visited_array[i + 1][j + 1] = map->array[i][j];
+            j++;
         }
+		i++;
     }
 }
-
-
 
     // // Print the expanded array (REMOVE)
     // for (i = 0; i < map->height + 2; i++) 

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 20:20:47 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 00:35:28 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     printf("Player orientation is %c\n", map.player_orientation);
 
 	allocate_visited_array(&map);
-
+	print_map_array(map.visited_array, map.height + 2, map.width + 1);
 	//	Start the dfs search from the player's position (replace all
 	//	walkable cells (that is, zeros) with '@')
 	size_t row = map.player_y + 1;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	//	Print visited map
 	// for (size_t i = 0; i < (map.height + 2); ++i)
 	// 	printf("%s\n", map.visited_array[i]);
-	print_map_array(map.visited_array, map.height + 2, map.width + 1);
+	// print_map_array(map.visited_array, map.height + 2, map.width + 1);
 
 	//	Search if the map is closed (all visited cells ('@' should be
 	//	adjacent to other visited cells or walls ('@', '1'), never to 
