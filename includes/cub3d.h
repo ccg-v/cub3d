@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 01:22:59 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:21:09 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,9 @@ void	free_rgb_values(char **rgb_array);
 int 	is_valid_number(const char *str);
 size_t	find_file_length(char *file);
 
+//	parse_utils2.c
+int		is_whitespace(char c);
+void	trim_and_reduce_spaces(char *line);
 //	reading_utils.c
 int 	open_file(const char *file_path);
 void	read_until_line(int fd, char **line, int endline_index);

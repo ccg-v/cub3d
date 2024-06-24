@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 23:24:18 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:41:59 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ result	check_colors(t_map *map, t_colors *colors)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		trim_and_reduce_spaces(line); 
 		original_line = line;
 		if (*line == 'F' || *line == 'C')
 		{

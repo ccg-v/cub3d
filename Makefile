@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/24 01:20:17 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/24 12:27:58 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRC_FILES		=		main.c \
 						parse/check_walls.c \
 						parse/parse_file_map.c \
 						parse/parse_utils.c \
+						parse/parse_utils2.c \
 						parse/reading_utils.c \
 						debug.c
 

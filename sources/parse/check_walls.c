@@ -51,8 +51,8 @@ void	dfs(t_map *map, int row, int column)
 		return;
 
 	map->visited_array[row][column] = '@';
-	// usleep(100000);
-	// print_visited_map(map);
+	usleep(100000);
+	print_visited_map(map);
 	
 	dfs(map, row -1, column);
 	dfs(map, row, column + 1);

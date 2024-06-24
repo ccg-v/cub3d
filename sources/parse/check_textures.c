@@ -6,27 +6,27 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/23 23:21:37 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:47:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void		trim_last_char(char *path);
+// static void		trim_last_char(char *path);
 static result 	store_texture_path(char *line, t_textures *textures);
 static result	create_textures_array(t_map *map, t_textures *textures);
 static boolean	are_all_textures_defined(t_textures *textures);
 static boolean	are_texture_paths_valid(t_textures *textures);
 result			check_textures(t_map *map, t_textures *textures);
 
-static void	trim_last_char(char *path)
-{
-	int		len;
+// static void	trim_last_char(char *path)
+// {
+// 	int		len;
 
-	len = ft_strlen(path);
-	if (len > 0 && path[len - 1] == '\n')
-		path[len - 1] = '\0';
-}
+// 	len = ft_strlen(path);
+// 	if (len > 0 && path[len - 1] == '\n')
+// 		path[len - 1] = '\0';
+// }
 
 static result	store_texture_path(char *line, t_textures *textures)
 {
@@ -48,7 +48,7 @@ static result	store_texture_path(char *line, t_textures *textures)
             while (line[j] == ' ')
                 j++;
             trimmed_path = ft_strdup(line + j);
-            trim_last_char(trimmed_path);
+            // trim_last_char(trimmed_path);
             *(textures->paths_array[i]) = trimmed_path;
             break;
         }
@@ -71,6 +71,7 @@ static result	create_textures_array(t_map *map, t_textures *textures)
     line = get_next_line(fd);
     while (line != NULL)
     {
+		trim_and_reduce_spaces(line);
         if (store_texture_path(line, textures) == FAIL)
         {
             free(line);
@@ -126,7 +127,7 @@ static boolean	are_texture_paths_valid(t_textures *textures)
     	fd = open(path, O_RDONLY);
     	if (fd < 0)
 		{
-      		printf("Error: Cannot open %s\n", path);
+      		printf("Error: Cannot open '%s'\n", path);
       		return (FALSE);  // Early exit on error
     	}
     	close(fd);

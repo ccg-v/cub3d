@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 01:49:23 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:20:40 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,19 +143,6 @@ int fill_map_array(t_map *map)
     free(line);
     close(fd);
     return (0);
-}
-
-// ' ' space, '\t' horizontal tab, '\r' return carriage
-// '\v' vertical tab, '\f' form feed
-int	is_whitespace(char c)
-{
-	if (c == ' ' ||
-		c == '\t' ||
-		c == '\r' ||
-		c == '\v' ||
-		c == '\f') 
-		return (1);
-	return (0);
 }
 
 int	find_map_height(t_map *map)
