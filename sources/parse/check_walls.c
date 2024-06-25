@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_walls.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:41 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 14:56:48 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:53:49 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,17 @@ void	print_visited_map(t_map *map)
 	map->visited_width = map->width + 1;	
 	row = 0;
 	system("clear");
-	printf ("Checking map...\n");
+
+	printf(GREEN " \u2714 " RESET);
+	printf("Scene description check passed\n");
+	printf(GREEN " \u2714 " RESET);
+	printf("Textures check passed\n");
+	printf(GREEN " \u2714 " RESET);
+	printf("Colors check passed\n");
+	printf(GREEN " \u2714 " RESET);
+	printf("Player check passed\n");
+	printf("Checking map...\n");
+	
 	while (row < map->visited_height)
 	{
 		column = 0;
@@ -31,12 +41,12 @@ void	print_visited_map(t_map *map)
 			{
 				if ((map->visited_array[row - 1][column] == ' ') || (map->visited_array[row][column + 1] == ' ')
 					|| (map->visited_array[row + 1][column] == ' ') || (map->visited_array[row][column - 1] == ' '))
-					printf(BACKGROUND_BRIGHT_RED "%c" RESET, map->visited_array[row][column]);				
+					printf(BCK_RED "%c" RESET, map->visited_array[row][column]);				
 				else
-					printf(BOLD_BRIGHT_GREEN "%c" RESET, map->visited_array[row][column]);
+					printf(GREEN "%c" RESET, map->visited_array[row][column]);
 			}
 			else if (map->visited_array[row][column] == '0')
-				printf(BOLD_BRIGHT_RED "%c" RESET, map->visited_array[row][column]);
+				printf(RED "%c" RESET, map->visited_array[row][column]);
 			else
 				printf("%c", map->visited_array[row][column]);
 			column++;			
@@ -170,15 +180,19 @@ result	check_walls(t_map *map)
 	start_dfs_search(map);
 	if (is_map_closed(map) == FALSE)
 	{
+		printf(RED " \u2718 " RESET);
 		printf("Error: Map is not closed\n");
+		printf(RED "Map is not valid\n" RESET);
 		return (FAIL);
 	}
 	else if (is_fully_walkable(map) == FALSE)
 	{
+		printf(YELLOW " \xE2\x9A\xA0 " RESET);
 		printf("Warning: Map has walkable but non-reachable parts\n");
 	}
-	printf("Map is closed\n");
-	printf("All checks passed. Map is valid\n");
-	printf("Starting cub3D...\n");
+	printf(GREEN " \u2714 " RESET);
+	printf("Map is closed. Map check passed\n");
+	printf(GREEN "All checks passed. Map is valid\n" RESET);
+	// printf("Starting cub3D...\n");
 	return (SUCCESS);
 }

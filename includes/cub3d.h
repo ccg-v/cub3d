@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 14:56:40 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:06:33 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@ typedef enum
 
 /* --- ANSI escape codes ---------------------------------------------------- */
 
-# define BOLD_BRIGHT_GREEN "\033[1;92m"
-# define BOLD_BRIGHT_RED "\033[1;91m"
-# define BACKGROUND_BRIGHT_RED "\033[0;101m"
+# define GREEN "\033[1;92m"	//	bold bright green
+# define RED "\033[1;91m"	//	bold bright red
+# define BCK_RED "\033[0;101m"	//	background bright red
+# define YELLOW "\033[1;93m"	//	bold bright yellow
 # define RESET "\x1B[0m"   // resets all terminal attributes to default settings
 
 /* --- Data structures ------------------------------------------------------ */
