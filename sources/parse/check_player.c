@@ -3,35 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   check_player.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:58:55 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/21 23:08:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 17:16:38 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int all_chars_are_valid(t_map *map)
+boolean all_chars_are_valid(t_map *map)
 {
     char    *valid_chars;
-
+	size_t	i;
+	size_t	j;
+	
     valid_chars = "NSEW10 ";
-    map->i = 0;
+    i = 0;
 	if (map == NULL || map->array == NULL)
-        return (-1);
-    while (map->i < map->height)
+	{
+		printf("Error: Map or map array is NULL\n");
+        return (FALSE);
+	}
+    while (i < map->height)
     {
-        map->j = 0;
-        while (map->array[map->i][map->j] != '\0')
+        j = 0;
+        while (map->array[i][j] != '\0')
         {
-            if (!ft_strchr(valid_chars, map->array[map->i][map->j]))
-                return (0);
-            map->j++;
+            if (!ft_strchr(valid_chars, map->array[i][j]))
+                return (FALSE);
+            j++;
         }
-        map->i++;
+        i++;
     }
-	return (1);    
+	return (TRUE);    
 }
 
 int player_count(t_map *map)
@@ -63,21 +68,32 @@ int player_count(t_map *map)
 	return (player_counter);
 }
 
-int check_player(t_map *map)
+result check_player(t_map *map)
 {
     int nbr_players;
 
+    if (all_chars_are_valid(map) == FALSE)
+	{
+      printf("Error: Map contains invalid characters\n");
+	  return (FAIL);
+	}
     nbr_players = player_count(map);
     if (nbr_players == -1)
-		printf("Error: map or map->array is NULL\n");
+	{
+		printf("Error: Map or map array is NULL\n");
+		return (FAIL);
+	}
     else if (nbr_players == 0)
-		printf("Error: no player found in the map\n");
+	{
+		printf("Error: No player found in the map\n");
+		return (FAIL);
+	}
     else if (nbr_players > 1)
-		printf("Error: the map contains more than one player\n");
-    else
-        printf("Map has a valid player\n");
-    return (0);
+	{
+		printf("Error: The map contains more than one player\n");
+		return (FAIL);
+	}
+    // else
+    //     printf("Map has a valid player\n");
+    return (SUCCESS);
 }
-
-
-

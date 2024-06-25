@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 00:35:28 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 17:27:08 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,75 +40,26 @@ int main(int argc, char **argv)
 	init(argv[1], &map, &textures, &colors);
 	if (file_check(argv[1]) == FAIL)
 		return (FAIL);
-
-    find_map_starting_line(&map);
-	find_map_height(&map);
-    find_map_width(&map);
-	
+	if (find_map_dimensions(&map) == FAIL)
+		return (FAIL);;
 	if (check_scene_description(&map) == FAIL)
 		return (FAIL);
-
-    allocate_map_array(&map);
-    fill_map_array(&map);
-    // print_map_array(map.array, map.height, map.width);
-
+	// print_map_array(map.array, map.height, map.width);
 	if (check_textures(&map, &textures) == 	FAIL)
 		return (FAIL);
-    // Free the allocated memory for texture paths
-    free(textures.north);
-    free(textures.south);
-    free(textures.west);
-    free(textures.east);
-	
-    if (check_colors(&map, &colors) == FAIL)
+	free(textures.north);
+	free(textures.south);
+	free(textures.west);
+	free(textures.east);
+	if (check_colors(&map, &colors) == FAIL)
 		return (FAIL);
-
-    if (all_chars_are_valid(&map))
-      printf("All characters in map are valid\n");
-    else
-      printf("Error: map contains invalid characters\n");
-
-    check_player(&map);
-    printf("Player orientation is %c\n", map.player_orientation);
-
-	allocate_visited_array(&map);
-	print_map_array(map.visited_array, map.height + 2, map.width + 1);
-	//	Start the dfs search from the player's position (replace all
-	//	walkable cells (that is, zeros) with '@')
-	size_t row = map.player_y + 1;
-	while (row < (map.height + 2))
-	{
-		size_t	column = map.player_x + 1;
-		while (column < (map.width + 1))
-		{
-			if (map.visited_array[row][column] != '0')
-				dfs(&map, row, column);
-			column++;
-		}
-		row++;
-	}
-
-	//	Print visited map
-	// for (size_t i = 0; i < (map.height + 2); ++i)
-	// 	printf("%s\n", map.visited_array[i]);
+	create_arrays(&map);
+	if (check_player(&map) == FAIL)
+		return (FAIL);
 	// print_map_array(map.visited_array, map.height + 2, map.width + 1);
-
-	//	Search if the map is closed (all visited cells ('@' should be
-	//	adjacent to other visited cells or walls ('@', '1'), never to 
-	//	a whitespace)
-	if (!is_map_closed(&map))
-		printf("Error: Map is not closed\n");
-	else
-		printf("Map is closed!\n");
-		
-	//	Search if the map has non-reachable areas in the map (any cell
-	//	remaining with zero value after running dfs)
-	if (!is_fully_walkable(&map))
-		printf("Warning: Map has walkable but non-reachable parts\n");
-	else
-		printf("Map is fully walkable!\n");
-
-    free_array(map.array, map.height);
+	if (check_walls(&map) == FAIL)
+		return (FAIL);
+	free_array(map.array, map.height);
 	free_array(map.visited_array, (map.height + 2));
     return 0;
 }

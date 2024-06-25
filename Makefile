@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
+#    By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/24 12:27:58 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/25 17:02:40 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ NAME			=		cub3D
 
 # --- Compiler flags --------------------------------------------------------- #
 
-CFLAGS			=		-MMD -Wall -Wextra -Werror -g #-fsanitize=address 
-#LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
+CFLAGS			=		-MMD -Wall -Wextra -Werror -g
+LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
 
 # --- Directories ------------------------------------------------------------ #
 
-LIBMLX_DIR		=		libraries/minilibx_linux/
+LIBMLX_DIR		=		libraries/minilibx_macos/
 LIBFT_DIR		=		libraries/libft/
 INC_DIR			=		includes/
 SRC_DIR			=		sources/
@@ -44,12 +44,13 @@ DEP_FILES 		= 		$(SRC_FILES:.c=.d)
 SRC_FILES		=		main.c \
 						init/init.c \
 						parse/check_file.c \
+						parse/find_map_dimensions.c \
 						parse/check_scene_description.c \
 						parse/check_textures.c \
 						parse/check_colors.c \
 						parse/check_player.c \
+						parse/create_arrays.c \
 						parse/check_walls.c \
-						parse/parse_file_map.c \
 						parse/parse_utils.c \
 						parse/parse_utils2.c \
 						parse/reading_utils.c \
@@ -71,7 +72,7 @@ all:
 		$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_PATH) $(LIBMLX_PATH) Makefile
-	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE)
+	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE) $(LIBMLX_FLAGS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -c $< -o $@
@@ -82,7 +83,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 clean:	
 			rm -f $(OBJ_PATH) $(DEP_PATH)
-			rm -rf $(OBJ_DIR)c
+			rm -rf $(OBJ_DIR)
 			$(MAKE) -C $(LIBFT_DIR) clean
 			$(MAKE) -C $(LIBMLX_DIR) clean
 

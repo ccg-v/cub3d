@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 23:46:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:56:40 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,9 @@ boolean is_directory(char *str);
 boolean can_open_file(char *str);
 result	file_check(char *file_name);
 
+//	find_map_dimensions.c
+result	find_map_dimensions(t_map *map);
+
 //	check_scene_description
 result	check_scene_description(t_map *map);
 
@@ -114,23 +117,22 @@ result	check_textures(t_map *map, t_textures *textures);
 result	check_colors(t_map *map, t_colors *colors);
 
 //	check_player.c
-int		check_player(t_map *map);
-int 	all_chars_are_valid(t_map *map);
-bool	check_navigability(t_map *map);
+boolean all_chars_are_valid(t_map *map);
+result	check_player(t_map *map);
+
+//	create_arrays.c
+// void	allocate_map_array(t_map *map);
+// result	fill_map_array(t_map *map);
+// void	allocate_visited_array(t_map *map);
+// void	fill_visited_array(t_map *map);
+result	create_arrays(t_map *map);
 
 //	check_walls.c
-void	print_visited_map(t_map *map);
-void	dfs(t_map *map, int row, int column);
-int		is_map_closed(t_map *map);
-int		is_fully_walkable(t_map *map);
-
-//	parse_file_map.c
-int		find_map_starting_line(t_map *map);
-int		find_map_height(t_map *map);
-int		find_map_width(t_map *map);
-char	**allocate_map_array(t_map *map);
-int		fill_map_array(t_map *map);
-void	allocate_visited_array(t_map *map);
+// void	print_visited_map(t_map *map);
+// void	dfs(t_map *map, int row, int column);
+// boolean	is_map_closed(t_map *map);
+// boolean	is_fully_walkable(t_map *map);
+result	check_walls(t_map *map);
 
 //	parse_utils.c
 int		is_file_type_valid(char *filename, char *expected_extension);
@@ -142,6 +144,7 @@ size_t	find_file_length(char *file);
 //	parse_utils2.c
 int		is_whitespace(char c);
 void	trim_and_reduce_spaces(char *line);
+
 //	reading_utils.c
 int 	open_file(const char *file_path);
 void	read_until_line(int fd, char **line, int endline_index);
