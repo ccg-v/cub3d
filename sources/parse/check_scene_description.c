@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_scene_description.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 02:14:25 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:21:47 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static boolean	is_map_last(t_map *map)
 		return (FALSE);
 	line = get_next_line(fd);
 	map_end_line = map->starting_line + map->height;
-	read_until_line(fd, &line, map_end_line);
+	read_until_line(fd, &line, map_end_line + 1);
 	while (line != NULL && flag == TRUE)
 	{
 		if (line[0] != '\n')
