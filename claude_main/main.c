@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/06/28 01:36:23 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/29 00:00:36 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,15 @@ void render_3d_view(t_data *data) {
         double plane_x = -ray_dir_y * tan(fov / 2);		// left part of the camera plane (from player's direction to left of screen)
         double plane_y = ray_dir_x * tan(fov / 2);		// right part of the camera plane (from player's direction to right of the screen)
         
+		// 1. DERIVATION OF THE PERPENDICULAR VECTOR (see example at main's end)
+		// 		For a vector (a, b), a vector perpendicular to it can be derived by swapping the components and changing the sign of one of them. Specifically:
+		// 		If the original vector is (ray_dir_x, ray_dir_y), then a perpendicular vector would be (-ray_dir_y, ray_dir_x).
+		// 2. Using the Perpendicular Vector to Define the Plane
+		//		The camera plane is scaled based on the field of view (FOV). The full width of this plane at a unit distance from the player is determined by tan⁡(FOV/2)tan(FOV/2).
+		// 3. Components of the Camera Plane
+		//		Plane_X: This component of the camera plane is calculated as -ray_dir_y * tan(FOV / 2).
+    	//		Plane_Y: This component of the camera plane is calculated as ray_dir_x * tan(FOV / 2).	
+
 		// direction of the ray to the current column. As camera_x goes from -1 to 1 the ray sweeps the player's view
         double ray_x = ray_dir_x + plane_x * camera_x;	
         double ray_y = ray_dir_y + plane_y * camera_x;
@@ -587,7 +596,68 @@ int main() {
     return 0;
 }
 
+/*
+	EXAMPLE: DERIVATION OF THE PERPENDICULAR VECTOR
 
+practical example where:
+    ray_dir_x = 1
+    ray_dir_y = 0
+
+	The perpendicular vector defining the camera plane would indeed be:
+    plane_x = 0
+    plane_y = tan(FOV / 2)
+
+Camera Plane Extension
+    - Middle Ray: The player is facing directly along the x-axis (ray_dir_x = 1, ray_dir_y = 0).
+    - Perpendicular Vector: The vector (-ray_dir_y, ray_dir_x) becomes (0, 1) before scaling.
+    - Scaled Vector: After scaling by tan(FOV / 2), the perpendicular vector becomes (0, tan(FOV / 2)).
+
+Interpretation
+    - Extent of the Camera Plane: The camera plane extends symmetrically to the left and right of 
+		the middle ray, perpendicular to the direction the player is facing. In this setup:
+        	- It extends tan(FOV / 2) units upward and downward from the central direction.
+
+Summary
+    The camera plane extends equally to the left and right around the middle ray, covering the field
+	of view symmetrically. Each side extends by tan(FOV / 2) units from the central direction at a unit
+	distance, providing the correct angular coverage for the FOV.
+*/
+/*
+	EXAMPLE WITH RAY COMPONENT VALUES DIFFERENT FROM ZERO
+
+	Let's consider an example where both ray_dir_x and ray_dir_y have non-zero values. Suppose:
+    ray_dir_x = 0.6
+    ray_dir_y = 0.8
+
+Perpendicular Vector Calculation
+	To find the perpendicular vector for the camera plane:
+
+    	Perpendicular Vector: (-ray_dir_y, ray_dir_x) becomes (-0.8, 0.6).
+
+Scaling by FOV
+	Assuming the FOV is such that:
+
+    	tan⁡(FOV/2)tan(FOV/2) = 0.5 (this is just an example value)
+
+The scaled components of the camera plane would be:
+    	plane_x = −0.8×0.5=−0.4−0.8×0.5=−0.4
+    	plane_y = 0.6×0.5=0.30.6×0.5=0.3
+
+Interpretation
+    The camera plane extends -0.4 units horizontally (leftward) and 0.3 units vertically (upward) from the center direction.
+
+Direction of Rays
+	When rays are cast across the screen:
+
+		Middle Ray Direction: (0.6, 0.8)
+		Left Edge of FOV: (0.6 - 0.4, 0.8 + 0.3) = (0.2, 1.1)
+		Right Edge of FOV: (0.6 + 0.4, 0.8 - 0.3) = (1.0, 0.5)
+
+	These vectors represent the boundaries of the rays cast from the player's position, covering the full field of view symmetrically around the middle ray.
+
+Summary
+	This setup allows each ray direction to be interpolated between the left and right edges, ensuring that the entire FOV is covered. The camera plane’s components help determine these directions accurately, simulating a realistic perspective in the rendered scene.
+*/
 
 
 
