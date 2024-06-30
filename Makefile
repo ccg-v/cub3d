@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile_linux                                     :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+         #
+#    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/25 12:39:59 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/06/29 22:07:15 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ NAME			=		cub3D
 
 # --- Compiler flags --------------------------------------------------------- #
 
-CFLAGS			=		-MMD -Wall -Wextra -Werror -g #-fsanitize=address 
+CFLAGS			=		-MMD -Wall -Wextra -Werror -g
 #LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
+LIBMLX_FLAGS 	=		-lmlx -lX11 -lXext -lm -lbsd
 
 # --- Directories ------------------------------------------------------------ #
 
@@ -35,7 +36,7 @@ DEP_DIR			= 		$(OBJ_DIR)
 # --- Includes --------------------------------------------------------------- #
 
 INCLUDES		=		-I $(INC_DIR) -I $(LIBFT_DIR) -I $(LIBMLX_DIR)
-LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR)
+LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR) $(LIBMLX_FLAGS)
 
 # --- Files ------------------------------------------------------------------ #
 
@@ -43,6 +44,7 @@ OBJ_FILES 		= 		$(SRC_FILES:.c=.o)
 DEP_FILES 		= 		$(SRC_FILES:.c=.d)
 SRC_FILES		=		main.c \
 						init/init.c \
+						engine.c \
 						parse/check_file.c \
 						parse/find_map_dimensions.c \
 						parse/check_scene_description.c \

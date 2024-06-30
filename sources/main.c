@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/26 11:15:54 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 01:07:46 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int main(int argc, char **argv)
     t_map         map;
     t_textures    textures;
     t_colors  colors;
+	t_data		data;
 
 	if (check_args(argc) == FAIL)
 		return (FAIL);
@@ -68,6 +69,10 @@ int main(int argc, char **argv)
 	if (check_walls(&map) == FAIL)
 		return (free_and_exit(&textures, &map));
 
+	for (int i = 0; i < 4; i++)
+		printf("%s = %s\n", textures.texture_ids[i], *(textures.paths_array[i]));
+
+	engine_main(&map, &data, &textures);
 	free_array(map.array, map.height);
 	free_array(map.visited_array, (map.height + 2));
     return (0);

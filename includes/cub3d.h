@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 19:06:33 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 01:32:59 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <time.h>
+# include <math.h>
 # include "libft.h"
+# include "mlx.h"
 
 // /* --- Define preprocessor directives ------------------------------------ */
 
@@ -45,7 +48,30 @@ typedef enum
 # define YELLOW "\033[1;93m"	//	bold bright yellow
 # define RESET "\x1B[0m"   // resets all terminal attributes to default settings
 
+#define WINDOW_WIDTH 2048
+#define WINDOW_HEIGHT 1536
+#define GREY_COLOR 0x808080
+#define PLAYER_COLOR 0xFF0000 // Red color for the player
+// #define PLAYER_SIZE 8  // Half-size of the player square
+#define MOVE_STEP WINDOW_WIDTH/100 // Step size for player movement
+#define WALL_COLOR 0xFFFFFF // White color for walls
+#define BLUE_COLOR 0x0000FF
+#define EMPTY_COLOR 0x000000 // Black color for empty space
+#define PI 3.14159265359
+#define CEILING_COLOR 0x87CEEB // Light blue color for ceiling
+#define FLOOR_COLOR 0x8B4513 // Brown color for floor
+// #define DEFAULT_CELL_SIZE 20 // Default size of each cell in the map
+
 /* --- Data structures ------------------------------------------------------ */
+
+typedef struct s_colors
+{
+    int floor[3];
+    int ceiling[3];
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+}	t_colors;
 
 typedef struct s_map
 {
@@ -66,6 +92,16 @@ typedef struct s_map
 	bool		closed;
 	size_t		new_x;
 	size_t		new_y;
+
+    char* north_texture;
+    char* south_texture;
+    char* west_texture;
+    char* east_texture;
+    t_colors floor_color;
+    t_colors ceiling_color;
+    // char** map_data;
+    // size_t map_height;
+    // size_t map_width;
 }	t_map;
 
 typedef struct s_textures
@@ -76,19 +112,54 @@ typedef struct s_textures
     char	*east;
 	char	**paths_array[4];
 	char	*texture_ids[4];
+
+    void *img;
+    char *addr;
+    int width;
+    int height;
+    int bits_per_pixel;
+    int line_length;
+    int endian;
 }	t_textures;
 
-typedef struct s_colors
-{
-    int floor[3];
-    int ceiling[3];
-}	t_colors;
+typedef struct s_player {
+    float x;
+    float y;
+    double angle;
+    int move_forward;
+    int move_backward;
+    int rotate_left;
+    int rotate_right;
+    double ray_length;
+    int strafe_left;
+    int strafe_right; // Length of the ray
+} t_player;
 
+typedef struct s_data {
+    void *mlx;
+    void *window;
+    void *image;
+    char *addr;
+    int bits_per_pixel;
+    int line_length;
+    int endian;
+    t_map map;
+    t_player player;
+    int cell_size;
+    int player_size;
+    // t_texture wall_texture;
+    t_textures north_texture;
+    t_textures south_texture;
+    t_textures west_texture;
+    t_textures east_texture;
+    struct timespec prev_time; // Add this line
+} t_data;
 
 /* === Functions ============================================================ */
 
 //	main.c
 void	init_map(t_map *map, char *map_file);
+int		engine_main();
 int		main(int argc, char **argv);
 
 /* --- Init ----------------------------------------------------------------- */
