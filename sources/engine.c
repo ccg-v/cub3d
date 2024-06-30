@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/06/30 02:04:43 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 02:32:08 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -479,6 +479,20 @@ int engine_main(t_map *map, t_data *data, t_textures *textures)
     data->player.rotate_left = 0;
     data->player.rotate_right = 0;
 
+
+    // Calculate the cell size based on the map and window dimensions
+    int cell_size_width = WINDOW_WIDTH / data->map.width;
+    int cell_size_height = WINDOW_HEIGHT / data->map.height;
+    data->cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
+printf("window width is %d\n", WINDOW_WIDTH);
+printf("window width is %d\n", WINDOW_HEIGHT);
+printf("data->map.width is %ld\n", data->map.width);
+printf("cell_size_width is %d\n", cell_size_width);
+printf("cell_size_height is %d\n", cell_size_height);
+printf("cell size is %d\n", data->cell_size);
+    data->player_size = data->cell_size / 2;
+    data->player.ray_length = data->cell_size * 100;
+
     data->mlx = mlx_init();
     if (data->mlx == NULL) {
         fprintf(stderr, "Failed to initialize mlx\n");
@@ -502,9 +516,7 @@ int engine_main(t_map *map, t_data *data, t_textures *textures)
         fprintf(stderr, "Failed to get image data address\n");
         return EXIT_FAILURE;
     }
-data->north_texture.width = 128;
-printf("data->north_texture.width is %d", data->north_texture.width);
-write(2, "Here!\n", 5);
+
     // Load textures using map struct
     data->map.north_texture = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[0]), &data->north_texture.width, &data->north_texture.height);
     if (!data->map.north_texture) {
@@ -537,13 +549,13 @@ write(2, "Here!\n", 5);
     // map_reading(&data->map);
     
     
-    // Calculate the cell size based on the map and window dimensions
-    int cell_size_width = WINDOW_WIDTH / data->map.width;
-    int cell_size_height = WINDOW_HEIGHT / data->map.height;
-    data->cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
-printf("cell size is %d\n", data->cell_size);
-    data->player_size = data->cell_size / 2;
-    data->player.ray_length = data->cell_size * 100;
+//     // Calculate the cell size based on the map and window dimensions
+//     int cell_size_width = WINDOW_WIDTH / data->map.width;
+//     int cell_size_height = WINDOW_HEIGHT / data->map.height;
+//     data->cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
+// printf("cell size is %d\n", data->cell_size);
+//     data->player_size = data->cell_size / 2;
+//     data->player.ray_length = data->cell_size * 100;
 
     // Initialize prev_time
     clock_gettime(CLOCK_MONOTONIC, &data->prev_time);
