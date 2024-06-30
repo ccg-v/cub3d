@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkhrabro <vkhrabro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/30 01:32:59 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 21:59:51 by vkhrabro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ typedef struct s_map
 	size_t		new_x;
 	size_t		new_y;
 
-    char* north_texture;
-    char* south_texture;
-    char* west_texture;
-    char* east_texture;
+    void *north_texture;
+    void *south_texture;
+    void *west_texture;
+    void *east_texture;
     t_colors floor_color;
     t_colors ceiling_color;
     // char** map_data;
@@ -158,14 +158,13 @@ typedef struct s_data {
 /* === Functions ============================================================ */
 
 //	main.c
-void	init_map(t_map *map, char *map_file);
-int		engine_main();
+int 	engine_main(t_data *data, t_textures *textures);
 int		main(int argc, char **argv);
 
 /* --- Init ----------------------------------------------------------------- */
 
 //	init.c
-void	init_map(t_map *map, char *map_file);
+void	init_map(t_data *data, char *map_file);
 void  	init_textures(t_textures *textures);
 void  	init_colors(t_colors *colors);
 
@@ -177,34 +176,34 @@ boolean can_open_file(char *str);
 result	file_check(char *file_name);
 
 //	find_map_dimensions.c
-result	find_map_dimensions(t_map *map);
+result	find_map_dimensions(t_data *data);
 
 //	check_scene_description
-result	check_scene_description(t_map *map);
+result	check_scene_description(t_data *data);
 
 //	check_textures.c
-result	check_textures(t_map *map, t_textures *textures);
+result	check_textures(t_data *data, t_textures *textures);
 
 //	check_colors.c
-result	check_colors(t_map *map, t_colors *colors);
+result	check_colors(t_data *data, t_colors *colors);
 
 //	check_player.c
-boolean all_chars_are_valid(t_map *map);
-result	check_player(t_map *map);
+boolean all_chars_are_valid(t_data *data);
+result	check_player(t_data *data);
 
 //	create_arrays.c
 // void	allocate_map_array(t_map *map);
 // result	fill_map_array(t_map *map);
 // void	allocate_visited_array(t_map *map);
 // void	fill_visited_array(t_map *map);
-result	create_arrays(t_map *map);
+result	create_arrays(t_data *data);
 
 //	check_walls.c
 // void	print_visited_map(t_map *map);
 // void	dfs(t_map *map, int row, int column);
 // boolean	is_map_closed(t_map *map);
 // boolean	is_fully_walkable(t_map *map);
-result	check_walls(t_map *map);
+result	check_walls(t_data *data);
 
 //	parse_utils.c
 int		is_file_type_valid(char *filename, char *expected_extension);

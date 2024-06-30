@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 13:41:59 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:27:56 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ static result	process_color_line(t_colors *colors, char *line, \
 	return (SUCCESS);
 }
 
-result	check_colors(t_map *map, t_colors *colors)
+result	check_colors(t_data *data, t_colors *colors)
 {
 	int		fd;
 	char	*line;
 	char	*original_line;
 	int		colors_found;
 
-	fd = open_file(map->file);
+	fd = open_file(data->map.file);
 	if (fd < 0)
 		return (FAIL);
 	colors_found = 0;

@@ -6,18 +6,18 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/24 13:47:45 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:53:10 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // static void		trim_last_char(char *path);
-static result 	store_texture_path(char *line, t_textures *textures);
-static result	create_textures_array(t_map *map, t_textures *textures);
-static boolean	are_all_textures_defined(t_textures *textures);
-static boolean	are_texture_paths_valid(t_textures *textures);
-result			check_textures(t_map *map, t_textures *textures);
+// static result 	store_texture_path(char *line, t_textures *textures);
+// static result	create_textures_array(t_map *map, t_textures *textures);
+// static boolean	are_all_textures_defined(t_textures *textures);
+// static boolean	are_texture_paths_valid(t_textures *textures);
+// result			check_textures(t_map *map, t_textures *textures);
 
 // static void	trim_last_char(char *path)
 // {
@@ -57,12 +57,12 @@ static result	store_texture_path(char *line, t_textures *textures)
     return (SUCCESS);
 }
 
-static result	create_textures_array(t_map *map, t_textures *textures)
+static result	create_textures_array(t_data *data, t_textures *textures)
 {
     int fd;
     char *line;
 
-    fd = open(map->file, O_RDONLY);
+    fd = open(data->map.file, O_RDONLY);
     if (fd < 0)
     {
         printf("Failed opening file\n");
@@ -136,9 +136,9 @@ static boolean	are_texture_paths_valid(t_textures *textures)
 	return (TRUE);
 }
 
-result	check_textures(t_map *map, t_textures *textures)
+result	check_textures(t_data *data, t_textures *textures)
 {
-	if (create_textures_array(map, textures) == FAIL)
+	if (create_textures_array(data, textures) == FAIL)
 		return (FAIL);
 	if (are_all_textures_defined(textures) == FALSE)
 		return (FAIL);

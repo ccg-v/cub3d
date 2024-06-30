@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_player.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:58:55 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/26 17:41:47 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:57:08 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-boolean all_chars_are_valid(t_map *map)
+boolean all_chars_are_valid(t_data *data)
 {
     char    *valid_chars;
 	size_t	i;
@@ -20,17 +20,17 @@ boolean all_chars_are_valid(t_map *map)
 	
     valid_chars = "NSEW10 ";
     i = 0;
-	if (map == NULL || map->array == NULL)
+	if (data->map.array == NULL)
 	{
 		printf("Error: Map or map array is NULL\n");
         return (FALSE);
 	}
-    while (i < map->height)
+    while (i < data->map.height)
     {
         j = 0;
-        while (map->array[i][j] != '\0')
+        while (data->map.array[i][j] != '\0')
         {
-            if (!ft_strchr(valid_chars, map->array[i][j]))
+            if (!ft_strchr(valid_chars, data->map.array[i][j]))
                 return (FALSE);
             j++;
         }
@@ -41,28 +41,28 @@ boolean all_chars_are_valid(t_map *map)
 
 // boolean	is_player_on_edge(t_map *map)
 // {
-// 	if (map->player_x == 0
-// 		|| map->player_y == 0
-// 		|| map->player_x == map->width - 2
-// 		|| map->player_y == map->height - 1
-// 		|| map->visited_array[map->player_x][map->player_y + 1] == ' '	// left
-// 		|| map->visited_array[map->player_x][map->player_y + 3] == ' '	// right
-// 		|| map->visited_array[map->player_x - 1][map->player_y + 2] == ' '	// up
-// 		|| map->visited_array[map->player_x + 1][map->player_y + 2] == ' ')	// down
+// 	if (data->map.player_x == 0
+// 		|| data->map.player_y == 0
+// 		|| data->map.player_x == data->map.width - 2
+// 		|| data->map.player_y == data->map.height - 1
+// 		|| data->map.visited_array[data->map.player_x][data->map.player_y + 1] == ' '	// left
+// 		|| data->map.visited_array[data->map.player_x][data->map.player_y + 3] == ' '	// right
+// 		|| data->map.visited_array[data->map.player_x - 1][data->map.player_y + 2] == ' '	// up
+// 		|| data->map.visited_array[data->map.player_x + 1][data->map.player_y + 2] == ' ')	// down
 // 		return (TRUE);
 // 	return (FALSE);
 // }
 
 // boolean	is_player_on_edge(t_map *map)
 // {
-// 	if (map->player_x == 0
-// 		|| map->player_y == 0
-// 		|| map->player_x == map->width - 2
-// 		|| map->player_y == map->height - 1
-// 		|| (map->player_y > 0 && map->array[map->player_x - 1][map->player_y] == ' ')	// left
-// 		|| (map->player_y < map->width && map->array[map->player_x + 1][map->player_y] == ' ')	// right
-// 		|| (map->player_x > 0 && map->array[map->player_x][map->player_y - 1] == ' ')	// up
-// 		|| (map->player_x < map->height && map->array[map->player_x][map->player_y + 1] == ' '))	// down
+// 	if (data->map.player_x == 0
+// 		|| data->map.player_y == 0
+// 		|| data->map.player_x == data->map.width - 2
+// 		|| data->map.player_y == data->map.height - 1
+// 		|| (data->map.player_y > 0 && data->map.array[data->map.player_x - 1][data->map.player_y] == ' ')	// left
+// 		|| (data->map.player_y < data->map.width && data->map.array[data->map.player_x + 1][data->map.player_y] == ' ')	// right
+// 		|| (data->map.player_x > 0 && data->map.array[data->map.player_x][data->map.player_y - 1] == ' ')	// up
+// 		|| (data->map.player_x < data->map.height && data->map.array[data->map.player_x][data->map.player_y + 1] == ' '))	// down
 // 		return (TRUE);
 // 	return (FALSE);
 // }
@@ -80,50 +80,50 @@ boolean is_player_on_edge(t_map *map)
     return (FALSE);
 }
 
-int player_count(t_map *map)
+int player_count(t_data *data)
 {
     int		player_counter;
     char    *valid_directions;
 
     valid_directions = "NSEW";
-    map->i = 0;
+    data->map.i = 0;
 	player_counter = 0;
-	if (map == NULL || map->array == NULL)
+	if (data->map.array == NULL)
 	{
 		printf("Error: Map or map array is NULL\n");
         return (0);
 	}
-    while (map->i < map->height)
+    while (data->map.i < data->map.height)
     {
-        map->j = 0;
-        while (map->array[map->i][map->j] != '\0')
+        data->map.j = 0;
+        while (data->map.array[data->map.i][data->map.j] != '\0')
         {
-            if (ft_strchr(valid_directions, map->array[map->i][map->j]))
+            if (ft_strchr(valid_directions, data->map.array[data->map.i][data->map.j]))
             {
-                map->player_orientation = map->array[map->i][map->j];
-				map->player_x = map->j;
-				map->player_y = map->i;
-				if (is_player_on_edge(map))
+                data->map.player_orientation = data->map.array[data->map.i][data->map.j];
+				data->map.player_x = data->map.j;
+				data->map.player_y = data->map.i;
+				if (is_player_on_edge(&data->map))
 					return (-1);
                 player_counter++;
             }
-            map->j++;
+            data->map.j++;
         }
-        map->i++;
+        data->map.i++;
     }
 	return (player_counter);
 }
 
-result check_player(t_map *map)
+result check_player(t_data *data)
 {
     int nbr_players;
 
-    if (all_chars_are_valid(map) == FALSE)
+    if (all_chars_are_valid(data) == FALSE)
 	{
 		printf("Error: Map contains invalid characters\n");
 		return (FAIL);
 	}
-    nbr_players = player_count(map);
+    nbr_players = player_count(data);
     if (nbr_players == -1)
 	{
 		printf("Error: Player cannot be placed in a map edge\n");

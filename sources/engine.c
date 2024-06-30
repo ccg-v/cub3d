@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/06/30 02:32:08 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/01 00:14:40 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,17 +278,17 @@ void render_3d_view(t_data *data) {
             side_dist_y = (map_y + 1.0 - (data->player.y / data->cell_size)) * delta_dist_y;
         }
 
-		// loop until a wall is hit or the ray goes out of bounds 
+		// loop where we keep incrementing the length of the ray until a wall is hit or the ray goes out of bounds 
         while (hit == 0) 
 		{
-			// ??????????????????????????????????
+			// ray hit a vertical grid line
             if (side_dist_x < side_dist_y)
 			{
                 side_dist_x += delta_dist_x;
                 map_x += step_x;
                 side = 0;
             }
-			else
+			else // ray has hit a horizontal line
 			{
                 side_dist_y += delta_dist_y;
                 map_y += step_y;
@@ -297,13 +297,25 @@ void render_3d_view(t_data *data) {
 			// check if ray is out of bounds
             if (map_x < 0 || map_y < 0 || map_x >= (int)data->map.width || map_y >= (int)data->map.height)
 				break;
+			// check the current map cell value, the loop goes on until the ray hits a wall
             if (data->map.array[map_y][map_x] == '1') hit = 1;
         }
-
-        if (hit == 1) {
+	// calculating the height and position of the wall segment to be drawn on the screen after a ray has hit a wall
+        if (hit == 1)
+		{
+			// store the perpendicular distance from the player to the wall, to avoid the fisheye effect.
             double perp_wall_dist;
-            if (side == 0) perp_wall_dist = (map_x - data->player.x / data->cell_size + (1 - step_x) / 2) / ray_x;
-            else           perp_wall_dist = (map_y - data->player.y / data->cell_size + (1 - step_y) / 2) / ray_y;
+            if (side == 0) // vertical wall hit
+				// 1. Calculate the horizontal distance from the player's position to the hit wall's grid position along the x-axis
+				// 2. Adjustment for the exact hit point within the grid cell:
+				//		- if step_x is 1 (moving right), (1 - step_x) / 2 = 0, so no adjustment
+				//		- If step_x is -1 (moving left), (1 - step_x) / 2 = 1, adding a full cell width
+				//		The addition is necessary because the horizontal distance must be measured always from the player's position
+				//		to the left edge of the wall cell that has been hit, so if the distance is negative a cell must be added
+				// 3. Divide by ray's direction component to get true distance
+				perp_wall_dist = (map_x - data->player.x / data->cell_size + (1 - step_x) / 2) / ray_x;
+            else // horizontal wall hit
+				perp_wall_dist = (map_y - data->player.y / data->cell_size + (1 - step_y) / 2) / ray_y;
 
             int line_height = (int)(height / perp_wall_dist);
 
@@ -313,10 +325,19 @@ void render_3d_view(t_data *data) {
             if (draw_end >= height) draw_end = height - 1;
 
             t_textures *texture;
-            if (side == 0) {
-                texture = (step_x > 0) ? &data->west_texture : &data->east_texture;
-            } else {
-                texture = (step_y > 0) ? &data->north_texture : &data->south_texture;
+            if (side == 0)
+			{
+                if (step_x > 0)
+					texture = &data->west_texture;
+				else
+					texture = &data->east_texture;
+            }
+			else
+			{
+                if(step_y > 0)
+					texture = &data->north_texture;
+				else
+					texture = &data->south_texture;
             }
 
             double wall_x;
@@ -343,7 +364,7 @@ int render_background(t_data *data) {
     render_3d_view(data); // Render the 3D view
     render_map(data); // Render the minimap (keeping your existing minimap rendering code)
     draw_player(data, data->player.x / 4 + 20, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 20, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
-    cast_ray(data); // Cast rays for the minimap
+    // cast_ray(data); // Cast rays for the minimap
 
     mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
     return 0;
@@ -465,12 +486,10 @@ int main_loop(t_data *data) {
     return 0;
 }
 
-int engine_main(t_map *map, t_data *data, t_textures *textures)
+int engine_main(t_data *data, t_textures *textures)
 {
     // t_data data;
     // Initialize player movement flags
-	
-	(void)map;
 
     data->player.move_forward = 0;
     data->player.move_backward = 0;
@@ -479,17 +498,10 @@ int engine_main(t_map *map, t_data *data, t_textures *textures)
     data->player.rotate_left = 0;
     data->player.rotate_right = 0;
 
-
     // Calculate the cell size based on the map and window dimensions
     int cell_size_width = WINDOW_WIDTH / data->map.width;
     int cell_size_height = WINDOW_HEIGHT / data->map.height;
     data->cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
-printf("window width is %d\n", WINDOW_WIDTH);
-printf("window width is %d\n", WINDOW_HEIGHT);
-printf("data->map.width is %ld\n", data->map.width);
-printf("cell_size_width is %d\n", cell_size_width);
-printf("cell_size_height is %d\n", cell_size_height);
-printf("cell size is %d\n", data->cell_size);
     data->player_size = data->cell_size / 2;
     data->player.ray_length = data->cell_size * 100;
 
@@ -516,36 +528,48 @@ printf("cell size is %d\n", data->cell_size);
         fprintf(stderr, "Failed to get image data address\n");
         return EXIT_FAILURE;
     }
+    
 
+
+// for (int i = 0; i < 4; i++) {
+//     data->textures[i].img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[i]), &data->textures[i].width, &data->textures[i].height);
+//     if (!data->textures[i].img) {
+//         fprintf(stderr, "Failed to load texture %d\n", i);
+//         return EXIT_FAILURE;
+//     }
+//     data->textures[i].addr = mlx_get_data_addr(data->textures[i].img, &data->textures[i].bits_per_pixel, &data->textures[i].line_length, &data->textures[i].endian);
+// }
     // Load textures using map struct
-    data->map.north_texture = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[0]), &data->north_texture.width, &data->north_texture.height);
-    if (!data->map.north_texture) {
-        fprintf(stderr, "Failed to load north texture\n");
-        return EXIT_FAILURE;
-    }
-    data->north_texture.addr = mlx_get_data_addr(data->map.north_texture, &data->north_texture.bits_per_pixel, &data->north_texture.line_length, &data->north_texture.endian);
+    
+    // In engine_main function
+data->north_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[0]), &data->north_texture.width, &data->north_texture.height);
+if (!data->north_texture.img) {
+    fprintf(stderr, "Failed to load north texture\n");
+    return EXIT_FAILURE;
+}
+data->north_texture.addr = mlx_get_data_addr(data->north_texture.img, &data->north_texture.bits_per_pixel, &data->north_texture.line_length, &data->north_texture.endian);
 
-    data->map.south_texture = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[1]), &data->south_texture.width, &data->south_texture.height);
-    if (!data->map.south_texture) {
+// Repeat for other textures
+    data->south_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[1]), &data->south_texture.width, &data->south_texture.height);
+    if (!data->south_texture.img) {
         fprintf(stderr, "Failed to load south texture\n");
         return EXIT_FAILURE;
     }
-    data->south_texture.addr = mlx_get_data_addr(data->map.south_texture, &data->south_texture.bits_per_pixel, &data->south_texture.line_length, &data->south_texture.endian);
+    data->south_texture.addr = mlx_get_data_addr(data->south_texture.img, &data->south_texture.bits_per_pixel, &data->south_texture.line_length, &data->south_texture.endian);
 
-    data->map.west_texture = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[3]), &data->west_texture.width, &data->west_texture.height);
-    if (!data->map.west_texture) {
+    data->west_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[3]), &data->west_texture.width, &data->west_texture.height);
+    if (!data->west_texture.img) {
         fprintf(stderr, "Failed to load west texture\n");
         return EXIT_FAILURE;
     }
-    data->west_texture.addr = mlx_get_data_addr(data->map.west_texture, &data->west_texture.bits_per_pixel, &data->west_texture.line_length, &data->west_texture.endian);
+    data->west_texture.addr = mlx_get_data_addr(data->west_texture.img, &data->west_texture.bits_per_pixel, &data->west_texture.line_length, &data->west_texture.endian);
 
-    data->map.east_texture = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[2]), &data->east_texture.width, &data->east_texture.height);
-    if (!data->map.east_texture) {
+    data->east_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[2]), &data->east_texture.width, &data->east_texture.height);
+    if (!data->east_texture.img) {
         fprintf(stderr, "Failed to load east texture\n");
         return EXIT_FAILURE;
     }
-    data->east_texture.addr = mlx_get_data_addr(data->map.east_texture, &data->east_texture.bits_per_pixel, &data->east_texture.line_length, &data->east_texture.endian);
-    
+    data->east_texture.addr = mlx_get_data_addr(data->east_texture.img, &data->east_texture.bits_per_pixel, &data->east_texture.line_length, &data->east_texture.endian);
     // map_reading(&data->map);
     
     
@@ -559,12 +583,16 @@ printf("cell size is %d\n", data->cell_size);
 
     // Initialize prev_time
     clock_gettime(CLOCK_MONOTONIC, &data->prev_time);
-
+	
     render_background(data);
+	
     mlx_hook(data->window, 17, 0, close_window, &data);
     mlx_hook(data->window, 2, 1L<<0, key_press, &data); // Handle key press
     mlx_hook(data->window, 3, 1L<<1, key_release, &data); // Handle key release
+	
+
     mlx_loop_hook(data->mlx, main_loop, &data); // Main loop
+
     mlx_loop(data->mlx);
 
     // Free the map data before exiting

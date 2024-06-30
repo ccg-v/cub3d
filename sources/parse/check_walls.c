@@ -6,19 +6,19 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:41 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 19:53:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/01 00:18:15 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	print_visited_map(t_map *map)
+void	print_visited_map(t_data *data)
 {
 	size_t	row;
 	size_t	column;
 	
-	map->visited_height = map->height + 2;
-	map->visited_width = map->width + 1;	
+	data->map.visited_height = data->map.height + 2;
+	data->map.visited_width = data->map.width + 1;	
 	row = 0;
 	system("clear");
 
@@ -32,23 +32,23 @@ void	print_visited_map(t_map *map)
 	printf("Player check passed\n");
 	printf("Checking map...\n");
 	
-	while (row < map->visited_height)
+	while (row < data->map.visited_height)
 	{
 		column = 0;
-		while (column < map->visited_width)
+		while (column < data->map.visited_width)
 		{
-			if (map->visited_array[row][column] == '@')
+			if (data->map.visited_array[row][column] == '@')
 			{
-				if ((map->visited_array[row - 1][column] == ' ') || (map->visited_array[row][column + 1] == ' ')
-					|| (map->visited_array[row + 1][column] == ' ') || (map->visited_array[row][column - 1] == ' '))
-					printf(BCK_RED "%c" RESET, map->visited_array[row][column]);				
+				if ((data->map.visited_array[row - 1][column] == ' ') || (data->map.visited_array[row][column + 1] == ' ')
+					|| (data->map.visited_array[row + 1][column] == ' ') || (data->map.visited_array[row][column - 1] == ' '))
+					printf(BCK_RED "%c" RESET, data->map.visited_array[row][column]);				
 				else
-					printf(GREEN "%c" RESET, map->visited_array[row][column]);
+					printf(GREEN "%c" RESET, data->map.visited_array[row][column]);
 			}
-			else if (map->visited_array[row][column] == '0')
-				printf(RED "%c" RESET, map->visited_array[row][column]);
+			else if (data->map.visited_array[row][column] == '0')
+				printf(RED "%c" RESET, data->map.visited_array[row][column]);
 			else
-				printf("%c", map->visited_array[row][column]);
+				printf("%c", data->map.visited_array[row][column]);
 			column++;			
 		}
 		row++;
@@ -69,26 +69,26 @@ void	print_visited_map(t_map *map)
  *	to find if map is closed, and if it's fully playable.
  */
 
-void	dfs(t_map *map, int row, int column)
+void	dfs(t_data *data, int row, int column)
 {
-	map->visited_height = map->height + 2;
-	map->visited_width = map->width + 1;
+	data->map.visited_height = data->map.height + 2;
+	data->map.visited_width = data->map.width + 1;
 
 	if (row < 0
-		|| row >= (int)map->visited_height
+		|| row >= (int)data->map.visited_height
 		|| column < 0
-		|| column >= (int)map->visited_width 
-		|| map->visited_array[row][column] == ' ' 
-		|| map->visited_array[row][column] == '1' 
-		|| map->visited_array[row][column] == '@')
+		|| column >= (int)data->map.visited_width 
+		|| data->map.visited_array[row][column] == ' ' 
+		|| data->map.visited_array[row][column] == '1' 
+		|| data->map.visited_array[row][column] == '@')
 		return ;
-	map->visited_array[row][column] = '@';
-	// usleep(100000);
-	// print_visited_map(map);
-	dfs(map, row -1, column);
-	dfs(map, row, column + 1);
-	dfs(map, row + 1, column);
-	dfs(map, row, column - 1);
+	data->map.visited_array[row][column] = '@';
+	usleep(100000);
+	print_visited_map(data);
+	dfs(data, row -1, column);
+	dfs(data, row, column + 1);
+	dfs(data, row + 1, column);
+	dfs(data, row, column - 1);
 }
 
 /*
@@ -98,16 +98,16 @@ void	dfs(t_map *map, int row, int column)
  *	walkable cells (that is, zeros) with '@')
  */
 
-void	start_dfs_search(t_map *map)
+void	start_dfs_search(t_data *data)
 {
-	size_t row = map->player_y + 1;
-	while (row < (map->height + 2))
+	size_t row = data->map.player_y + 1;
+	while (row < (data->map.height + 2))
 	{
-		size_t	column = map->player_x + 1;
-		while (column < (map->width + 1))
+		size_t	column = data->map.player_x + 1;
+		while (column < (data->map.width + 1))
 		{
-			if (map->visited_array[row][column] != '0')
-				dfs(map, row, column);
+			if (data->map.visited_array[row][column] != '0')
+				dfs(data, row, column);
 			column++;
 		}
 		row++;
@@ -119,25 +119,25 @@ void	start_dfs_search(t_map *map)
  *	Searches if the map is closed (all visited cells ('@') should be adjacent
  *	to other visited cells or walls ('@', '1'), never to a whitespace)
  */
-boolean	is_map_closed(t_map *map)
+boolean	is_map_closed(t_data *data)
 {
 	size_t	row;
 	size_t	column;
 	
-	map->visited_height = map->height + 2;
-	map->visited_width = map->width + 1;
+	data->map.visited_height = data->map.height + 2;
+	data->map.visited_width = data->map.width + 1;
 	row = 0;
-	while (row < map->visited_height)
+	while (row < data->map.visited_height)
 	{
 		column = 0;
-		while (column < map->visited_width)
+		while (column < data->map.visited_width)
 		{
-			if (map->visited_array[row][column] == '@')
+			if (data->map.visited_array[row][column] == '@')
 			{
-				if ((row > 0 && map->visited_array[row - 1][column] == ' ')
-					|| (row < (map->visited_height - 1) && map->visited_array[row + 1][column] == ' ')
-					|| (column > 0 && map->visited_array[row][column - 1] == ' ')
-					|| (column < (map->visited_width - 1) && map->visited_array[row][column + 1] == ' '))
+				if ((row > 0 && data->map.visited_array[row - 1][column] == ' ')
+					|| (row < (data->map.visited_height - 1) && data->map.visited_array[row + 1][column] == ' ')
+					|| (column > 0 && data->map.visited_array[row][column - 1] == ' ')
+					|| (column < (data->map.visited_width - 1) && data->map.visited_array[row][column + 1] == ' '))
 					return (FALSE);
 			}
 			column++;
@@ -153,20 +153,20 @@ boolean	is_map_closed(t_map *map)
  * 	Search if the map has non-reachable areas in the map (any cell remaining 
  * 	with value '0' after running dfs)
  */
-boolean	is_fully_walkable(t_map *map)
+boolean	is_fully_walkable(t_data *data)
 {
 	size_t	row;
 	size_t	column;
 	
-	map->visited_height = map->height + 2;
-	map->visited_width = map->width + 1;
+	data->map.visited_height = data->map.height + 2;
+	data->map.visited_width = data->map.width + 1;
 	row = 0;
-	while (row < map->visited_height)
+	while (row < data->map.visited_height)
 	{
 		column = 0;
-		while (column < map->visited_width)
+		while (column < data->map.visited_width)
 		{
-			if (map->visited_array[row][column] == '0')
+			if (data->map.visited_array[row][column] == '0')
 					return (FALSE);
 			column++;
 		}
@@ -175,17 +175,17 @@ boolean	is_fully_walkable(t_map *map)
 	return (TRUE);
 }
 
-result	check_walls(t_map *map)
+result	check_walls(t_data *data)
 {
-	start_dfs_search(map);
-	if (is_map_closed(map) == FALSE)
+	start_dfs_search(data);
+	if (is_map_closed(data) == FALSE)
 	{
 		printf(RED " \u2718 " RESET);
 		printf("Error: Map is not closed\n");
 		printf(RED "Map is not valid\n" RESET);
 		return (FAIL);
 	}
-	else if (is_fully_walkable(map) == FALSE)
+	else if (is_fully_walkable(data) == FALSE)
 	{
 		printf(YELLOW " \xE2\x9A\xA0 " RESET);
 		printf("Warning: Map has walkable but non-reachable parts\n");

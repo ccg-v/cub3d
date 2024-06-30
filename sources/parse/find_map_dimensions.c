@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   find_map_dimensions.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:47:31 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/25 14:09:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/06/30 20:48:22 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static result	find_map_starting_line(t_map *map)
+static result	find_map_starting_line(t_data *data)
 {
 	int		fd;
 	char	*line;
 
-	fd = open_file(map->file);
+	fd = open_file(data->map.file);
 	if (fd < 0)
 		return (FAIL);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		if (((line[0] != ' ' && line[0] != '1') || (line[0] == ' '
-			&& ft_strchr(line, '1') == NULL)) && map->height == 0)
-			++map->starting_line;
+			&& ft_strchr(line, '1') == NULL)) && data->map.height == 0)
+			++data->map.starting_line;
 		else
 			break ;
 		free(line);
@@ -41,24 +41,24 @@ static result	find_map_starting_line(t_map *map)
 	return (SUCCESS);
 }
 
-static result	find_map_height(t_map *map)
+static result	find_map_height(t_data *data)
 {
 	int		fd;
 	char	*line;
 	int		i;
 
-	fd = open_file(map->file);
+	fd = open_file(data->map.file);
 	if (fd < 0)
 		return (FAIL);
 	line = get_next_line(fd);
-	read_until_line(fd, &line, map->starting_line);
+	read_until_line(fd, &line, data->map.starting_line);
 	while (line && line[0] != '\n')
 	{
 		i = 0;
 		while (is_whitespace(line[i]))
 			i++;
 		if (line[i] == '1' || line[i] == '0')
-			++map->height;
+			++data->map.height;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -68,27 +68,27 @@ static result	find_map_height(t_map *map)
 	return (SUCCESS);
 }
 
-static result	find_map_width(t_map *map)
+static result	find_map_width(t_data *data)
 {
 	int		fd;
 	char	*line;
 	size_t	len;
 
-	map->i = 0;
-	fd = open_file(map->file);
+	data->map.i = 0;
+	fd = open_file(data->map.file);
 	if (fd < 0)
 		return (FAIL);
-	while (map->i++ < map->starting_line)
+	while (data->map.i++ < data->map.starting_line)
 	{
 		line = get_next_line(fd);
-		if (map->i < map->starting_line)
+		if (data->map.i < data->map.starting_line)
 			free(line);
 	}
 	while (line != NULL)
 	{
 		len = ft_strlen(line);
-		if (len > map->width)
-			map->width = len;
+		if (len > data->map.width)
+			data->map.width = len;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -97,11 +97,11 @@ static result	find_map_width(t_map *map)
 	return (SUCCESS);
 }
 
-result	find_map_dimensions(t_map *map)
+result	find_map_dimensions(t_data *data)
 {
-	if (find_map_starting_line(map) == FAIL
-		|| find_map_width(map) == FAIL
-		|| find_map_height(map) == FAIL)
+	if (find_map_starting_line(data) == FAIL
+		|| find_map_width(data) == FAIL
+		|| find_map_height(data) == FAIL)
 		return (FAIL);
 	return (SUCCESS);
 }
