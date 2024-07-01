@@ -6,11 +6,16 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/01 21:19:00 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/02 01:15:35 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static unsigned long rgb_to_hex(int *rgb_array)
+{
+	return((rgb_array[0] << 16) + (rgb_array[1] << 8) + rgb_array[2]);
+}
 
 static boolean	rgb_triplet_is_valid(char **rgb_array, int *color)
 {
@@ -56,6 +61,7 @@ static result	store_rgb_color(const char *line, int *color)
 		free_rgb_values(rgb_array);
 		return (FAIL);
 	}
+
 	free_rgb_values(rgb_array);
 	return (SUCCESS);
 }
@@ -84,7 +90,7 @@ static boolean	are_colors_defined(int *color_found)
 	return (FALSE);
 }
 
-static result	process_color_line(t_colors *colors, char *line, \
+static result	process_color_line(t_colors *colors, char *line,
 		int *colors_found)
 {
 	char	surface;
@@ -96,14 +102,20 @@ static result	process_color_line(t_colors *colors, char *line, \
 	if (surface == 'F')
 	{
 		if (store_rgb_color(line, colors->floor) == SUCCESS)
+		{
 			*colors_found += 1;
+			colors->hex_floor = rgb_to_hex(colors->floor);
+		}
 		else
 			return (FAIL);
 	}
 	else if (surface == 'C')
 	{
 		if (store_rgb_color(line, colors->ceiling) == SUCCESS)
+		{
 			*colors_found += 2;
+			colors->hex_ceiling = rgb_to_hex(colors->ceiling);
+		}
 		else
 			return (FAIL);
 	}
@@ -139,22 +151,3 @@ result	check_colors(t_data *data, t_colors *colors)
 		return (FAIL);
 	return (SUCCESS);
 }
-
-// void rgb_to_hex(int *rgb_array, char *hex_color)
-// {
-// 	int		i;
-//     char	hex_chars[16];
-	
-// 	i = 0;
-// 	hex_chars = "0123456789ABCDEF";
-
-//     // Initialize the first character
-//     hex_color[0] = '#';
-//     // Loop through each RGB component
-//     for (int i = 0; i < 3; i++) {
-//         hex_color[2 * i + 1] = hex_chars[rgb_array[i] / 16];  // High nibble
-//         hex_color[2 * i + 2] = hex_chars[rgb_array[i] % 16];  // Low nibble
-//     }
-//     // Null-terminate the string
-//     hex_color[7] = '\0';
-// }

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/01 21:54:58 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/02 01:17:19 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ int main(int argc, char **argv)
 	|| check_scene_description(&data) == FAIL || check_colors(&data, &colors) == FAIL)
 		return (FAIL);
 	// print_map_array(map.array, map.height, map.width);
+
+printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
+printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);	
+
 	if (check_textures(&data, &textures) == 	FAIL)
 	{	
 		free(textures.north);
@@ -97,30 +101,10 @@ int main(int argc, char **argv)
     // data.player.ray_length = data.cell_size * 100;
 
     data.mlx = mlx_init();
-    if (data.mlx == NULL) {
-        fprintf(stderr, "Failed to initialize mlx\n");
-        return EXIT_FAILURE;
-    }
-
     data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Grey Background");
-    if (data.window == NULL) {
-        fprintf(stderr, "Failed to create window\n");
-        return EXIT_FAILURE;
-    }
-
     data.image = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-    if (data.image == NULL) {
-        fprintf(stderr, "Failed to create image\n");
-        return EXIT_FAILURE;
-    }
-
     data.addr = mlx_get_data_addr(data.image, &data.bits_per_pixel, &data.line_length, &data.endian);
-    if (data.addr == NULL) {
-        fprintf(stderr, "Failed to get image data address\n");
-        return EXIT_FAILURE;
-    }
-
-    (void)textures;
+ 
     // Load textures using map struct
 	data.north_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[0]), &data.north_texture.width, &data.north_texture.height);
 	if (!data.north_texture.img) {

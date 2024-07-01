@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/01 21:15:51 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/02 01:02:37 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ typedef struct s_colors
 {
     int floor[3];
     int ceiling[3];
-    unsigned char red;
-    unsigned char green;
-    unsigned char blue;
-	char *floor_hex;
-	char *ceiling_hex;
+    // int red;
+    // int green;
+    // int blue;
+	unsigned int hex_floor;
+	unsigned int hex_ceiling;
 }	t_colors;
 
 typedef struct s_map
