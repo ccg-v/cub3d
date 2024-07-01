@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/30 20:27:56 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:19:00 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,3 +139,22 @@ result	check_colors(t_data *data, t_colors *colors)
 		return (FAIL);
 	return (SUCCESS);
 }
+
+// void rgb_to_hex(int *rgb_array, char *hex_color)
+// {
+// 	int		i;
+//     char	hex_chars[16];
+	
+// 	i = 0;
+// 	hex_chars = "0123456789ABCDEF";
+
+//     // Initialize the first character
+//     hex_color[0] = '#';
+//     // Loop through each RGB component
+//     for (int i = 0; i < 3; i++) {
+//         hex_color[2 * i + 1] = hex_chars[rgb_array[i] / 16];  // High nibble
+//         hex_color[2 * i + 2] = hex_chars[rgb_array[i] % 16];  // Low nibble
+//     }
+//     // Null-terminate the string
+//     hex_color[7] = '\0';
+// }

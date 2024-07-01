@@ -6,11 +6,17 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/01 00:14:49 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/01 21:54:58 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int close_window(t_data *data);
+int key_press(int keycode, t_data *data);
+int key_release(int keycode, t_data *data);
+int main_loop(t_data *data);
+int render_background(t_data *data);
 
 result	check_args(int argc)
 {
@@ -69,10 +75,106 @@ int main(int argc, char **argv)
 	if (check_walls(&data) == FAIL)
 		return (free_and_exit(&textures, &data.map));
 
-	for (int i = 0; i < 4; i++)
-		printf("%s = %s\n", textures.texture_ids[i], *(textures.paths_array[i]));
+	// for (int i = 0; i < 4; i++)
+	// 	printf("%s = %s\n", textures.texture_ids[i], *(textures.paths_array[i]));
 
 	// engine_main(&data, &textures);
+
+
+
+	data.player.move_forward = 0;
+    data.player.move_backward = 0;
+    data.player.strafe_left = 0;
+    data.player.strafe_right = 0;
+    data.player.rotate_left = 0;
+    data.player.rotate_right = 0;
+
+    // // Calculate the cell size based on the map and window dimensions
+    // int cell_size_width = WINDOW_WIDTH / data.map.width;
+    // int cell_size_height = WINDOW_HEIGHT / data.map.height;
+    // data.cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
+    // data.player_size = data.cell_size / 2;
+    // data.player.ray_length = data.cell_size * 100;
+
+    data.mlx = mlx_init();
+    if (data.mlx == NULL) {
+        fprintf(stderr, "Failed to initialize mlx\n");
+        return EXIT_FAILURE;
+    }
+
+    data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Grey Background");
+    if (data.window == NULL) {
+        fprintf(stderr, "Failed to create window\n");
+        return EXIT_FAILURE;
+    }
+
+    data.image = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (data.image == NULL) {
+        fprintf(stderr, "Failed to create image\n");
+        return EXIT_FAILURE;
+    }
+
+    data.addr = mlx_get_data_addr(data.image, &data.bits_per_pixel, &data.line_length, &data.endian);
+    if (data.addr == NULL) {
+        fprintf(stderr, "Failed to get image data address\n");
+        return EXIT_FAILURE;
+    }
+
+    (void)textures;
+    // Load textures using map struct
+	data.north_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[0]), &data.north_texture.width, &data.north_texture.height);
+	if (!data.north_texture.img) {
+		fprintf(stderr, "Failed to load north texture\n");
+		return EXIT_FAILURE;
+	}
+	data.north_texture.addr = mlx_get_data_addr(data.north_texture.img, &data.north_texture.bits_per_pixel, &data.north_texture.line_length, &data.north_texture.endian);
+
+    data.south_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[1]), &data.south_texture.width, &data.south_texture.height);
+    if (!data.south_texture.img) {
+        fprintf(stderr, "Failed to load south texture\n");
+        return EXIT_FAILURE;
+    }
+    data.south_texture.addr = mlx_get_data_addr(data.south_texture.img, &data.south_texture.bits_per_pixel, &data.south_texture.line_length, &data.south_texture.endian);
+
+    data.west_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[3]), &data.west_texture.width, &data.west_texture.height);
+    if (!data.west_texture.img) {
+        fprintf(stderr, "Failed to load west texture\n");
+        return EXIT_FAILURE;
+    }
+    data.west_texture.addr = mlx_get_data_addr(data.west_texture.img, &data.west_texture.bits_per_pixel, &data.west_texture.line_length, &data.west_texture.endian);
+
+    data.east_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[2]), &data.east_texture.width, &data.east_texture.height);
+    if (!data.east_texture.img) {
+        fprintf(stderr, "Failed to load east texture\n");
+        return EXIT_FAILURE;
+    }
+    data.east_texture.addr = mlx_get_data_addr(data.east_texture.img, &data.east_texture.bits_per_pixel, &data.east_texture.line_length, &data.east_texture.endian);
+    
+    
+//     // Calculate the cell size based on the map and window dimensions
+    int cell_size_width = WINDOW_WIDTH / data.map.width;
+    int cell_size_height = WINDOW_HEIGHT / data.map.height;
+    data.cell_size = (cell_size_width < cell_size_height) ? cell_size_width : cell_size_height;
+    data.player_size = data.cell_size / 2;
+    data.player.ray_length = data.cell_size * 100;
+
+    // Initialize prev_time
+    // clock_gettime(CLOCK_MONOTONIC, &data.prev_time);
+	
+    render_background(&data);
+	
+    mlx_hook(data.window, 17, 0, close_window, &data);
+    mlx_hook(data.window, 2, 1L<<0, key_press, &data); // Handle key press
+    mlx_hook(data.window, 3, 1L<<1, key_release, &data); // Handle key release
+	
+
+    mlx_loop_hook(data.mlx, main_loop, &data); // Main loop
+
+    mlx_loop(data.mlx);
+
+
+
+
 	free_array(data.map.array, data.map.height);
 	free_array(data.map.visited_array, (data.map.height + 2));
     return (0);

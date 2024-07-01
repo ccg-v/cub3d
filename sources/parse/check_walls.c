@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:41 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/01 00:18:15 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/01 20:02:45 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ void	dfs(t_data *data, int row, int column)
 		|| data->map.visited_array[row][column] == '@')
 		return ;
 	data->map.visited_array[row][column] = '@';
-	usleep(100000);
-	print_visited_map(data);
+	// usleep(100000);
+	// print_visited_map(data);
 	dfs(data, row -1, column);
 	dfs(data, row, column + 1);
 	dfs(data, row + 1, column);
@@ -193,6 +193,6 @@ result	check_walls(t_data *data)
 	printf(GREEN " \u2714 " RESET);
 	printf("Map is closed. Map check passed\n");
 	printf(GREEN "All checks passed. Map is valid\n" RESET);
-	// printf("Starting cub3D...\n");
+	printf("Starting cub3D...\n");
 	return (SUCCESS);
 }
