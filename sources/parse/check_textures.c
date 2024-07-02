@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/06/30 20:53:10 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/02 21:11:40 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@
 // static boolean	are_texture_paths_valid(t_textures *textures);
 // result			check_textures(t_map *map, t_textures *textures);
 
-// static void	trim_last_char(char *path)
-// {
-// 	int		len;
-
-// 	len = ft_strlen(path);
-// 	if (len > 0 && path[len - 1] == '\n')
-// 		path[len - 1] = '\0';
-// }
-
 static result	store_texture_path(char *line, t_textures *textures)
 {
     int i = 0;
@@ -38,10 +29,12 @@ static result	store_texture_path(char *line, t_textures *textures)
     {
         if (ft_strncmp(line, textures->texture_ids[i], 2) == 0)
         {
-            if (*(textures->paths_array[i]) != NULL)
+            if (*(textures->array[i]) != NULL)
             {
-                printf("Error: Two %s textures in the file\n", \
-					textures->texture_ids[i]);
+// ----- CHECK HERE IF THE PATH IS VALID TO AVOID CONSIDERING A WRONG PATH (i.e. 'NO sdfsaf') AS VALID
+                printf("Error: Textures: Two attempts to define %s texture\n", textures->texture_ids[i]);
+				// printf("Error: Invalid characters found\n");	<-- DESCARTADO
+				// printf("Error: Textures: Invalid or duplicated %s texture definition found\n", textures->texture_ids[i]);
                 return (FAIL);
             }
             j = 2;
@@ -49,7 +42,7 @@ static result	store_texture_path(char *line, t_textures *textures)
                 j++;
             trimmed_path = ft_strdup(line + j);
             // trim_last_char(trimmed_path);
-            *(textures->paths_array[i]) = trimmed_path;
+            *(textures->array[i]) = trimmed_path;
             break;
         }
         i++;
@@ -116,7 +109,7 @@ static boolean	are_texture_paths_valid(t_textures *textures)
 	i = 0;
 	while (i < 4)
 	{
-    	path = *(textures->paths_array[i]);
+    	path = *(textures->array[i]);
     	fd = open(path, O_DIRECTORY);
     	if (fd >= 0)
 		{
@@ -136,6 +129,31 @@ static boolean	are_texture_paths_valid(t_textures *textures)
 	return (TRUE);
 }
 
+static boolean	are_textures_unique(t_textures *textures)
+{
+	size_t	len0;
+	size_t	len1;
+	size_t	len2;
+
+	// for (int i = 0; i < 4; i++)
+	// 	printf("%s = %s\n", textures->texture_ids[i], *(textures->array[i]));
+		
+	len0 = ft_strlen(*(textures->array[0]));
+	len1 = ft_strlen(*(textures->array[1]));
+	len2 = ft_strlen(*(textures->array[2]));
+	if (!ft_strncmp(*(textures->array[0]), *(textures->array[1]), len0)
+		|| !ft_strncmp(*(textures->array[0]), *(textures->array[2]), len0)
+		|| !ft_strncmp(*(textures->array[0]), *(textures->array[3]), len0)
+		|| !ft_strncmp(*(textures->array[1]), *(textures->array[2]), len1)
+		|| !ft_strncmp(*(textures->array[1]), *(textures->array[3]), len1)
+		|| !ft_strncmp(*(textures->array[2]), *(textures->array[3]), len2))
+	{
+		printf("Error: Textures: Must be different for every orientation\n");
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 result	check_textures(t_data *data, t_textures *textures)
 {
 	if (create_textures_array(data, textures) == FAIL)
@@ -144,5 +162,8 @@ result	check_textures(t_data *data, t_textures *textures)
 		return (FAIL);
 	if (are_texture_paths_valid(textures) == FALSE)
 		return (FAIL);
+	if (are_textures_unique(textures) == FALSE)
+		return (FAIL);
 	return (SUCCESS);
 }
+

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/02 01:17:19 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 01:29:35 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,6 @@ printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling
 	if (check_walls(&data) == FAIL)
 		return (free_and_exit(&textures, &data.map));
 
-	// for (int i = 0; i < 4; i++)
-	// 	printf("%s = %s\n", textures.texture_ids[i], *(textures.paths_array[i]));
-
 	// engine_main(&data, &textures);
 
 
@@ -106,28 +103,28 @@ printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling
     data.addr = mlx_get_data_addr(data.image, &data.bits_per_pixel, &data.line_length, &data.endian);
  
     // Load textures using map struct
-	data.north_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[0]), &data.north_texture.width, &data.north_texture.height);
+	data.north_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.array[0]), &data.north_texture.width, &data.north_texture.height);
 	if (!data.north_texture.img) {
 		fprintf(stderr, "Failed to load north texture\n");
 		return EXIT_FAILURE;
 	}
 	data.north_texture.addr = mlx_get_data_addr(data.north_texture.img, &data.north_texture.bits_per_pixel, &data.north_texture.line_length, &data.north_texture.endian);
 
-    data.south_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[1]), &data.south_texture.width, &data.south_texture.height);
+    data.south_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.array[1]), &data.south_texture.width, &data.south_texture.height);
     if (!data.south_texture.img) {
         fprintf(stderr, "Failed to load south texture\n");
         return EXIT_FAILURE;
     }
     data.south_texture.addr = mlx_get_data_addr(data.south_texture.img, &data.south_texture.bits_per_pixel, &data.south_texture.line_length, &data.south_texture.endian);
 
-    data.west_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[3]), &data.west_texture.width, &data.west_texture.height);
+    data.west_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.array[3]), &data.west_texture.width, &data.west_texture.height);
     if (!data.west_texture.img) {
         fprintf(stderr, "Failed to load west texture\n");
         return EXIT_FAILURE;
     }
     data.west_texture.addr = mlx_get_data_addr(data.west_texture.img, &data.west_texture.bits_per_pixel, &data.west_texture.line_length, &data.west_texture.endian);
 
-    data.east_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.paths_array[2]), &data.east_texture.width, &data.east_texture.height);
+    data.east_texture.img = mlx_xpm_file_to_image(data.mlx, *(textures.array[2]), &data.east_texture.width, &data.east_texture.height);
     if (!data.east_texture.img) {
         fprintf(stderr, "Failed to load east texture\n");
         return EXIT_FAILURE;

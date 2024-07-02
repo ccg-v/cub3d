@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/02 01:02:37 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 01:28:54 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef enum
 #define BLUE_COLOR 0x0000FF
 #define EMPTY_COLOR 0x000000 // Black color for empty space
 #define PI 3.14159265359
-#define CEILING_COLOR 0x87CEEB // Light blue color for ceiling
-#define FLOOR_COLOR 0x8B4513 // Brown color for floor
+#define CEILING_COLOR 0x87CEEB // Light blue color for ceiling (135,206,235)
+#define FLOOR_COLOR 0x8B4513 // Brown color for floor (139,69,19)
 // #define DEFAULT_CELL_SIZE 20 // Default size of each cell in the map
 
 /* --- Data structures ------------------------------------------------------ */
@@ -112,7 +112,7 @@ typedef struct s_textures
     char	*south;
     char	*west;
     char	*east;
-	char	**paths_array[4];
+	char	**array[4];
 	char	*texture_ids[4];
 
     void *img;
@@ -160,7 +160,7 @@ typedef struct s_data {
 /* === Functions ============================================================ */
 
 //	main.c
-int 	engine_main(t_data *data, t_textures *textures);
+// int 	engine_main(t_data *data, t_textures *textures);
 int		main(int argc, char **argv);
 
 /* --- Init ----------------------------------------------------------------- */

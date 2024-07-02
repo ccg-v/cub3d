@@ -6,13 +6,20 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/07/01 22:30:58 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 01:49:15 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void put_pixel(t_data *data, int x, int y, int color) {
+// void put_pixel(t_data *data, int x, int y, int color) {
+//     if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT) {
+//         char *dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+//         *(unsigned int*)dst = color;
+//     }
+// }
+
+void put_pixel(t_data *data, int x, int y, unsigned int color) {
     if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT) {
         char *dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
         *(unsigned int*)dst = color;
@@ -57,7 +64,7 @@ void render_map(t_data *data)
 		{
             if (j < ft_strlen(data->map.array[i]))
 			{
-                int color = -1;
+                int color = GREY_COLOR;
                 if (data->map.array[i][j] == '1')
                     color = WALL_COLOR;
                 else if (data->map.array[i][j] == '0')
@@ -169,7 +176,17 @@ int is_vertical_hit(double ray_dx, double ray_dy) {
     return fabs(ray_dx) > fabs(ray_dy);
 }
 
-void render_3d_view(t_data *data) {
+void render_3d_view(t_data *data, t_colors *colors)
+{
+	// (void)colors;
+
+    printf("Address of colors: %p\n", (void*)colors);
+    printf("Address of hex_ceiling: %p\n", (void*)&(colors->hex_ceiling));
+    printf("Address of hex_floor: %p\n", (void*)&(colors->hex_floor));
+    printf("hex_ceiling = 0x%08X\n", colors->hex_ceiling);
+    printf("hex_floor = 0x%08X\n", colors->hex_floor);
+
+
     int width = WINDOW_WIDTH;
     int height = WINDOW_HEIGHT;
     double fov = 60.0 * PI / 180.0;
@@ -178,10 +195,17 @@ void render_3d_view(t_data *data) {
     // Fill ceiling and floor
     for (int y = 0; y < height / 2; y++) {
         for (int x = 0; x < width; x++) {
-            put_pixel(data, x, y, CEILING_COLOR);
-            put_pixel(data, x, height - 1 - y, FLOOR_COLOR);
+            // put_pixel(data, x, y, CEILING_COLOR);
+            // put_pixel(data, x, height - 1 - y, FLOOR_COLOR);
+            put_pixel(data, x, y, colors->hex_ceiling);
+            put_pixel(data, x, height - 1 - y, colors->hex_floor);
         }
     }
+// Assuming colors->hex_ceiling and colors->hex_floor are of type unsigned long
+// printf("hex_ceiling = %1lX\n", colors->hex_ceiling);
+// printf("hex_floor = %1lX\n", colors->hex_floor);
+    // printf("hex_ceiling = 0x%08X\n", colors->hex_ceiling);
+    // printf("hex_floor = 0x%08X\n", colors->hex_floor);
 
     // Render walls
     for (int x = 0; x < num_rays; x++) 
@@ -358,8 +382,8 @@ void render_3d_view(t_data *data) {
     }
 }
 
-int render_background(t_data *data) {
-    render_3d_view(data); // Render the 3D view
+int render_background(t_data *data, t_colors *colors) {
+    render_3d_view(data, colors); // Render the 3D view
     render_map(data); // Render the minimap (keeping your existing minimap rendering code)
     draw_player(data, data->player.x / 4 + 20, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 20, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
     // cast_ray(data); // Cast rays for the minimap
@@ -479,9 +503,9 @@ void update_player(t_data *data) {
     }
 }
 
-int main_loop(t_data *data) {
+int main_loop(t_data *data, t_colors *colors) {
     update_player(data);
-    render_background(data);
+    render_background(data, colors);
     return 0;
 }
 
@@ -531,28 +555,28 @@ int main_loop(t_data *data) {
 
 // //     (void)textures;
 // //     // Load textures using map struct
-// // 	data->north_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[0]), &data->north_texture.width, &data->north_texture.height);
+// // 	data->north_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->array[0]), &data->north_texture.width, &data->north_texture.height);
 // // 	if (!data->north_texture.img) {
 // // 		fprintf(stderr, "Failed to load north texture\n");
 // // 		return EXIT_FAILURE;
 // // 	}
 // // 	data->north_texture.addr = mlx_get_data_addr(data->north_texture.img, &data->north_texture.bits_per_pixel, &data->north_texture.line_length, &data->north_texture.endian);
 
-// //     data->south_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[1]), &data->south_texture.width, &data->south_texture.height);
+// //     data->south_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->array[1]), &data->south_texture.width, &data->south_texture.height);
 // //     if (!data->south_texture.img) {
 // //         fprintf(stderr, "Failed to load south texture\n");
 // //         return EXIT_FAILURE;
 // //     }
 // //     data->south_texture.addr = mlx_get_data_addr(data->south_texture.img, &data->south_texture.bits_per_pixel, &data->south_texture.line_length, &data->south_texture.endian);
 
-// //     data->west_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[3]), &data->west_texture.width, &data->west_texture.height);
+// //     data->west_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->array[3]), &data->west_texture.width, &data->west_texture.height);
 // //     if (!data->west_texture.img) {
 // //         fprintf(stderr, "Failed to load west texture\n");
 // //         return EXIT_FAILURE;
 // //     }
 // //     data->west_texture.addr = mlx_get_data_addr(data->west_texture.img, &data->west_texture.bits_per_pixel, &data->west_texture.line_length, &data->west_texture.endian);
 
-// //     data->east_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->paths_array[2]), &data->east_texture.width, &data->east_texture.height);
+// //     data->east_texture.img = mlx_xpm_file_to_image(data->mlx, *(textures->array[2]), &data->east_texture.width, &data->east_texture.height);
 // //     if (!data->east_texture.img) {
 // //         fprintf(stderr, "Failed to load east texture\n");
 // //         return EXIT_FAILURE;
