@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
+#    By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/06/29 22:07:15 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/07/03 12:04:01 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,11 @@ NAME			=		cub3D
 # --- Compiler flags --------------------------------------------------------- #
 
 CFLAGS			=		-MMD -Wall -Wextra -Werror -g
-#LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
-LIBMLX_FLAGS 	=		-lmlx -lX11 -lXext -lm -lbsd
+LIBMLX_FLAGS	=		-lmlx -framework OpenGL -framework AppKit
 
 # --- Directories ------------------------------------------------------------ #
 
-LIBMLX_DIR		=		libraries/minilibx_linux/
+LIBMLX_DIR		=		libraries/minilibx_macos/
 LIBFT_DIR		=		libraries/libft/
 INC_DIR			=		includes/
 SRC_DIR			=		sources/
@@ -36,7 +35,7 @@ DEP_DIR			= 		$(OBJ_DIR)
 # --- Includes --------------------------------------------------------------- #
 
 INCLUDES		=		-I $(INC_DIR) -I $(LIBFT_DIR) -I $(LIBMLX_DIR)
-LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR) $(LIBMLX_FLAGS)
+LIB_INCLUDE		=		-L $(LIBFT_DIR) -lft -L $(LIBMLX_DIR)
 
 # --- Files ------------------------------------------------------------------ #
 
@@ -74,7 +73,7 @@ all:
 		$(MAKE) $(NAME)
 
 $(NAME): $(OBJ_PATH) $(LIBMLX_PATH) Makefile
-	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE)
+	$(CC) $(CFLAGS)  $(INCLUDES) $(OBJ_PATH) -o $@ $(LIB_INCLUDE) $(LIBMLX_FLAGS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -c $< -o $@
@@ -85,7 +84,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 clean:	
 			rm -f $(OBJ_PATH) $(DEP_PATH)
-			rm -rf $(OBJ_DIR)c
+			rm -rf $(OBJ_DIR)
 			$(MAKE) -C $(LIBFT_DIR) clean
 			$(MAKE) -C $(LIBMLX_DIR) clean
 

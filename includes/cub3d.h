@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 01:28:54 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 12:06:03 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ typedef enum
 # define YELLOW "\033[1;93m"	//	bold bright yellow
 # define RESET "\x1B[0m"   // resets all terminal attributes to default settings
 
-#define WINDOW_WIDTH 2048
-#define WINDOW_HEIGHT 1536
+// #define WINDOW_WIDTH 2048
+// #define WINDOW_HEIGHT 1536
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
 #define GREY_COLOR 0x808080
 #define PLAYER_COLOR 0xFF0000 // Red color for the player
 // #define PLAYER_SIZE 8  // Half-size of the player square

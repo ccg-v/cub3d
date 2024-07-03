@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/07/03 01:49:15 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:57:25 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,73 @@ void put_texture_pixel(t_data *data, int x, int y, int tex_x, int tex_y, t_textu
     }
 }
 
+// void render_map(t_data *data)
+// {
+//     int minimap_scale = 4; // Scale down the minimap by this factor
+//     int minimap_cell_size = data->cell_size / minimap_scale;
+//     int offset_x = 30; // Position from the left
+//     int offset_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
+// 	size_t	i;
+// 	size_t	j;
+
+// 	i = 0;
+//     while (i < data->map.height)
+// 	{
+// 		j = 0;
+//         while (j < data->map.width) 
+// 		{
+//             if (j < ft_strlen(data->map.array[i]))
+// 			{
+//                 int color = GREY_COLOR;
+//                 if (data->map.array[i][j] == '1')
+//                     color = WALL_COLOR;
+//                 else if (data->map.array[i][j] == '0')
+//                     color = EMPTY_COLOR;
+//                 else if (ft_strchr("NSEW", data->map.array[i][j]))
+// 				{
+//                     data->player.x = j * data->cell_size + data->cell_size / 2;
+//                     data->player.y = i * data->cell_size + data->cell_size / 2;
+//                     color = EMPTY_COLOR;
+//                     if (data->map.array[i][j] == 'N') data->player.angle = 3 * PI / 2;
+//                     if (data->map.array[i][j] == 'S') data->player.angle = PI / 2;
+//                     if (data->map.array[i][j] == 'W') data->player.angle = PI;
+//                     if (data->map.array[i][j] == 'E') data->player.angle = 0;
+//                     data->map.array[i][j] = '0';
+//                 }
+//                 draw_square(data, offset_x + j * minimap_cell_size, offset_y + i * minimap_cell_size, minimap_cell_size, color);
+//             }
+// 			j++;
+//         }
+// 		i++;
+//     }
+// }
+
+void	init_player(t_data *data)
+{
+	data->player.x = data->map.player_x * data->cell_size + data->cell_size / 2;
+	data->player.y = data->map.player_y * data->cell_size + data->cell_size / 2;
+	if (data->map.player_orientation == 'N') data->player.angle = 3 * PI / 2;
+	if (data->map.player_orientation == 'S') data->player.angle = PI / 2;
+	if (data->map.player_orientation == 'W') data->player.angle = PI;
+	if (data->map.player_orientation == 'E') data->player.angle = 0;
+	data->map.array[data->map.player_y][data->map.player_x] = '0';	
+}
+
 void render_map(t_data *data)
 {
     int minimap_scale = 4; // Scale down the minimap by this factor
     int minimap_cell_size = data->cell_size / minimap_scale;
     int offset_x = 30; // Position from the left
     int offset_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
+	size_t	i;
+	size_t	j;
 
-    for (size_t i = 0; i < data->map.height; i++)
+	// init_player(data);
+	i = 0;
+    while (i < data->map.height)
 	{
-        for (size_t j = 0; j < data->map.width; j++) 
+		j = 0;
+        while (j < data->map.width) 
 		{
             if (j < ft_strlen(data->map.array[i]))
 			{
@@ -69,20 +126,13 @@ void render_map(t_data *data)
                     color = WALL_COLOR;
                 else if (data->map.array[i][j] == '0')
                     color = EMPTY_COLOR;
-                else if (ft_strchr("NSEW", data->map.array[i][j]))
-				{
-                    data->player.x = j * data->cell_size + data->cell_size / 2;
-                    data->player.y = i * data->cell_size + data->cell_size / 2;
-                    color = EMPTY_COLOR;
-                    if (data->map.array[i][j] == 'N') data->player.angle = 3 * PI / 2;
-                    if (data->map.array[i][j] == 'S') data->player.angle = PI / 2;
-                    if (data->map.array[i][j] == 'W') data->player.angle = PI;
-                    if (data->map.array[i][j] == 'E') data->player.angle = 0;
-                    data->map.array[i][j] = '0';
-                }
+				else if (data->map.array[i][j] == data->map.player_orientation)
+					init_player(data);
                 draw_square(data, offset_x + j * minimap_cell_size, offset_y + i * minimap_cell_size, minimap_cell_size, color);
             }
+			j++;
         }
+		i++;
     }
 }
 
@@ -180,11 +230,11 @@ void render_3d_view(t_data *data, t_colors *colors)
 {
 	// (void)colors;
 
-    printf("Address of colors: %p\n", (void*)colors);
-    printf("Address of hex_ceiling: %p\n", (void*)&(colors->hex_ceiling));
-    printf("Address of hex_floor: %p\n", (void*)&(colors->hex_floor));
-    printf("hex_ceiling = 0x%08X\n", colors->hex_ceiling);
-    printf("hex_floor = 0x%08X\n", colors->hex_floor);
+    // printf("Address of colors: %p\n", (void*)colors);
+    // printf("Address of hex_ceiling: %p\n", (void*)&(colors->hex_ceiling));
+    // printf("Address of hex_floor: %p\n", (void*)&(colors->hex_floor));
+    // printf("hex_ceiling = 0x%08X\n", colors->hex_ceiling);
+    // printf("hex_floor = 0x%08X\n", colors->hex_floor);
 
 
     int width = WINDOW_WIDTH;
@@ -384,6 +434,7 @@ void render_3d_view(t_data *data, t_colors *colors)
 
 int render_background(t_data *data, t_colors *colors) {
     render_3d_view(data, colors); // Render the 3D view
+	// initialize_player(data);
     render_map(data); // Render the minimap (keeping your existing minimap rendering code)
     draw_player(data, data->player.x / 4 + 20, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 20, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
     // cast_ray(data); // Cast rays for the minimap
@@ -397,41 +448,80 @@ int close_window(t_data *data) {
     exit(0);
 }
 
+//	Office mac key codes
 int key_press(int keycode, t_data *data) {
-    if (keycode == 65307) // ESC key code on MacOS
+    if (keycode == 53) // ESC key code on MacOS
         close_window(data);
-    else if (keycode == 65361) // Left arrow key for rotation
+    else if (keycode == 123) // Left arrow key for rotation
         data->player.rotate_left = 1;
-    else if (keycode == 65363) // Right arrow key for rotation
+    else if (keycode == 124) // Right arrow key for rotation
         data->player.rotate_right = 1;
-    else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+    else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
         data->player.move_forward = 1;
-    else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+    else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
         data->player.move_backward = 1;
-    else if (keycode == 97) // 'a' key for left strafe
+    else if (keycode == 0) // 'a' key for left strafe
         data->player.strafe_left = 1;
-    else if (keycode == 100) // 'd' key for right strafe
+    else if (keycode == 2) // 'd' key for right strafe
         data->player.strafe_right = 1;
 
     return 0;
 }
 
+//	Office mac key codes
 int key_release(int keycode, t_data *data) {
-    if (keycode == 65361) // Left arrow key for rotation
+    if (keycode == 123) // Left arrow key for rotation
         data->player.rotate_left = 0;
-    else if (keycode == 65363) // Right arrow key for rotation
+    else if (keycode == 124) // Right arrow key for rotation
         data->player.rotate_right = 0;
-    else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+    else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
         data->player.move_forward = 0;
-    else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+    else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
         data->player.move_backward = 0;
-    else if (keycode == 97) // 'a' key for left strafe
+    else if (keycode == 0) // 'a' key for left strafe
         data->player.strafe_left = 0;
-    else if (keycode == 100) // 'd' key for right strafe
+    else if (keycode == 2) // 'd' key for right strafe
         data->player.strafe_right = 0;
 
     return 0;
 }
+
+// int key_press(int keycode, t_data *data) {
+//     if (keycode == 65307) // ESC key code on MacOS
+//         close_window(data);
+//     else if (keycode == 65361) // Left arrow key for rotation
+//         data->player.rotate_left = 1;
+//     else if (keycode == 65363) // Right arrow key for rotation
+//         data->player.rotate_right = 1;
+//     else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+//         data->player.move_forward = 1;
+//     else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+//         data->player.move_backward = 1;
+//     else if (keycode == 97) // 'a' key for left strafe
+//         data->player.strafe_left = 1;
+//     else if (keycode == 100) // 'd' key for right strafe
+//         data->player.strafe_right = 1;
+
+//     return 0;
+// }
+
+// int key_release(int keycode, t_data *data) {
+// printf("key pressed is %d\n", keycode);
+//     if (keycode == 65361) // Left arrow key for rotation
+//         data->player.rotate_left = 0;
+//     else if (keycode == 65363) // Right arrow key for rotation
+//         data->player.rotate_right = 0;
+//     else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+//         data->player.move_forward = 0;
+//     else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+//         data->player.move_backward = 0;
+//     else if (keycode == 97) // 'a' key for left strafe
+//         data->player.strafe_left = 0;
+//     else if (keycode == 100) // 'd' key for right strafe
+//         data->player.strafe_right = 0;
+
+//     return 0;
+// }
 
 void normalize_angle(double *angle) {
     while (*angle < 0) *angle += 2 * PI;
