@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 21:54:44 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/02 21:11:40 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 20:17:25 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static result	store_texture_path(char *line, t_textures *textures)
             if (*(textures->array[i]) != NULL)
             {
 // ----- CHECK HERE IF THE PATH IS VALID TO AVOID CONSIDERING A WRONG PATH (i.e. 'NO sdfsaf') AS VALID
-                printf("Error: Textures: Two attempts to define %s texture\n", textures->texture_ids[i]);
-				// printf("Error: Invalid characters found\n");	<-- DESCARTADO
-				// printf("Error: Textures: Invalid or duplicated %s texture definition found\n", textures->texture_ids[i]);
+                printf("Error\nTextures: Two attempts to define %s texture\n", textures->texture_ids[i]);
+				// printf("Error\nInvalid characters found\n");	<-- DESCARTADO
+				// printf("Error\nTextures: Invalid or duplicated %s texture definition found\n", textures->texture_ids[i]);
                 return (FAIL);
             }
             j = 2;
@@ -86,17 +86,17 @@ static boolean	are_all_textures_defined(t_textures *textures)
     if (textures->north == NULL && textures->south == NULL
         && textures->east == NULL && textures->west == NULL)
     {
-        printf("Error: No textures defined in the file\n");
+        printf("Error\nTextures: Not defined in the file\n");
         return (FALSE);
     }    
     if (textures->north == NULL)
-        printf("Error: North texture is missing in the file\n");
+        printf("Error\nTextures: North is missing in the file\n");
     if (textures->south == NULL)
-        printf("Error: South texture is missing in the file\n");
+        printf("Error\nTextures: South is missing in the file\n");
     if (textures->east == NULL)
-        printf("Error: East texture is missing in the file\n");
+        printf("Error\nTextures: East is missing in the file\n");
     if (textures->west == NULL)
-        printf("Error: West texture is missing in the file\n");
+        printf("Error\nTextures: West is missing in the file\n");
     return (FALSE);
 }
 
@@ -114,13 +114,13 @@ static boolean	are_texture_paths_valid(t_textures *textures)
     	if (fd >= 0)
 		{
 			close(fd);
-      		printf("Error: '%s' is a directory\n", path);
+      		printf("Error\nOpen: '%s' is a directory, not a file\n", path);
       		return (FALSE);  // Early exit on error
     	}
     	fd = open(path, O_RDONLY);
     	if (fd < 0)
 		{
-      		printf("Error: Cannot open '%s'\n", path);
+      		printf("Error\nOpen: Cannot open '%s'\n", path);
       		return (FALSE);  // Early exit on error
     	}
     	close(fd);
@@ -148,7 +148,7 @@ static boolean	are_textures_unique(t_textures *textures)
 		|| !ft_strncmp(*(textures->array[1]), *(textures->array[3]), len1)
 		|| !ft_strncmp(*(textures->array[2]), *(textures->array[3]), len2))
 	{
-		printf("Error: Textures: Must be different for every orientation\n");
+		printf("Error\nTextures: Must be different for every orientation\n");
 		return (FALSE);
 	}
 	return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:02:33 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 00:43:30 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 23:20:41 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_map(t_data *data, char *map_file)
 	data->map.visited_array = NULL;
 	data->map.player_x = 0;
 	data->map.player_y = 0;
-	data->map.closed = true;
+	// data->map.closed = true;
 	data->map.new_x = 0;
 	data->map.new_y = 0;
 }

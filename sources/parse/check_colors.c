@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 01:47:26 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 20:05:39 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,21 @@ static boolean	rgb_triplet_is_valid(char **rgb_array, int *color)
 	{
 		if (!(is_valid_number(rgb_array[i])))
 		{
-			printf("Error: Color: ");
+			printf("Error\nColor: ");
 			printf("Negative value or non-numeric characters found\n");
 			return (FALSE);
 		}
 		color[i] = ft_atoi(rgb_array[i]);
 		if (color[i] < 0 || color[i] > 255)
 		{
-			printf("Error: Color: Parameter out of range found\n");
+			printf("Error\nColor: Parameter out of range found\n");
 			return (FALSE);
 		}
 		i++;
 	}
 	if (i != 3 || rgb_array[i] != NULL)
 	{
-		printf("Error: Color: RGB must have three parameters\n");
+		printf("Error\nColor: RGB must have three parameters\n");
 		return (FALSE);
 	}
 	return (TRUE);
@@ -75,7 +75,7 @@ static result	store_rgb_color(const char *line, int *color)
 	rgb_array = ft_split(line, ',');
 	if (!rgb_array)
 	{
-		printf("Error: Failed to split RGB values.\n");
+		printf("Error\nFailed to split RGB values.\n");
 		return (FAIL);
 	}
 	if (rgb_triplet_is_valid(rgb_array, color) == FALSE)
@@ -92,23 +92,23 @@ static boolean	are_colors_defined(int *color_found)
 {
 	if (*color_found == 0)
 	{
-		printf("Error: Colors: Not defined in the file\n");
+		printf("Error\nColors: Not defined in the file\n");
 		return (FALSE);
 	}
 	else if (*color_found == 1)
 	{
-		printf("Error: Colors: Ceiling is wrong or missing\n");
+		printf("Error\nColors: Ceiling is wrong or missing\n");
 		return (FALSE);
 	}
 	else if (*color_found == 2)
 	{
-		printf("Error: Colors: Floor is wrong or missing\n");
+		printf("Error\nColors: Floor is wrong or missing\n");
 		return (FALSE);
 	}
 	else if (*color_found == 3)
 		return (TRUE);
 	else
-		printf("Error: Colors: Only two colors needed\n");
+		printf("Error\nColors: Only two colors needed\n");
 	return (FALSE);
 }
 
@@ -148,7 +148,7 @@ boolean	are_colors_unique(t_colors *colors)
 {
 	if((colors->hex_ceiling) == (colors->hex_floor))
 	{
-		printf("Error: Colors: must be different for ceiling and floor\n");
+		printf("Error\nColors: must be different for ceiling and floor\n");
 		return (FALSE);
 	}
 	return (TRUE);

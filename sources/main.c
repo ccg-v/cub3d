@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 01:29:35 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 20:58:21 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ result	check_args(int argc)
 {
     if (argc!= 2)
     {
-      printf("Error: Wrong arguments (usage: ./cub3d <path_to_file>)\n");
+      printf("Error\nWrong arguments (usage: ./cub3d <path_to_file>)\n");
       return (FAIL);
     }
 	return (SUCCESS);
@@ -48,7 +48,7 @@ int	free_and_exit(t_textures *textures, t_map *map)
 
 int main(int argc, char **argv)
 {
-    // t_map		map;
+    t_map		map;
     t_textures	textures;
     t_colors	colors;
 	t_data		data;
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 		return (FAIL);
 	// print_map_array(map.array, map.height, map.width);
 
-printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
-printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);	
+// printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
+// printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);
 
 	if (check_textures(&data, &textures) == 	FAIL)
 	{	
@@ -79,9 +79,8 @@ printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling
 	if (check_walls(&data) == FAIL)
 		return (free_and_exit(&textures, &data.map));
 
+
 	// engine_main(&data, &textures);
-
-
 
 	data.player.move_forward = 0;
     data.player.move_backward = 0;
@@ -139,6 +138,18 @@ printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling
     data.player_size = data.cell_size / 2;
     data.player.ray_length = data.cell_size * 100;
 
+printf("map.height = %ld\n", map.height);
+printf("map.width =%ld\n", map.width);
+printf("data.map.height = %ld\n", data.map.height);
+printf("data.map.width = %ld\n", data.map.width);
+printf("map.player_x = %ld\n", map.player_x);
+printf("map.player_y = %ld\n", map.player_y);
+printf("data.map.player_x = %ld\n", data.map.player_x);
+printf("data.map.player_y = %ld\n", data.map.player_y);
+printf("data.cell_size = %d\n", data.cell_size);
+printf("data.player.x = %f\n", data.player.x);
+printf("data.player.y = %f\n", data.player.y);
+
     // Initialize prev_time
     // clock_gettime(CLOCK_MONOTONIC, &data.prev_time);
 	
@@ -152,9 +163,6 @@ printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling
     mlx_loop_hook(data.mlx, main_loop, &data); // Main loop
 
     mlx_loop(data.mlx);
-
-
-
 
 	free_array(data.map.array, data.map.height);
 	free_array(data.map.visited_array, (data.map.height + 2));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/07/03 17:57:25 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/04 00:31:20 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,21 @@ void	init_player(t_data *data)
 
 void render_map(t_data *data)
 {
-    int minimap_scale = 4; // Scale down the minimap by this factor
-    int minimap_cell_size = data->cell_size / minimap_scale;
-    int offset_x = 30; // Position from the left
-    int offset_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
+    // int minimap_scale = 4; // Scale down the minimap by this factor
+    int minimap_cell_size = data->cell_size / MINIMAP_SCALE;
+    data->minimap_x = 30; // Position from the left
+    data->minimap_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
 	size_t	i;
 	size_t	j;
 
-	// init_player(data);
+// printf("data.map.height = %ld\n", data->map.height);
+// printf("data.map.width = %ld\n", data->map.width);
+// printf("data.map.player_x = %ld\n", data->map.player_x);
+// printf("data.map.player_y = %ld\n", data->map.player_y);
+// printf("data.cell_size = %d\n", data->cell_size);
+// printf("data.player.x = %f\n", data->player.x);
+// printf("data.player.y = %f\n", data->player.y);
+
 	i = 0;
     while (i < data->map.height)
 	{
@@ -128,7 +135,7 @@ void render_map(t_data *data)
                     color = EMPTY_COLOR;
 				else if (data->map.array[i][j] == data->map.player_orientation)
 					init_player(data);
-                draw_square(data, offset_x + j * minimap_cell_size, offset_y + i * minimap_cell_size, minimap_cell_size, color);
+                draw_square(data, data->minimap_x + j * minimap_cell_size, data->minimap_y + i * minimap_cell_size, minimap_cell_size, color);
             }
 			j++;
         }
@@ -434,10 +441,33 @@ void render_3d_view(t_data *data, t_colors *colors)
 
 int render_background(t_data *data, t_colors *colors) {
     render_3d_view(data, colors); // Render the 3D view
-	// initialize_player(data);
     render_map(data); // Render the minimap (keeping your existing minimap rendering code)
-    draw_player(data, data->player.x / 4 + 20, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 20, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
-    // cast_ray(data); // Cast rays for the minimap
+
+    // draw_player(data, data->player.x / 4 + 10, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 10, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
+	// draw_player(data, (data->player.x / data->cell_size) * (data->cell_size / MINIMAP_SCALE) + 30, 
+    //         (data->player.y / data->cell_size) * (data->cell_size / MINIMAP_SCALE) + WINDOW_HEIGHT - (data->map.height * (data->cell_size / MINIMAP_SCALE)) - 20, 
+    //         data->player_size / MINIMAP_SCALE, 
+    //         PLAYER_COLOR);
+	
+	// Update coordinates:
+	//	- (player.x / cell_size) converts the player's x-position from pixels to grid units
+	//	- multiplying by (cell_size / MINIMAP_SCALE) converts it back to pixels, but scaled down for the minimap.
+	//	-----> CAN BE SHORTENED JUST DIVIDING (data->player.x / MINIMAP_SCALE) ????????????????????????????????????????????????
+	// int player_new_x = data->minimap_x + (data->player.x / data->cell_size) * (data->cell_size / MINIMAP_SCALE);
+	// int player_new_y = data->minimap_y + (data->player.y / data->cell_size) * (data->cell_size / MINIMAP_SCALE);
+	int player_new_x = data->minimap_x + (data->player.x  / MINIMAP_SCALE);
+	int player_new_y = data->minimap_y + (data->player.y  / MINIMAP_SCALE);
+	int scaled_player = data->player_size / MINIMAP_SCALE;
+
+printf("player_x_update = %d\n", player_new_x);
+printf("player_y_update = %d\n", player_new_y);
+
+	draw_player(data, player_new_x, player_new_y, scaled_player, PLAYER_COLOR);
+				// data->minimap_x + (data->player.x / data->cell_size) * (data->cell_size / MINIMAP_SCALE), 
+				// data->minimap_y + (data->player.y / data->cell_size) * (data->cell_size / MINIMAP_SCALE), 
+				// data->player_size / MINIMAP_SCALE, 
+				// PLAYER_COLOR);
+    cast_ray(data); // Cast rays for the minimap
 
     mlx_put_image_to_window(data->mlx, data->window, data->image, 0, 0);
     return 0;
@@ -448,100 +478,173 @@ int close_window(t_data *data) {
     exit(0);
 }
 
-//	Office mac key codes
-int key_press(int keycode, t_data *data) {
-    if (keycode == 53) // ESC key code on MacOS
-        close_window(data);
-    else if (keycode == 123) // Left arrow key for rotation
-        data->player.rotate_left = 1;
-    else if (keycode == 124) // Right arrow key for rotation
-        data->player.rotate_right = 1;
-    else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
-        data->player.move_forward = 1;
-    else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
-        data->player.move_backward = 1;
-    else if (keycode == 0) // 'a' key for left strafe
-        data->player.strafe_left = 1;
-    else if (keycode == 2) // 'd' key for right strafe
-        data->player.strafe_right = 1;
-
-    return 0;
-}
-
-//	Office mac key codes
-int key_release(int keycode, t_data *data) {
-    if (keycode == 123) // Left arrow key for rotation
-        data->player.rotate_left = 0;
-    else if (keycode == 124) // Right arrow key for rotation
-        data->player.rotate_right = 0;
-    else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
-        data->player.move_forward = 0;
-    else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
-        data->player.move_backward = 0;
-    else if (keycode == 0) // 'a' key for left strafe
-        data->player.strafe_left = 0;
-    else if (keycode == 2) // 'd' key for right strafe
-        data->player.strafe_right = 0;
-
-    return 0;
-}
-
+// //	Carlos Office mac key codes
 // int key_press(int keycode, t_data *data) {
-//     if (keycode == 65307) // ESC key code on MacOS
+//     if (keycode == 53) // ESC key code on MacOS
 //         close_window(data);
-//     else if (keycode == 65361) // Left arrow key for rotation
+//     else if (keycode == 123) // Left arrow key for rotation
 //         data->player.rotate_left = 1;
-//     else if (keycode == 65363) // Right arrow key for rotation
+//     else if (keycode == 124) // Right arrow key for rotation
 //         data->player.rotate_right = 1;
-//     else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+//     else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
 //         data->player.move_forward = 1;
-//     else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+//     else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
 //         data->player.move_backward = 1;
-//     else if (keycode == 97) // 'a' key for left strafe
+//     else if (keycode == 0) // 'a' key for left strafe
 //         data->player.strafe_left = 1;
-//     else if (keycode == 100) // 'd' key for right strafe
+//     else if (keycode == 2) // 'd' key for right strafe
 //         data->player.strafe_right = 1;
 
 //     return 0;
 // }
 
+// //	Carlos Office mac key codes
 // int key_release(int keycode, t_data *data) {
-// printf("key pressed is %d\n", keycode);
-//     if (keycode == 65361) // Left arrow key for rotation
+//     if (keycode == 123) // Left arrow key for rotation
 //         data->player.rotate_left = 0;
-//     else if (keycode == 65363) // Right arrow key for rotation
+//     else if (keycode == 124) // Right arrow key for rotation
 //         data->player.rotate_right = 0;
-//     else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+//     else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
 //         data->player.move_forward = 0;
-//     else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+//     else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
 //         data->player.move_backward = 0;
-//     else if (keycode == 97) // 'a' key for left strafe
+//     else if (keycode == 0) // 'a' key for left strafe
 //         data->player.strafe_left = 0;
-//     else if (keycode == 100) // 'd' key for right strafe
+//     else if (keycode == 2) // 'd' key for right strafe
 //         data->player.strafe_right = 0;
 
 //     return 0;
 // }
+
+int key_press(int keycode, t_data *data) {
+    if (keycode == 65307) // ESC key code on MacOS
+        close_window(data);
+    else if (keycode == 65361) // Left arrow key for rotation
+        data->player.rotate_left = 1;
+    else if (keycode == 65363) // Right arrow key for rotation
+        data->player.rotate_right = 1;
+    else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+        data->player.move_forward = 1;
+    else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+        data->player.move_backward = 1;
+    else if (keycode == 97) // 'a' key for left strafe
+        data->player.strafe_left = 1;
+    else if (keycode == 100) // 'd' key for right strafe
+        data->player.strafe_right = 1;
+
+    return 0;
+}
+
+int key_release(int keycode, t_data *data) {
+    if (keycode == 65361) // Left arrow key for rotation
+        data->player.rotate_left = 0;
+    else if (keycode == 65363) // Right arrow key for rotation
+        data->player.rotate_right = 0;
+    else if (keycode == 65362 || keycode == 119) // Up arrow key or 'w' key
+        data->player.move_forward = 0;
+    else if (keycode == 65364 || keycode == 115) // Down arrow key or 's' key
+        data->player.move_backward = 0;
+    else if (keycode == 97) // 'a' key for left strafe
+        data->player.strafe_left = 0;
+    else if (keycode == 100) // 'd' key for right strafe
+        data->player.strafe_right = 0;
+
+    return 0;
+}
 
 void normalize_angle(double *angle) {
     while (*angle < 0) *angle += 2 * PI;
     while (*angle >= 2 * PI) *angle -= 2 * PI;
 }
 
+// void update_player(t_data *data) {
+//     // struct timespec current_time;
+//     // clock_gettime(CLOCK_MONOTONIC, &current_time);
+//     // double delta_time = (current_time.tv_sec - data->prev_time.tv_sec) + (current_time.tv_nsec - data->prev_time.tv_nsec) / 1e9;
+//     double delta_time = 0.028135;
+//     // data->prev_time = current_time;
+
+//     double move_speed = data->cell_size * 15.0 * delta_time; // Adjust speed as needed
+//     double rot_speed = PI / 2.0 * delta_time; // Adjust rotation speed as needed
+
+//     // Save the original position
+//     double original_x = data->player.x;
+//     double original_y = data->player.y;
+
+//     if (data->player.rotate_left) {
+//         data->player.angle -= rot_speed;
+//         normalize_angle(&data->player.angle);
+//     }
+//     if (data->player.rotate_right) {
+//         data->player.angle += rot_speed;
+//         normalize_angle(&data->player.angle);
+//     }
+
+//     double cos_angle = cos(data->player.angle);
+//     double sin_angle = sin(data->player.angle);
+
+//     if (data->player.move_forward) {
+//         data->player.x += move_speed * cos_angle;
+//         data->player.y += move_speed * sin_angle;
+//     }
+//     if (data->player.move_backward) {
+//         data->player.x -= move_speed * cos_angle;
+//         data->player.y -= move_speed * sin_angle;
+//     }
+//     if (data->player.strafe_left) {
+//         data->player.x += move_speed * cos(data->player.angle - PI / 2);
+//         data->player.y += move_speed * sin(data->player.angle - PI / 2);
+//     }
+//     if (data->player.strafe_right) {
+//         data->player.x += move_speed * cos(data->player.angle + PI / 2);
+//         data->player.y += move_speed * sin(data->player.angle + PI / 2);
+//     }
+
+//     // Calculate the player's bounding box
+//     double half_size = data->player_size / 2.0;
+//     int left_x = ((data->player.x - half_size) / data->cell_size);
+//     int right_x = ((data->player.x + half_size) / data->cell_size);
+//     int top_y = ((data->player.y - half_size) / data->cell_size);
+//     int bottom_y = ((data->player.y + half_size) / data->cell_size);
+
+//     // Ensure the new position is not within a wall
+//     if (left_x >= 0 && right_x < (int)data->map.width &&
+//         top_y >= 0 && bottom_y < (int)data->map.height &&
+//         data->map.array[top_y][left_x] != '1' &&
+//         data->map.array[top_y][right_x] != '1' &&
+//         data->map.array[bottom_y][left_x] != '1' &&
+//         data->map.array[bottom_y][right_x] != '1') {
+//         // New position is valid, nothing to revert
+//     } else {
+//         // Revert to original position if new position is invalid
+//         data->player.x = original_x;
+//         data->player.y = original_y;
+//     }
+// }
+
+int is_wall(t_data *data, double x, double y) {
+    int map_x = (int)(x / data->cell_size);
+    int map_y = (int)(y / data->cell_size);
+    
+    if (map_x < 0 || map_x >= data->map.width || 
+        map_y < 0 || map_y >= data->map.height) {
+        return 1;  // Treat out of bounds as a wall
+    }
+    
+    return (data->map.array[map_y][map_x] == '1');
+}
+
 void update_player(t_data *data) {
     // struct timespec current_time;
     // clock_gettime(CLOCK_MONOTONIC, &current_time);
     // double delta_time = (current_time.tv_sec - data->prev_time.tv_sec) + (current_time.tv_nsec - data->prev_time.tv_nsec) / 1e9;
-    double delta_time = 0.028135;
     // data->prev_time = current_time;
+	double delta_time = 0.028135;
 
-    double move_speed = data->cell_size * 15.0 * delta_time; // Adjust speed as needed
+    double move_speed = data->cell_size * 5.0 * delta_time; // Adjust speed as needed
     double rot_speed = PI / 2.0 * delta_time; // Adjust rotation speed as needed
 
-    // Save the original position
-    double original_x = data->player.x;
-    double original_y = data->player.y;
-
+    // Handle rotation
     if (data->player.rotate_left) {
         data->player.angle -= rot_speed;
         normalize_angle(&data->player.angle);
@@ -554,42 +657,40 @@ void update_player(t_data *data) {
     double cos_angle = cos(data->player.angle);
     double sin_angle = sin(data->player.angle);
 
+    // Calculate new position
+    double new_x = data->player.x;
+    double new_y = data->player.y;
+
     if (data->player.move_forward) {
-        data->player.x += move_speed * cos_angle;
-        data->player.y += move_speed * sin_angle;
+        new_x += move_speed * cos_angle;
+        new_y += move_speed * sin_angle;
     }
     if (data->player.move_backward) {
-        data->player.x -= move_speed * cos_angle;
-        data->player.y -= move_speed * sin_angle;
+        new_x -= move_speed * cos_angle;
+        new_y -= move_speed * sin_angle;
     }
     if (data->player.strafe_left) {
-        data->player.x += move_speed * cos(data->player.angle - PI / 2);
-        data->player.y += move_speed * sin(data->player.angle - PI / 2);
+        new_x += move_speed * cos(data->player.angle - PI / 2);
+        new_y += move_speed * sin(data->player.angle - PI / 2);
     }
     if (data->player.strafe_right) {
-        data->player.x += move_speed * cos(data->player.angle + PI / 2);
-        data->player.y += move_speed * sin(data->player.angle + PI / 2);
+        new_x += move_speed * cos(data->player.angle + PI / 2);
+        new_y += move_speed * sin(data->player.angle + PI / 2);
     }
 
-    // Calculate the player's bounding box
+    // Collision detection
     double half_size = data->player_size / 2.0;
-    int left_x = ((data->player.x - half_size) / data->cell_size);
-    int right_x = ((data->player.x + half_size) / data->cell_size);
-    int top_y = ((data->player.y - half_size) / data->cell_size);
-    int bottom_y = ((data->player.y + half_size) / data->cell_size);
 
-    // Ensure the new position is not within a wall
-    if (left_x >= 0 && right_x < (int)data->map.width &&
-        top_y >= 0 && bottom_y < (int)data->map.height &&
-        data->map.array[top_y][left_x] != '1' &&
-        data->map.array[top_y][right_x] != '1' &&
-        data->map.array[bottom_y][left_x] != '1' &&
-        data->map.array[bottom_y][right_x] != '1') {
-        // New position is valid, nothing to revert
-    } else {
-        // Revert to original position if new position is invalid
-        data->player.x = original_x;
-        data->player.y = original_y;
+    // Check collision for X axis
+    if (!is_wall(data, new_x + half_size, data->player.y) && 
+        !is_wall(data, new_x - half_size, data->player.y)) {
+        data->player.x = new_x;
+    }
+
+    // Check collision for Y axis
+    if (!is_wall(data, data->player.x, new_y + half_size) && 
+        !is_wall(data, data->player.x, new_y - half_size)) {
+        data->player.y = new_y;
     }
 }
 

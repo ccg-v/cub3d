@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarrace <ccarrace@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 12:06:03 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/03 23:16:16 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ typedef enum
 # define YELLOW "\033[1;93m"	//	bold bright yellow
 # define RESET "\x1B[0m"   // resets all terminal attributes to default settings
 
-// #define WINDOW_WIDTH 2048
-// #define WINDOW_HEIGHT 1536
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
+#define WINDOW_WIDTH 2048
+#define WINDOW_HEIGHT 1536
+// #define WINDOW_WIDTH 1024
+// #define WINDOW_HEIGHT 768
 #define GREY_COLOR 0x808080
 #define PLAYER_COLOR 0xFF0000 // Red color for the player
 // #define PLAYER_SIZE 8  // Half-size of the player square
@@ -62,6 +62,8 @@ typedef enum
 #define PI 3.14159265359
 #define CEILING_COLOR 0x87CEEB // Light blue color for ceiling (135,206,235)
 #define FLOOR_COLOR 0x8B4513 // Brown color for floor (139,69,19)
+
+#define MINIMAP_SCALE 4
 // #define DEFAULT_CELL_SIZE 20 // Default size of each cell in the map
 
 /* --- Data structures ------------------------------------------------------ */
@@ -93,7 +95,7 @@ typedef struct s_map
 	size_t		player_x;
 	size_t		player_y;
 	char		player_orientation;
-	bool		closed;
+	// bool		closed;
 	size_t		new_x;
 	size_t		new_y;
 
@@ -157,6 +159,9 @@ typedef struct s_data {
     t_textures west_texture;
     t_textures east_texture;
     struct timespec prev_time; // Add this line
+
+	int	minimap_x;
+	int	minimap_y;
 } t_data;
 
 /* === Functions ============================================================ */
