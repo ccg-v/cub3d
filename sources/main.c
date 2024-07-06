@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/06 00:09:21 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/06 21:10:12 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ result	check_args(int argc)
 	return (SUCCESS);
 }
 
-void	init(char *file_name, t_data *data, t_textures *textures, t_colors *colors)
+void	init(char *file_name, t_data *data, t_textures *textures)
 {
     init_map(data, file_name);
     init_textures(textures);
-    init_colors(colors);	
+    init_colors(data);	
 }
 
 int	free_and_exit(t_textures *textures, t_map *map)
@@ -50,21 +50,17 @@ int main(int argc, char **argv)
 {
     t_map		map;
     t_textures	textures;
-    t_colors	colors;
 	t_data		data;
 
 	if (check_args(argc) == FAIL)
 		return (FAIL);
-	init(argv[1], &data, &textures, &colors);
+	init(argv[1], &data, &textures);
 	if (file_check(argv[1]) == FAIL || find_map_dimensions(&data) == FAIL
-	|| check_scene_description(&data) == FAIL || check_colors(&data, &colors) == FAIL)
+	|| check_scene_description(&data) == FAIL || check_colors(&data) == FAIL)
 		return (FAIL);
 	// print_map_array(map.array, map.height, map.width);
 
-printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
-printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);
-
-	if (check_textures(&data, &textures) == 	FAIL)
+	if (check_textures(&data, &textures) == FAIL)
 	{	
 		free(textures.north);
 		free(textures.south);

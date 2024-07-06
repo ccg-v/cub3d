@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/07/06 02:54:57 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/06 21:12:37 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,21 +105,14 @@ void	init_player(t_data *data)
 
 void render_map(t_data *data)
 {
-    // int minimap_scale = 4; // Scale down the minimap by this factor
-    int minimap_cell_size = data->cell_size / MINIMAP_SCALE;
-    data->minimap_x = 30; // Position from the left
-    data->minimap_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
 	size_t	i;
 	size_t	j;
-
-// printf("data.map.height = %ld\n", data->map.height);
-// printf("data.map.width = %ld\n", data->map.width);
-// printf("data.map.player_x = %ld\n", data->map.player_x);
-// printf("data.map.player_y = %ld\n", data->map.player_y);
-// printf("data.cell_size = %d\n", data->cell_size);
-// printf("data.player.x = %f\n", data->player.x);
-// printf("data.player.y = %f\n", data->player.y);
-
+    int 	minimap_cell_size;
+	int		color;
+	
+	minimap_cell_size = data->cell_size / MINIMAP_SCALE;
+    data->minimap_x = 30; // Position from the left
+    data->minimap_y = WINDOW_HEIGHT - (data->map.height * minimap_cell_size) - 20; // Position from the bottom
 	i = 0;
     while (i < data->map.height)
 	{
@@ -128,7 +121,7 @@ void render_map(t_data *data)
 		{
             if (j < ft_strlen(data->map.array[i]))
 			{
-                int color = GREY_COLOR;
+                color = GREY_COLOR;
                 if (data->map.array[i][j] == '1')
                     color = WALL_COLOR;
                 else if (data->map.array[i][j] == '0')
@@ -219,12 +212,7 @@ void cast_ray(t_data *data)
     }
 }
 
-
-int is_vertical_hit(double ray_dx, double ray_dy) {
-    return fabs(ray_dx) > fabs(ray_dy);
-}
-
-void render_3d_view(t_data *data, t_colors *colors)
+void render_3d_view(t_data *data)
 {
 	// (void)colors;
 
@@ -245,8 +233,8 @@ void render_3d_view(t_data *data, t_colors *colors)
         for (int x = 0; x < width; x++) {
             // put_pixel(data, x, y, CEILING_COLOR);
             // put_pixel(data, x, height - 1 - y, FLOOR_COLOR);
-            put_pixel(data, x, y, 0xffffffff);
-            put_pixel(data, x, height - 1 - y, 0xff0000ff);
+            put_pixel(data, x, y, data->colors.hex_ceiling);
+            put_pixel(data, x, height - 1 - y, data->colors.hex_floor);
         }
     }
 // Assuming colors->hex_ceiling and colors->hex_floor are of type unsigned long
@@ -430,8 +418,8 @@ void render_3d_view(t_data *data, t_colors *colors)
     }
 }
 
-int render_background(t_data *data, t_colors *colors) {
-    render_3d_view(data, colors); // Render the 3D view
+int render_background(t_data *data) {
+    render_3d_view(data); // Render the 3D view
     render_map(data); // Render the minimap (keeping your existing minimap rendering code)
 
     // draw_player(data, data->player.x / 4 + 10, data->player.y / 4 + WINDOW_HEIGHT - (data->map.height * (data->cell_size / 4)) - 10, data->player_size / 4, PLAYER_COLOR); // Render the player on the minimap
@@ -477,44 +465,6 @@ int close_window(t_data *data) {
     exit(0);
 }
 
-// //	Carlos Office mac key codes
-// int key_press(int keycode, t_data *data) {
-//     if (keycode == 53) // ESC key code on MacOS
-//         close_window(data);
-//     else if (keycode == 123) // Left arrow key for rotation
-//         data->player.rotate_left = 1;
-//     else if (keycode == 124) // Right arrow key for rotation
-//         data->player.rotate_right = 1;
-//     else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
-//         data->player.move_forward = 1;
-//     else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
-//         data->player.move_backward = 1;
-//     else if (keycode == 0) // 'a' key for left strafe
-//         data->player.strafe_left = 1;
-//     else if (keycode == 2) // 'd' key for right strafe
-//         data->player.strafe_right = 1;
-
-//     return 0;
-// }
-
-// //	Carlos Office mac key codes
-// int key_release(int keycode, t_data *data) {
-//     if (keycode == 123) // Left arrow key for rotation
-//         data->player.rotate_left = 0;
-//     else if (keycode == 124) // Right arrow key for rotation
-//         data->player.rotate_right = 0;
-//     else if (keycode == 126 || keycode == 13) // Up arrow key or 'w' key
-//         data->player.move_forward = 0;
-//     else if (keycode == 125 || keycode == 1) // Down arrow key or 's' key
-//         data->player.move_backward = 0;
-//     else if (keycode == 0) // 'a' key for left strafe
-//         data->player.strafe_left = 0;
-//     else if (keycode == 2) // 'd' key for right strafe
-//         data->player.strafe_right = 0;
-
-//     return 0;
-// }
-
 int key_press(int keycode, t_data *data) {
     if (keycode == 65307) // ESC key code on MacOS
         close_window(data);
@@ -555,72 +505,6 @@ void normalize_angle(double *angle) {
     while (*angle < 0) *angle += 2 * PI;
     while (*angle >= 2 * PI) *angle -= 2 * PI;
 }
-
-// void update_player(t_data *data) {
-//     // struct timespec current_time;
-//     // clock_gettime(CLOCK_MONOTONIC, &current_time);
-//     // double delta_time = (current_time.tv_sec - data->prev_time.tv_sec) + (current_time.tv_nsec - data->prev_time.tv_nsec) / 1e9;
-//     double delta_time = 0.028135;
-//     // data->prev_time = current_time;
-
-//     double move_speed = data->cell_size * 15.0 * delta_time; // Adjust speed as needed
-//     double rot_speed = PI / 2.0 * delta_time; // Adjust rotation speed as needed
-
-//     // Save the original position
-//     double original_x = data->player.x;
-//     double original_y = data->player.y;
-
-//     if (data->player.rotate_left) {
-//         data->player.angle -= rot_speed;
-//         normalize_angle(&data->player.angle);
-//     }
-//     if (data->player.rotate_right) {
-//         data->player.angle += rot_speed;
-//         normalize_angle(&data->player.angle);
-//     }
-
-//     double cos_angle = cos(data->player.angle);
-//     double sin_angle = sin(data->player.angle);
-
-//     if (data->player.move_forward) {
-//         data->player.x += move_speed * cos_angle;
-//         data->player.y += move_speed * sin_angle;
-//     }
-//     if (data->player.move_backward) {
-//         data->player.x -= move_speed * cos_angle;
-//         data->player.y -= move_speed * sin_angle;
-//     }
-//     if (data->player.strafe_left) {
-//         data->player.x += move_speed * cos(data->player.angle - PI / 2);
-//         data->player.y += move_speed * sin(data->player.angle - PI / 2);
-//     }
-//     if (data->player.strafe_right) {
-//         data->player.x += move_speed * cos(data->player.angle + PI / 2);
-//         data->player.y += move_speed * sin(data->player.angle + PI / 2);
-//     }
-
-//     // Calculate the player's bounding box
-//     double half_size = data->player_size / 2.0;
-//     int left_x = ((data->player.x - half_size) / data->cell_size);
-//     int right_x = ((data->player.x + half_size) / data->cell_size);
-//     int top_y = ((data->player.y - half_size) / data->cell_size);
-//     int bottom_y = ((data->player.y + half_size) / data->cell_size);
-
-//     // Ensure the new position is not within a wall
-//     if (left_x >= 0 && right_x < (int)data->map.width &&
-//         top_y >= 0 && bottom_y < (int)data->map.height &&
-//         data->map.array[top_y][left_x] != '1' &&
-//         data->map.array[top_y][right_x] != '1' &&
-//         data->map.array[bottom_y][left_x] != '1' &&
-//         data->map.array[bottom_y][right_x] != '1') {
-//         // New position is valid, nothing to revert
-//     } else {
-//         // Revert to original position if new position is invalid
-//         data->player.x = original_x;
-//         data->player.y = original_y;
-//     }
-// }
-
 
 int is_wall(t_data *data, double x, double y) {
     int map_x = (int)(x / data->cell_size);
@@ -674,178 +558,62 @@ void update_player(t_data *data)
         new_y += move_speed * sin(data->player.angle + PI / 2);
     }
 
-//     // Collision detection
-//     double half_size = data->player_size / 2.0;
+    // // Collision detection
+    // double half_size = data->player_size / 2.0;
 
-//     // Check collision for X axis
-//     if (!is_wall(data, new_x + half_size, data->player.y) && 
-//         !is_wall(data, new_x - half_size, data->player.y)) {
-//         data->player.x = new_x;
-//     }
+    // // Check collision for X axis
+    // if (!is_wall(data, new_x + half_size, data->player.y) && 
+    //     !is_wall(data, new_x - half_size, data->player.y)) {
+    //     data->player.x = new_x;
+    // }
 
-// 	else if (is_wall(data, new_x - half_size, data->player.y))
-// 	{
-// printf("---------------------------------------------------\n");
-// printf("cell size   = %d\n", data->cell_size);
-// printf("player size = %d\n", data->player_size);
-// printf("player_position_update = (%f, %f)\n", new_x, new_y);
-// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-// printf("---------------------------------------------------\n");
-// 		printf("east wall collision at  %f\n", new_x - half_size);
-// 	}
-
-//     else if (is_wall(data, new_x + half_size, data->player.y))
-// 	{
-// printf("---------------------------------------------------\n");
-// printf("cell size   = %d\n", data->cell_size);
-// printf("player size = %d\n", data->player_size);
-// printf("player_position_update = (%f, %f)\n", new_x, new_y);
-// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-// printf("---------------------------------------------------\n");
-// 		printf("west wall collision at  %f\n", new_x + half_size);
-// 	}
-
-
-//     // Check collision for Y axis
-//     if (!is_wall(data, data->player.x, new_y + half_size) && 
-//         !is_wall(data, data->player.x, new_y - half_size)) {
-//         data->player.y = new_y;
-//     }
-
-
-
-// 	else if (is_wall(data, data->player.x, new_y + half_size))
-// 	{
-// printf("---------------------------------------------------\n");
-// printf("cell size   = %d\n", data->cell_size);
-// printf("player size = %d\n", data->player_size);
-// printf("player_position_update = (%f, %f)\n", new_x, new_y);
-// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-// printf("---------------------------------------------------\n");
-// 		printf("south wall collision at %f\n", new_y + half_size);
-// 	}
-// 	else if (is_wall(data, data->player.x, new_y - half_size))
-// 	{
-// printf("---------------------------------------------------\n");
-// printf("cell size   = %d\n", data->cell_size);
-// printf("player size = %d\n", data->player_size);
-// printf("player_position_update = (%f, %f)\n", new_x, new_y);
-// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-// printf("---------------------------------------------------\n");
-// 		printf("north wall collision at %f\n", new_y - half_size);
-// 	}
-
+    // // Check collision for Y axis
+    // if (!is_wall(data, data->player.x, new_y + half_size) && 
+    //     !is_wall(data, data->player.x, new_y - half_size)) {
+    //     data->player.y = new_y;
+    // }
 
     // Collision detection   
-	double half_size = data->player_size / 2.0;
-
+	double half_size;
+	
+	half_size = data->player_size / 2.0;
 	// Check collision for X axis
 	if (!is_wall(data, new_x + half_size, data->player.y) &&
-		!is_wall(data, new_x - half_size, data->player.y)) {
+		!is_wall(data, new_x - half_size, data->player.y))
 		data->player.x = new_x;
-	} else {
+	else
+	{
 		// Push player to the edge of the wall
-		if (new_x > data->player.x) {
+		if (new_x > data->player.x)
 			// Moving right: we substract 1 from the final position to ensure the player stops just before entering the wall cell
-			data->player.x = floor((new_x + half_size) / data->cell_size) * data->cell_size - half_size - 10;
-		} else {
+			data->player.x = floor((new_x + half_size) / data->cell_size) * data->cell_size - half_size - 1;
+		else
 			// Moving left
 			data->player.x = ceil((new_x - half_size) / data->cell_size) * data->cell_size + half_size;
-		}
-
-	if (is_wall(data, new_x - half_size, data->player.y))
-	{
-printf("---------------------------------------------------\n");
-printf("cell size   = %d\n", data->cell_size);
-printf("player size = %d\n", data->player_size);
-printf("player_position_update = (%f, %f)\n", new_x, new_y);
-printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-printf("---------------------------------------------------\n");
-		printf("east wall collision at  %f\n", new_x - half_size);
-	}
-
-    else if (is_wall(data, new_x + half_size, data->player.y))
-	{
-printf("---------------------------------------------------\n");
-printf("cell size   = %d\n", data->cell_size);
-printf("player size = %d\n", data->player_size);
-printf("player_position_update = (%f, %f)\n", new_x, new_y);
-printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-printf("---------------------------------------------------\n");
-		printf("west wall collision at  %f\n", new_x + half_size);
-	}
-
-
+		debug_x_collision(data, new_x, new_y);
 	}
 
 	// Check collision for Y axis
 	if (!is_wall(data, data->player.x, new_y + half_size) &&
 		!is_wall(data, data->player.x, new_y - half_size)) {
 		data->player.y = new_y;
-	} else {
+	}
+	else
+	{
 		// Push player to the edge of the wall
-		if (new_y > data->player.y) {
+		if (new_y > data->player.y)
 			// Moving down: we substract 1 from the final position to ensure the player stops just before entering the wall cell
-			data->player.y = floor((new_y + half_size) / data->cell_size) * data->cell_size - half_size - 10;
-		} else {
+			data->player.y = floor((new_y + half_size) / data->cell_size) * data->cell_size - half_size - 1;
+		else
 			// Moving up
 			data->player.y = ceil((new_y - half_size) / data->cell_size) * data->cell_size + half_size;
-		}
-
-	if (is_wall(data, data->player.x, new_y + half_size))
-	{
-
-printf("---------------------------------------------------\n");
-printf("cell size   = %d\n", data->cell_size);
-printf("player size = %d\n", data->player_size);
-printf("player_position_update = (%f, %f)\n", new_x, new_y);
-printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-printf("---------------------------------------------------\n");
-		printf("south wall collision at %f\n", new_y + half_size);
+		debug_y_collision(data, new_x, new_y);
 	}
-	else if (is_wall(data, data->player.x, new_y - half_size))
-	{
-printf("---------------------------------------------------\n");
-printf("cell size   = %d\n", data->cell_size);
-printf("player size = %d\n", data->player_size);
-printf("player_position_update = (%f, %f)\n", new_x, new_y);
-printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
-printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
-printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
-printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
-printf("---------------------------------------------------\n");
-		printf("north wall collision at %f\n", new_y - half_size);
-	}
-
-
-	}
-
 }
  
-int main_loop(t_data *data, t_colors *colors) {
+int main_loop(t_data *data) {
     update_player(data);
-    render_background(data, colors);
+    render_background(data);
     return 0;
 }
 

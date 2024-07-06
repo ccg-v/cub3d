@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 23:16:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/06 21:09:18 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct s_data {
     t_textures west_texture;
     t_textures east_texture;
     struct timespec prev_time; // Add this line
+	t_colors colors;
 
 	int	minimap_x;
 	int	minimap_y;
@@ -175,7 +176,7 @@ int		main(int argc, char **argv);
 //	init.c
 void	init_map(t_data *data, char *map_file);
 void  	init_textures(t_textures *textures);
-void  	init_colors(t_colors *colors);
+void  	init_colors(t_data *data);
 
 /* --- Parse ---------------------------------------------------------------- */
 
@@ -194,7 +195,7 @@ result	check_scene_description(t_data *data);
 result	check_textures(t_data *data, t_textures *textures);
 
 //	check_colors.c
-result	check_colors(t_data *data, t_colors *colors);
+result	check_colors(t_data *data);
 
 //	check_player.c
 boolean all_chars_are_valid(t_data *data);
@@ -230,9 +231,14 @@ int 	open_file(const char *file_path);
 void	read_until_line(int fd, char **line, int endline_index);
 void	read_until_end_of_file(int fd, char **line);
 
+/* --- ?????? ------------------------------------------------------ */
+int		is_wall(t_data *data, double x, double y);
+
 /* --- Debug ------------------------------------------------------- */
 
 //	debug.c
 void	print_map_array(char **array, size_t height, size_t width);
+void	debug_x_collision(t_data *data, double new_x, double new_y);
+void	debug_y_collision(t_data *data, double new_x, double new_y);
 
 #endif
