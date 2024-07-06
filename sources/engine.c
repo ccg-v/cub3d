@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 22:06:48 by vkhrabro          #+#    #+#             */
-/*   Updated: 2024/07/04 00:31:20 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/06 02:54:57 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ void cast_ray(t_data *data)
 {
     int x0 = data->player.x;
     int y0 = data->player.y;
-    double fov = 33.0 * PI / 180.0; // 33 degrees to radians
-    int num_rays = 180; // Number of rays to cast
+    double fov = 60.0 * PI / 180.0; // 33 degrees to radians
+    int num_rays = WINDOW_WIDTH; // Number of rays to cast
     double angle_step = fov / num_rays;
     double ray_angle;
     int minimap_scale = 4;
@@ -219,15 +219,6 @@ void cast_ray(t_data *data)
     }
 }
 
-// int is_vertical_hit(double ray_x, double ray_y, double ray_dx, double ray_dy, int cell_size) {
-//     double next_vertical_grid = (ray_dx > 0) ? ceil(ray_x / cell_size) * cell_size : floor(ray_x / cell_size) * cell_size;
-//     double next_horizontal_grid = (ray_dy > 0) ? ceil(ray_y / cell_size) * cell_size : floor(ray_y / cell_size) * cell_size;
-
-//     double vertical_distance = fabs((next_vertical_grid - ray_x) / ray_dx);
-//     double horizontal_distance = fabs((next_horizontal_grid - ray_y) / ray_dy);
-
-//     return vertical_distance < horizontal_distance ? 1 : 0; // 1 for vertical, 0 for horizontal
-// }
 
 int is_vertical_hit(double ray_dx, double ray_dy) {
     return fabs(ray_dx) > fabs(ray_dy);
@@ -254,8 +245,8 @@ void render_3d_view(t_data *data, t_colors *colors)
         for (int x = 0; x < width; x++) {
             // put_pixel(data, x, y, CEILING_COLOR);
             // put_pixel(data, x, height - 1 - y, FLOOR_COLOR);
-            put_pixel(data, x, y, colors->hex_ceiling);
-            put_pixel(data, x, height - 1 - y, colors->hex_floor);
+            put_pixel(data, x, y, 0xffffffff);
+            put_pixel(data, x, height - 1 - y, 0xff0000ff);
         }
     }
 // Assuming colors->hex_ceiling and colors->hex_floor are of type unsigned long
@@ -459,8 +450,16 @@ int render_background(t_data *data, t_colors *colors) {
 	int player_new_y = data->minimap_y + (data->player.y  / MINIMAP_SCALE);
 	int scaled_player = data->player_size / MINIMAP_SCALE;
 
-printf("player_x_update = %d\n", player_new_x);
-printf("player_y_update = %d\n", player_new_y);
+// printf("---------------------------------------------------\n");
+// printf("cell size   = %d\n", data->cell_size);
+// printf("player size = %d\n", data->player_size);
+// printf("player_position_update = (%d, %d)\n", player_new_x, player_new_y);
+// printf("player_north_boundary  = (%d, %d)\n", player_new_x, player_new_y + (data->player_size / 2));
+// printf("player_south_boundary  = (%d, %d)\n", player_new_x, player_new_y - (data->player_size / 2));
+// printf("player_east_boundary   = (%d, %d)\n", player_new_x - (data->player_size / 2), player_new_y);
+// printf("player_west_boundary   = (%d, %d)\n", player_new_x + (data->player_size / 2), player_new_y);
+// // printf("hit point = (%d, %d)\n", );
+// printf("---------------------------------------------------\n");
 
 	draw_player(data, player_new_x, player_new_y, scaled_player, PLAYER_COLOR);
 				// data->minimap_x + (data->player.x / data->cell_size) * (data->cell_size / MINIMAP_SCALE), 
@@ -622,6 +621,7 @@ void normalize_angle(double *angle) {
 //     }
 // }
 
+
 int is_wall(t_data *data, double x, double y) {
     int map_x = (int)(x / data->cell_size);
     int map_y = (int)(y / data->cell_size);
@@ -634,13 +634,9 @@ int is_wall(t_data *data, double x, double y) {
     return (data->map.array[map_y][map_x] == '1');
 }
 
-void update_player(t_data *data) {
-    // struct timespec current_time;
-    // clock_gettime(CLOCK_MONOTONIC, &current_time);
-    // double delta_time = (current_time.tv_sec - data->prev_time.tv_sec) + (current_time.tv_nsec - data->prev_time.tv_nsec) / 1e9;
-    // data->prev_time = current_time;
+void update_player(t_data *data)
+{
 	double delta_time = 0.028135;
-
     double move_speed = data->cell_size * 5.0 * delta_time; // Adjust speed as needed
     double rot_speed = PI / 2.0 * delta_time; // Adjust rotation speed as needed
 
@@ -678,22 +674,175 @@ void update_player(t_data *data) {
         new_y += move_speed * sin(data->player.angle + PI / 2);
     }
 
-    // Collision detection
-    double half_size = data->player_size / 2.0;
+//     // Collision detection
+//     double half_size = data->player_size / 2.0;
 
-    // Check collision for X axis
-    if (!is_wall(data, new_x + half_size, data->player.y) && 
-        !is_wall(data, new_x - half_size, data->player.y)) {
-        data->player.x = new_x;
-    }
+//     // Check collision for X axis
+//     if (!is_wall(data, new_x + half_size, data->player.y) && 
+//         !is_wall(data, new_x - half_size, data->player.y)) {
+//         data->player.x = new_x;
+//     }
 
-    // Check collision for Y axis
-    if (!is_wall(data, data->player.x, new_y + half_size) && 
-        !is_wall(data, data->player.x, new_y - half_size)) {
-        data->player.y = new_y;
-    }
+// 	else if (is_wall(data, new_x - half_size, data->player.y))
+// 	{
+// printf("---------------------------------------------------\n");
+// printf("cell size   = %d\n", data->cell_size);
+// printf("player size = %d\n", data->player_size);
+// printf("player_position_update = (%f, %f)\n", new_x, new_y);
+// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+// printf("---------------------------------------------------\n");
+// 		printf("east wall collision at  %f\n", new_x - half_size);
+// 	}
+
+//     else if (is_wall(data, new_x + half_size, data->player.y))
+// 	{
+// printf("---------------------------------------------------\n");
+// printf("cell size   = %d\n", data->cell_size);
+// printf("player size = %d\n", data->player_size);
+// printf("player_position_update = (%f, %f)\n", new_x, new_y);
+// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+// printf("---------------------------------------------------\n");
+// 		printf("west wall collision at  %f\n", new_x + half_size);
+// 	}
+
+
+//     // Check collision for Y axis
+//     if (!is_wall(data, data->player.x, new_y + half_size) && 
+//         !is_wall(data, data->player.x, new_y - half_size)) {
+//         data->player.y = new_y;
+//     }
+
+
+
+// 	else if (is_wall(data, data->player.x, new_y + half_size))
+// 	{
+// printf("---------------------------------------------------\n");
+// printf("cell size   = %d\n", data->cell_size);
+// printf("player size = %d\n", data->player_size);
+// printf("player_position_update = (%f, %f)\n", new_x, new_y);
+// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+// printf("---------------------------------------------------\n");
+// 		printf("south wall collision at %f\n", new_y + half_size);
+// 	}
+// 	else if (is_wall(data, data->player.x, new_y - half_size))
+// 	{
+// printf("---------------------------------------------------\n");
+// printf("cell size   = %d\n", data->cell_size);
+// printf("player size = %d\n", data->player_size);
+// printf("player_position_update = (%f, %f)\n", new_x, new_y);
+// printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+// printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+// printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+// printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+// printf("---------------------------------------------------\n");
+// 		printf("north wall collision at %f\n", new_y - half_size);
+// 	}
+
+
+    // Collision detection   
+	double half_size = data->player_size / 2.0;
+
+	// Check collision for X axis
+	if (!is_wall(data, new_x + half_size, data->player.y) &&
+		!is_wall(data, new_x - half_size, data->player.y)) {
+		data->player.x = new_x;
+	} else {
+		// Push player to the edge of the wall
+		if (new_x > data->player.x) {
+			// Moving right: we substract 1 from the final position to ensure the player stops just before entering the wall cell
+			data->player.x = floor((new_x + half_size) / data->cell_size) * data->cell_size - half_size - 10;
+		} else {
+			// Moving left
+			data->player.x = ceil((new_x - half_size) / data->cell_size) * data->cell_size + half_size;
+		}
+
+	if (is_wall(data, new_x - half_size, data->player.y))
+	{
+printf("---------------------------------------------------\n");
+printf("cell size   = %d\n", data->cell_size);
+printf("player size = %d\n", data->player_size);
+printf("player_position_update = (%f, %f)\n", new_x, new_y);
+printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+printf("---------------------------------------------------\n");
+		printf("east wall collision at  %f\n", new_x - half_size);
+	}
+
+    else if (is_wall(data, new_x + half_size, data->player.y))
+	{
+printf("---------------------------------------------------\n");
+printf("cell size   = %d\n", data->cell_size);
+printf("player size = %d\n", data->player_size);
+printf("player_position_update = (%f, %f)\n", new_x, new_y);
+printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+printf("---------------------------------------------------\n");
+		printf("west wall collision at  %f\n", new_x + half_size);
+	}
+
+
+	}
+
+	// Check collision for Y axis
+	if (!is_wall(data, data->player.x, new_y + half_size) &&
+		!is_wall(data, data->player.x, new_y - half_size)) {
+		data->player.y = new_y;
+	} else {
+		// Push player to the edge of the wall
+		if (new_y > data->player.y) {
+			// Moving down: we substract 1 from the final position to ensure the player stops just before entering the wall cell
+			data->player.y = floor((new_y + half_size) / data->cell_size) * data->cell_size - half_size - 10;
+		} else {
+			// Moving up
+			data->player.y = ceil((new_y - half_size) / data->cell_size) * data->cell_size + half_size;
+		}
+
+	if (is_wall(data, data->player.x, new_y + half_size))
+	{
+
+printf("---------------------------------------------------\n");
+printf("cell size   = %d\n", data->cell_size);
+printf("player size = %d\n", data->player_size);
+printf("player_position_update = (%f, %f)\n", new_x, new_y);
+printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+printf("---------------------------------------------------\n");
+		printf("south wall collision at %f\n", new_y + half_size);
+	}
+	else if (is_wall(data, data->player.x, new_y - half_size))
+	{
+printf("---------------------------------------------------\n");
+printf("cell size   = %d\n", data->cell_size);
+printf("player size = %d\n", data->player_size);
+printf("player_position_update = (%f, %f)\n", new_x, new_y);
+printf("player_south_boundary  = (%f, %f)\n", new_x, new_y + (data->player_size / 2));
+printf("player_north_boundary  = (%f, %f)\n", new_x, new_y - (data->player_size / 2));
+printf("player_east_boundary   = (%f, %f)\n", new_x - (data->player_size / 2), new_y);
+printf("player_west_boundary   = (%f, %f)\n", new_x + (data->player_size / 2), new_y);
+printf("---------------------------------------------------\n");
+		printf("north wall collision at %f\n", new_y - half_size);
+	}
+
+
+	}
+
 }
-
+ 
 int main_loop(t_data *data, t_colors *colors) {
     update_player(data);
     render_background(data, colors);

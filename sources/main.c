@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/03 20:58:21 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/06 00:09:21 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
 		return (FAIL);
 	// print_map_array(map.array, map.height, map.width);
 
-// printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
-// printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);
+printf("rgb(%d, %d, %d) is hex_floor %1x\n", colors.floor[0], colors.floor[1], colors.floor[2], colors.hex_floor);
+printf("rgb(%d, %d, %d) is hex_ceiling %1x\n", colors.ceiling[0], colors.ceiling[1], colors.ceiling[2], colors.hex_ceiling);
 
 	if (check_textures(&data, &textures) == 	FAIL)
 	{	
