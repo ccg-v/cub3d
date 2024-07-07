@@ -6,7 +6,7 @@
 #    By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/22 21:20:12 by ccarrace          #+#    #+#              #
-#    Updated: 2024/07/07 14:24:13 by ccarrace         ###   ########.fr        #
+#    Updated: 2024/07/08 01:24:15 by ccarrace         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,12 +56,12 @@ SRC_FILES		=		main.c \
 						parse/create_arrays.c \
 						parse/create_arrays2.c \
 						parse/check_walls.c \
-						parse/check_walls2.c \
 						parse/parse_utils.c \
 						parse/parse_utils2.c \
 						parse/parse_utils3.c \
 						parse/reading_utils.c \
-						debug.c
+						debug/debug.c \
+						debug/print_visited_map.c
 
 # --- Files full paths ------------------------------------------------------- #
 
@@ -73,7 +73,7 @@ DEP_PATH		=		$(addprefix $(DEP_DIR), $(DEP_FILES))
 # --- Compilation rules ------------------------------------------------------ #
 
 all:
-		mkdir -p $(OBJ_DIR) $(OBJ_DIR)/parse $(OBJ_DIR)/init
+		mkdir -p $(OBJ_DIR) $(OBJ_DIR)/parse $(OBJ_DIR)/init $(OBJ_DIR)/debug
 		$(MAKE) -C $(LIBFT_DIR)
 		$(MAKE) -C $(LIBMLX_DIR)
 		$(MAKE) $(NAME)
@@ -90,7 +90,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 
 clean:	
 			rm -f $(OBJ_PATH) $(DEP_PATH)
-			rm -rf $(OBJ_DIR)c
+			rm -rf $(OBJ_DIR)
 			$(MAKE) -C $(LIBFT_DIR) clean
 			$(MAKE) -C $(LIBMLX_DIR) clean
 

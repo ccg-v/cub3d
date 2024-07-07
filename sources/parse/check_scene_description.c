@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 19:10:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_boolean	is_invalid_whitespace(char *line)
 {
 	if (is_whitespace(line[0]) && line[0] != ' ')
 	{
-		printf("Error\nWhitespaces: tabs leading lines not allowed \n");
+		printf("Error\nWhitespaces: tabs leading lines not allowed\n");
 		return (TRUE);
 	}
 	return (FALSE);

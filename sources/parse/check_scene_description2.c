@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:41:14 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 19:10:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_result	find_map(t_data *data)
 {
 	if (data->map.height == 0)
 	{
-		printf("Error\n Map: Not found in the file\n");
+		printf("Error\nMap: Not found in the file\n");
 		return (FAIL);
 	}
 	return (SUCCESS);
@@ -43,7 +43,7 @@ t_boolean	is_map_empty(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Error\nOpen: Could not open '%s'\n", file);
+		printf("Error\nOpen: Could not open the file\n");
 		return (-1);
 	}
 	line = get_next_line(fd);

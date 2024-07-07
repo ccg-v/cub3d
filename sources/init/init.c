@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:02:33 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 14:17:36 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/07 22:20:36 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ void	init_map(t_data *data, char *map_file)
 	data->map.visited = NULL;
 	data->map.player_x = 0;
 	data->map.player_y = 0;
-	// data->map.closed = true;
 	data->map.new_x = 0;
 	data->map.new_y = 0;
 }
 
-void  init_textures(t_textures *textures)
+void	init_textures(t_textures *textures)
 {
 	textures->north = NULL;
 	textures->south = NULL;
@@ -45,15 +44,15 @@ void  init_textures(t_textures *textures)
 	textures->array[0] = &textures->north;
 	textures->array[1] = &textures->south;
 	textures->array[2] = &textures->east;
-	textures->array[3] = &textures->west;	
+	textures->array[3] = &textures->west;
 }
 
-void  init_colors(t_data *data)
+void	init_colors(t_data *data)
 {
 	data->colors.floor[0] = -1;
 	data->colors.floor[1] = -1;
 	data->colors.floor[2] = -1;
-	data->colors.ceiling[0] = -1; 
+	data->colors.ceiling[0] = -1;
 	data->colors.ceiling[1] = -1;
 	data->colors.ceiling[2] = -1;
 	data->colors.hex_floor = 0x0;

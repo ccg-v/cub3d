@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 19:27:17 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 01:08:50 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,11 @@ typedef struct s_data
 
 //	main.c
 int				main(int argc, char **argv);
-
-//	debug.c
-void			print_map_by_lines(char **array, size_t height, size_t width);
-void			print_map_by_chars(char **array, size_t height, size_t width);
-void			debug_x_collision(t_data *data, double new_x, double new_y);
-void			debug_y_collision(t_data *data, double new_x, double new_y);
+int 			render_background(t_data *data);
+int 			main_loop(t_data *data);
+int 			key_press(int keycode, t_data *data);
+int 			key_release(int keycode, t_data *data);
+int 			close_window(t_data *data);
 
 /* --- Init ----------------------------------------------------------------- */
 
@@ -217,11 +216,6 @@ void			fill_visited(t_data *data);
 //	check_walls.c
 t_result		check_walls(t_data *data);
 
-//	check_walls2.c
-void			start_dfs_search(t_data *data);
-t_boolean		is_map_closed(t_data *data);
-t_boolean		is_fully_walkable(t_data *data);
-
 //	parse_utils.c
 int				is_file_type_valid(char *filename, char *expected_extension);
 void			free_array(char **array, size_t height);
@@ -245,4 +239,15 @@ void			read_until_end_of_file(int fd, char **line);
 /* --- ?????? --------------------------------------------------------------- */
 int				is_wall(t_data *data, double x, double y);
 
+/* --- Debug ---------------------------------------------------------------- */
+
+//	debug.c
+void			print_map_by_lines(char **array, size_t height, size_t width);
+void			print_map_by_chars(char **array, size_t height, size_t width);
+void			debug_x_collision(t_data *data, double new_x, double new_y);
+void			debug_y_collision(t_data *data, double new_x, double new_y);
+
+//	print_visited_map.c
+void			display_checks(void);
+void			print_visited_map(t_data *data);
 #endif

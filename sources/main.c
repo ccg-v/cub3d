@@ -6,17 +6,12 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:59:38 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 19:10:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int close_window(t_data *data);
-int key_press(int keycode, t_data *data);
-int key_release(int keycode, t_data *data);
-int main_loop(t_data *data);
-int render_background(t_data *data);
 
 t_result	check_args(int argc)
 {

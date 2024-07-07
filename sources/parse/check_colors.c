@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 19:10:01 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ static t_boolean	rgb_triplet_is_valid(char **rgb_array, int *color)
 	{
 		if (!(is_valid_number(rgb_array[i])))
 		{
-			printf("Error\nColor: ");
-			printf("Negative value or non-numeric characters found\n");
+			printf("Error\nColor: Values must be positive and numeric\n");
 			return (FALSE);
 		}
 		color[i] = ft_atoi(rgb_array[i]);
