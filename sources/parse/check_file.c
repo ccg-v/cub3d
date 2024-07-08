@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:33:05 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:33:48 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_boolean	can_open_file(char *str)
 	fd = open(str, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Error\nOpen: Could not open the file\n");
+		printf("Error\nOpen: Could not open '%s'\n", str);
 		return (FALSE);
 	}
 	close(fd);

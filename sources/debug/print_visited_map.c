@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 22:01:43 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 00:26:36 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:42:51 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	print_visited_map(t_data *data)
 	data->map.visited_height = data->map.height + 2;
 	data->map.visited_width = data->map.width + 1;
 	system("clear");
-	// display_checks();
+	display_checks();
 	row = 0;
 	while (row < data->map.visited_height)
 	{

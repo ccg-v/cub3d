@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:02:33 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/07 22:20:36 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:50:17 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,32 @@ void	init_colors(t_data *data)
 	data->colors.ceiling[2] = -1;
 	data->colors.hex_floor = 0x0;
 	data->colors.hex_ceiling = 0x0;
+}
+
+void	initialize_game_data(t_data *data)
+{
+	data->player.x = 0.0f;
+	data->player.y = 0.0f;
+	data->player.angle = INITIAL_ANGLE;
+	data->player.move_forward = 0;
+	data->player.move_backward = 0;
+	data->player.rotate_left = 0;
+	data->player.rotate_right = 0;
+	data->player.ray_length = 0.0;
+	data->player.strafe_left = 0;
+	data->player.strafe_right = 0;
+	data->mlx = mlx_init();
+	data->window = mlx_new_window(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
+			"Cub3D");
+	data->image = mlx_new_image(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->addr = mlx_get_data_addr(data->image, &data->bits_per_pixel,
+			&data->line_length, &data->endian);
+}
+
+void	init(char *file_name, t_data *data, t_textures *textures)
+{
+	init_map(data, file_name);
+	init_textures(textures);
+	init_colors(data);
+	initialize_game_data(data);
 }

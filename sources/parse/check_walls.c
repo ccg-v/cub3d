@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:41 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:19:34 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:43:35 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ static void	dfs(t_data *data, int row, int column)
 		|| data->map.visited[row][column] == '@')
 		return ;
 	data->map.visited[row][column] = '@';
-	// print_visited_map(data);
+	if (DEBUG_MODE == 1)
+	{
+		usleep(100000);
+		print_visited_map(data);
+	}
 	dfs(data, row -1, column);
 	dfs(data, row, column + 1);
 	dfs(data, row + 1, column);
@@ -145,7 +149,8 @@ t_result	check_walls(t_data *data)
 		printf("Error\nMap: Is not closed\n");
 		return (FAIL);
 	}
-	display_checks();
+	if (DEBUG_MODE == 0)
+		display_checks();
 	if (is_fully_walkable(data) == FALSE)
 	{
 		printf(YELLOW " \xE2\x9A\xA0 " RESET);

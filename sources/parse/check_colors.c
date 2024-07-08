@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 19:28:00 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:54:09 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_boolean	are_colors_defined(int *color_found)
 	else if (*color_found == 3)
 		return (TRUE);
 	else
-		printf("Error\nColors: Only two colors needed\n");
+		printf("Error\nColors: More than two found\n");
 	return (FALSE);
 }
 
@@ -127,7 +127,7 @@ t_result	check_colors(t_data *data)
 	{
 		trim_and_reduce_spaces(line);
 		original_line = line;
-		if ((*line == 'F' || *line == 'C')
+		if ((*line == 'F' || *line == 'C') && line[1] == ' '
 			&& (process_color_line(data, line, &colors_found) == FAIL))
 			return (FAIL);
 		free(original_line);

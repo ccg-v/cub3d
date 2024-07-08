@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 22:43:07 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:00:15 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 19:37:38 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,33 @@ int	find_min(int a, int b)
 	if (a < b)
 		return (a);
 	return (b);
+}
+
+int	free_all(t_textures *textures, t_map *map)
+{
+	int	i;
+
+	i = 0;
+	if (textures->array != NULL)
+	{
+		while (i < 4)
+		{
+			if (*(textures->array[i]) != NULL)
+			{
+				free(*(textures->array[i]));
+				*(textures->array[i]) = NULL;
+			}
+			i++;
+		}
+	}
+	if (map != NULL)
+	{
+		free_array(map->array, map->height);
+		map->array = NULL;
+		free_array(map->visited, (map->height + 2));
+		map->visited = NULL;
+	}
+	return (0);
 }
 
 void	display_map_error(char *str, int code)

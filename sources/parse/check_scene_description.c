@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:34:09 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:32:18 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_boolean	contains_invalid_characters(char *line)
 				|| (line[0] == 'S' && line[1] == 'O')
 				|| (line[0] == 'E' && line[1] == 'A')
 				|| (line[0] == 'W' && line[1] == 'E'))
-			&& line[2] != ' '))
+			&& line[2] != ' ' && line[2] != '\n'))
 	{
 		printf("Error\nFormat: Invalid characters found in the file\n");
 		return (TRUE);

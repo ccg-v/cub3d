@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:41:14 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 01:17:34 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:34:26 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_boolean	is_map_empty(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Error\nOpen: Could not open the file\n");
+		printf("Error\nOpen: Could not open '%s'\n", file);
 		return (-1);
 	}
 	line = get_next_line(fd);
