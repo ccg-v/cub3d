@@ -1,10 +1,10 @@
-NO ./textures/color_stone.xpm
-SO ./textures/purple_stone.xpm
-EA ./textures/grey_stone.xpm
-WE ./textures/blue_stone.xpm
+NO ./textures/neon_C_256.xpm
+SO ./textures/neon_G_256.xpm
+EA ./textures/neon_M.xpm
+WE ./textures/neon_Y_256.xpm
 
-C 135,206,235
-F 139,69,19
+C 0,0,0
+F 0,0,0
 
 111111111111111111111
 101000001000000000001
