@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:41:14 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/08 18:34:26 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/09 19:06:12 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ t_boolean	is_map_last(t_data *data)
 {
 	int		fd;
 	char	*line;
-	int		map_end_line;
 	int		flag;
 
 	flag = TRUE;
@@ -75,8 +74,8 @@ t_boolean	is_map_last(t_data *data)
 	if (fd < 0)
 		return (FALSE);
 	line = get_next_line(fd);
-	map_end_line = data->map.starting_line + data->map.height;
-	read_until_line(fd, &line, map_end_line + 1);
+	data->map.ending_line = data->map.starting_line + data->map.height;
+	read_until_line(fd, &line, data->map.ending_line + 1);
 	while (line != NULL && flag == TRUE)
 	{
 		if (line[0] != '\n')

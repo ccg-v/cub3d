@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/09 18:29:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/09 19:43:15 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define FLOOR_COLOR 0x8B4513 // Brown color for floor (139,69,19)
 # define INITIAL_ANGLE PI / 2
 # define MINIMAP_SCALE 4
-# define DEBUG_MODE 1
+# define DEBUG_MODE 0
 
 /* --- Enum definitions ----------------------------------------------------- */
 
@@ -98,45 +98,46 @@ typedef struct s_map
 	t_colors	ceiling_color;
 }	t_map;
 
-typedef struct s_moves {
-    double delta_time;
-    double move_speed;
-    double rot_speed;
-    double cos_angle;
-    double sin_angle;
-    double new_x;
-    double new_y;
-    double half_size;
-} t_moves;
+typedef struct s_moves
+{
+	double		delta_time;
+	double		move_speed;
+	double		rot_speed;
+	double		cos_angle;
+	double		sin_angle;
+	double		new_x;
+	double		new_y;
+	double		half_size;
+}	t_moves;
 
-
-typedef struct s_render {
-    double fov;
-    double camera_x;
-    double ray_dir_x;
-    double ray_dir_y;
-    double plane_x;
-    double plane_y;
-    double ray_x;
-    double ray_y;
-    int map_x;
-    int map_y;
-    double side_dist_x;
-    double side_dist_y;
-    double d_dist_x;
-    double d_dist_y;
-    int step_x;
-    int step_y;
-    int hit;
-    int side;
-    double perp_wall_dist;
-    int line_height;
-    int draw_start;
-    int draw_end;
-    double wall_x;
-    double step;
-    double tex_pos;
-} t_render;
+typedef struct s_render
+{
+	double		fov;
+	double		camera_x;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		ray_x;
+	double		ray_y;
+	int			map_x;
+	int			map_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	double		d_dist_x;
+	double		d_dist_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
+	double		perp_wall_dist;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	double		wall_x;
+	double		step;
+	double		tex_pos;
+}	t_render;
 
 typedef struct s_textures
 {
@@ -178,13 +179,13 @@ typedef struct s_data
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
-	int i;
-	int j;
-	int color;
-	int minimap_cell_size;
+	int				i;
+	int				j;
+	int				color;
+	int				minimap_cell_size;
 	t_map			map;
 	t_player		player;
-	t_render 		render;
+	t_render		render;
 	t_moves			moves;
 	int				cell_size;
 	int				player_size;
@@ -192,24 +193,24 @@ typedef struct s_data
 	t_textures		south_texture;
 	t_textures		west_texture;
 	t_textures		east_texture;
-	t_textures 		texture;
+	t_textures		texture;
 	struct timespec	prev_time;
 	t_colors		colors;
 	int				minimap_x;
 	int				minimap_y;
-	int tex_x;
-	int tex_y;
+	int				tex_x;
+	int				tex_y;
 }	t_data;
 
 /* === Functions ============================================================ */
 
 //	main.c
 int				main(int argc, char **argv);
-int 			render_background(t_data *data);
-int 			main_loop(t_data *data);
-int 			key_press(int keycode, t_data *data);
-int 			key_release(int keycode, t_data *data);
-int 			close_window(t_data *data);
+int				render_background(t_data *data);
+int				main_loop(t_data *data);
+int				key_press(int keycode, t_data *data);
+int				key_release(int keycode, t_data *data);
+int				close_window(t_data *data);
 
 /* --- Init ----------------------------------------------------------------- */
 
@@ -217,7 +218,7 @@ int 			close_window(t_data *data);
 void			init_map(t_data *data, char *map_file);
 void			init_textures(t_textures *textures);
 void			init_colors(t_data *data);
-void 			initialize_game_data(t_data *data);
+void			initialize_game_data(t_data *data);
 void			init(char *file_name, t_data *data, t_textures *textures);
 
 /* --- Parse ---------------------------------------------------------------- */
