@@ -6,7 +6,7 @@
 /*   By: ccarrace <ccarrace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 21:19:54 by ccarrace          #+#    #+#             */
-/*   Updated: 2024/07/09 00:29:16 by ccarrace         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:29:16 by ccarrace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define FLOOR_COLOR 0x8B4513 // Brown color for floor (139,69,19)
 # define INITIAL_ANGLE PI / 2
 # define MINIMAP_SCALE 4
-# define DEBUG_MODE 0
+# define DEBUG_MODE 1
 
 /* --- Enum definitions ----------------------------------------------------- */
 
